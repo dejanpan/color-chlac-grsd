@@ -1,5 +1,15 @@
 \documentclass[conference]{sty/IEEEtran}
 \usepackage{times}
+\usepackage{wrapfig}
+\usepackage{tweaklist}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+
 
 % numbers option provides compact numerical references in the text. 
 \usepackage[numbers]{natbib}
@@ -86,7 +96,26 @@ The abstract goes here.
 
 \subsection{Color CHLAC}
 \subsection{GRSD}
-
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=.4\columnwidth]{figures/grsd/book.png}
+\hfill
+    \includegraphics[width=.48\columnwidth]{figures/grsd/book_global.png} \\
+\hfill
+    \includegraphics[width=.3\columnwidth]{figures/grsd/mug.png}
+\hfill
+    \includegraphics[width=.48\columnwidth]{figures/grsd/mug_global.png}
+\caption{Example of RSD classes and GRSD plots for a big flat box (i.e. book, upper row) and a short cylinder (i.e. mug, bottom row).
+The histogram bin values are scaled between -1 and 1 according to the
+training data, and the colors represent the following local surfaces:
+red - sharp edge (or noise), yellow - plane, green - cylinder, light blue -
+sphere (not present), and dark blue - rim (i.e. boundary, transition between surfaces).
+\emph{Best viewed in color.}
+}
+    \label{fig:gfpfh}
+  \end{center}
+\vspace{-2ex}
+\end{figure}
 
 \section{Classification Methods}
 
