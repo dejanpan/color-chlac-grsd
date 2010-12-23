@@ -81,6 +81,44 @@ The abstract goes here.
 \IEEEpeerreviewmaketitle
 
 \section{Introduction}
+One of the great challenges faced by autonomous mobile robot
+manipulation is the scaling of the technology to realistic tasks, in
+realistic environments under realistic conditions. This challenge
+implies that an autonomous household robot is required to act on many
+different objects of daily use, to handle them in typical situations
+for example when opening a fridge to get the milk or when performing
+realistic tasks such as setting the table or preparing a meal.
+
+\subsection{What}
+Problem statement:
+\begin{itemize}
+\item Recogniton and localization of objects of daily use in households
+\item Categorization and classification with \emph{one} descriptor
+\item Omits a supporting-table assumption and performs in cluttered and occluded scenes
+\item Runs online
+\end{itemize}
+
+
+\subsection{Why}
+\begin{itemize}
+\item to equipp the service robots with the boostrapped recognition models and capabilities
+to acquire additional models
+\item to enable manipulation tasks in realistic environments under realistic conditions
+\item to exploit new sensing technology (e.g. Kinect) and to thus avoid decoupling of gemetrical and
+visual appearance data
+\end{itemize}
+
+
+\subsection{How}
+\begin{itemize}
+\item Combination of view-variant ColorCHLAC and GRSD with the
+normalization of the latter by number 27 (number of transitions)
+\item Combination of view-invariant version of ColorCHLAC and GRSD
+\item Comparisson of Linear Subspace Method and SVM Classifier
+\end{itemize}
+
+\subsection{Novelty}
+
 
 \section{Related Work}
 \begin{itemize}
@@ -160,13 +198,13 @@ Same approach (if using rotation invariant Color-CHLAC), but different things ar
     \includegraphics[width=.45\columnwidth]{figures/rot_table/barilla.png}
 \hfill
     \includegraphics[width=.45\columnwidth]{figures/rot_table/barilla1.png} \\
-\hfill
     \includegraphics[width=.45\columnwidth]{figures/rot_table/barilla2.png}
 \caption{Acquisition of Training Data}
     \label{fig:data_acquisition}
   \end{center}
 \end{figure}
 \subsection{Online Testing/Object Recognition}
+
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.45\columnwidth]{figures/colorCHLAC/detection7.png}
