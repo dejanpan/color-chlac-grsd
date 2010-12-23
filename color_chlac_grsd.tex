@@ -95,7 +95,22 @@ The abstract goes here.
 \section{Feature Estimation}
 
 \subsection{Color CHLAC}
+
 \subsection{GRSD}
+%
+Compute radiuses as in \cite{Marton10CAD}.
+Since these values have physical meaning, we can categorize surfaces using
+simple, intuitive rules, into: planes (large $r_{min}$), cylinders (medium $r_{min}$,
+large $r_{max}$), edges (small $r_{min}$ and $r_{max}$), rims (small $r_{min}$,
+medium to large $r_{max}$), and spheres (similar $r_{min}$ and $r_{max}$).
+Figure~\ref{fig:gfpfh} shows annotated the surface types.
+
+Once all voxels are annotated locally using a geometric class, our
+processing pipeline constructs a global feature by counting the transitions
+between these local labels (and free space). Since we do not use raycasting
+as previously in \cite{Humanoids} but consider only the direct neighbors
+of each occupied cell, the computation of this \emph{simplified} GRSD is much faster.
+
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.4\columnwidth]{figures/grsd/book.png}
@@ -105,7 +120,7 @@ The abstract goes here.
     \includegraphics[width=.3\columnwidth]{figures/grsd/mug.png}
 \hfill
     \includegraphics[width=.48\columnwidth]{figures/grsd/mug_global.png}
-\caption{Example of RSD classes and GRSD plots for a big flat box (i.e. book, upper row) and a short cylinder (i.e. mug, bottom row).
+\caption{REDO: Example of RSD classes and GRSD plots for a big flat box (i.e. book, upper row) and a short cylinder (i.e. mug, bottom row).
 The histogram bin values are scaled between -1 and 1 according to the
 training data, and the colors represent the following local surfaces:
 red - sharp edge (or noise), yellow - plane, green - cylinder, light blue -
@@ -113,6 +128,20 @@ sphere (not present), and dark blue - rim (i.e. boundary, transition between sur
 \emph{Best viewed in color.}
 }
     \label{fig:gfpfh}
+  \end{center}
+\vspace{-2ex}
+\end{figure}
+
+\subsection{Comparison}
+%
+Same approach (if using rotation invariant Color-CHLAC), but different things are counted (color vs surface type). Also, GRSD considers free space as well.
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=.3\columnwidth]{figures/comparison/cube.png}
+    \includegraphics[width=.32\columnwidth]{figures/comparison/dice1.png}
+    \includegraphics[width=.32\columnwidth]{figures/comparison/dice2.png}
+    \caption{Color-CHLAC: can not differentiate the dice from the cube. GRSD: can not differentiate the different colors. Combination solves both.}
+    \label{fig:comparison}
   \end{center}
 \vspace{-2ex}
 \end{figure}
