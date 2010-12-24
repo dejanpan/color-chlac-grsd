@@ -11,6 +11,23 @@
 \usepackage{url}
 \usepackage{bm}
 
+\def\cH{\mathcal{H}}
+\def\cL{\mathcal{L}}
+\def\cP{\mathcal{P}}
+\def\cO{\mathcal{O}}
+\def\mP{{\mathsf P}}
+\def\mh{{\mathsf h}}
+\def\mo{{\mathsf o}}
+\def\mv{{\mathsf v}}
+\def\mn{{\mathsf n}}
+\def\vcb{{\boldsymbol{c}}}
+\def\vpb{{\boldsymbol{p}}}
+\def\vqb{{\boldsymbol{q}}}
+\def\vnb{{\boldsymbol{n}}}
+\def\vlb{{\boldsymbol{l}}}
+\def\mr{{\mathsf r}}
+
+
 % numbers option provides compact numerical references in the text. 
 \usepackage[numbers]{natbib}
 \usepackage{multicol}
@@ -191,6 +208,54 @@ Then the dimension of Color-CHLAC feature vector becomes 981 (=6+480+6+489).
 
 
 \subsection{GRSD}
+In order to perform surface classification, we label the surface units
+needed for the global classification  directly, instead
+of taking the dominant point-based label for each voxel. This reduces the
+complexity proportionally to the average number of points in a voxel. Also,
+the neighborhood can be directly constructed using the points in the current
+and surrounding voxels.
+
+Once the neighborhood is constructed, we compute the RSD features, i.e. the
+radius of the highest and lowest curvature in the local neighborhood, as
+described in \cite{Marton10IROS}. As a short overview, from the distribution
+of normal angles by distance we take the minimum and maximum normal
+variations by distance, and solve the equation:
+\begin{align}
+\label{eqn:distance_by_angle}
+  d_{(\alpha)} = \sqrt{2} r \sqrt{1 - cos(\alpha)}
+\end{align}
+
+We can assume $d = r \alpha$ as $\alpha \in [0,\pi/2]$ and the Taylor
+decomposition of equation \ref{eqn:distance_by_angle} is:
+\begin{align}
+\label{eqn:taylor}
+  d_{(\alpha)} = r \alpha + \frac{r \alpha^3}{24} + O(\alpha^5)
+\end{align}
+which greatly reduces the problem of finding $r_{min}$ and $r_{max}$.
+
+Since these values have physical meaning, we can categorize surfaces using
+simple, intuitive rules, into: planes (large $r_{min}$), cylinders (medium $r_{min}$,
+large $r_{max}$), edges (small $r_{min}$ and $r_{max}$), rims (small $r_{min}$,
+medium to large $r_{max}$), and spheres (similar $r_{min}$ and $r_{max}$).
+
+Once all voxels are annotated locally using a geometric class, our
+processing pipeline constructs a global feature space that can
+produce a unique signature for each object cluster.  This space is
+based on the idea that, for a set of labeled voxels, a
+global feature can be constructed by observing the relationships between all
+these local labels (and the encapsulated free space).
+Since the labels represent geometric classes obtained
+from the classification of RSD descriptors, we call this new feature the
+Global Radius-based Surface Descriptor (GRSD).
+The computation of GRSD is similar to GFPFH \cite{Rusu09ICCV-WS}, with the
+exception that we sum up the individual $\cH_{f_{ij}}$ histograms instead of
+computing their distribution, to further reduce computational complexity. This way,
+the complete processing of a cluster (correcting, estimating normals,
+computing the voxelized RSD values, labeling voxels and constructing the
+GRSD) takes between 0.3 and 0.7 seconds (depending on object size) on a
+single core (using voxel size of $1.5cm$ as in the presented examples).
+
+
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.4\columnwidth]{figures/grsd/book.png}
