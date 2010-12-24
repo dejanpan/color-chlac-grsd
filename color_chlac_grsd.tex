@@ -9,7 +9,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{url}
-
+\usepackage{bm}
 
 % numbers option provides compact numerical references in the text. 
 \usepackage[numbers]{natbib}
@@ -125,7 +125,7 @@ normalization of the latter by number 27 (number of transitions)
 \begin{itemize}
 \item VFH
 \item GRSD (Humanoids10GRSD)\cite{kalman1960new} 
-\item Color CHLAC (Asako)
+\item Color CHLAC (Asako)\cite{kanezaki2010icra}\cite{kanezaki2010tvc}
 \end{itemize}
 
 \section{System Overview}
@@ -134,6 +134,62 @@ normalization of the latter by number 27 (number of transitions)
 \section{Feature Estimation}
 
 \subsection{Color CHLAC}
+Color-CHLAC features are computed from color 3D voxel data by measuring 
+    the autocorrelation function of the 3D target object at specific points, 
+    represented by local patterns.
+Local descriptors are represented by correlation values of the colors of neighboring voxels.
+
+Letting $\bm{x}=(x,y,z)^T$ be the position of a voxel, 
+    we use the notation $p(\bm{x})=1$ if the voxel is occupied, and $p(\bm{x})=0$ otherwise. 
+When $p(\bm{x})=1$, the voxel has RGB color values.
+We represent them as $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$, 
+    which are normalized between 0 and 1.
+By defining $r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$ and $b'(\bm{x}) \equiv 1 - b(\bm{x})$, 
+    a voxel status $\bm{f}(\bm{x})\in R^6$ is defined as follows:
+%\vspace{-2mm}
+\begin{eqnarray*}
+  \label{eq:voxel}
+%  \hspace{-1mm}
+  \bm{f}({\bm x})\hspace{-1mm}=\hspace{-1mm}\left\{
+  \begin{array}{cc}
+    \hspace{-1mm}
+    (r({\bm x})\hspace{1mm} r'({\bm x}) \hspace{1mm}g({\bm x}) \hspace{1mm}g'({\bm x}) \hspace{1mm}b({\bm x}) \hspace{1mm}b'({\bm x}))^T & \hspace{-2mm}(p({\bm x})\hspace{-1mm}=\hspace{-1mm}1) \\
+    (0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0)^T & \hspace{-2mm}(p({\bm x})\hspace{-1mm}=\hspace{-1mm}0)
+  \end{array}\right.
+\end{eqnarray*}
+%
+Color-CHLAC features are the integral of $\bm{f}(\bm{x})$ or correlations of $\bm{f}(\bm{x})$ between neighboring voxels.
+They are calculated by following equations:  
+\begin{equation}\label{eq:0th}
+  {\bm q} = \int \bm{f}({\bm x}) d{\bm x} 
+\end{equation}
+%\vspace{-4mm}
+\begin{equation}\label{eq:1st}
+  {\bm q}({\bm a}) = \int \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a}) d{\bm x} \\
+\end{equation}
+%
+The dimension of Color-CHLAC features calculated by (\ref{eq:0th}) is 6. 
+14 patterns are used for the displacement vectors ${\bm a}$ in (\ref{eq:1st}) (Fig. \ref{fig:displacement_vectors}). 
+Note that not only $\bm{f}(\bm{x})$ correlation between two neighboring voxels 
+    but also the correlation between two elements of $\bm{f}(\bm{x})$ of one voxel is integrated. 
+
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=0.43\textwidth]{figures/colorCHLAC/displacement_vectors.png}
+    %\vspace{-2mm}
+    \caption{Patterns of displacement vectors. Position of the center voxel is ${\bm x}$, 
+      while position of the other highlighted voxel is ${\bm x}+{\bm a}$. }
+    \label{fig:displacement_vectors}
+  \end{center}
+\end{figure}
+
+As a pre-processing of features extraction, $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ can be binarized. 
+Excluding redundant elements, the dimension of Color-CHLAC features calculated by (\ref{eq:1st}) is 
+    480 if color values are binarized, and 489 otherwise.
+In this paper, we extract Color-CHLAC features both from binarized color voxel data and from original color voxel data. 
+Then the dimension of Color-CHLAC feature vector becomes 981 (=6+480+6+489). 
+
+
 \subsection{GRSD}
 \begin{figure}[htb!]
   \begin{center}
@@ -159,6 +215,49 @@ sphere (not present), and dark blue - rim (i.e. boundary, transition between sur
 \section{Classification Methods}
 
 \subsection{Linear Subspace Method}
+\label{sec:subspace}
+\subsubsection{Creating subspaces of objects in a database}
+First, the voxel data of each object in a database is subdivided into a voxel grid of a certain size, 
+    e.g. $10 \times 10 \times 10$ voxels. 
+Suppose the $i$-th object in the database is divided into $M_i$ subdivisions.
+Then $M_i$ Color-CHLAC feature vectors are extracted. 
+To achieve robustness to rotation, 
+    features extraction is repeated with various poses of the object. 
+The feature vector of an object which is rotated by 90 degrees can be obtained rapidly
+    through a simple exchange of the elements of the feature vector in the initial posture.
+This is possible because each displacement vector in Fig.~\ref{fig:displacement_vectors}
+    is equivalent to another, rotated by 90 degrees.
+In this paper, we use this 90 degrees rotation in 24 ways,
+    and rotations of 30 and 60 degrees in 21 ways, 
+    resulting in achieving 504($=24 \times 21$) varieties of postures for an object. 
+Therefore, the number of Color-CHLAC feature vectors 
+    generated from each object is $N_i \equiv 504M_i$. 
+
+We represent a Color-CHLAC feature vector compressed by PCA as $\bm{z}_t \in R^d, t=1,2,...N_i$, 
+    where $d$ is the dimension of a compressed feature vector.
+The auto-correlation matrix of these feature vectors is calculated by the following equation: 
+\begin{eqnarray*}
+  %\hspace{-1mm}
+  R_i = \frac{1}{N_i} \sum^{N_i}_{t=1} \bm{z}_t \bm{z}_t^T
+\end{eqnarray*}
+The eigenvectors of $R_i$ are then computed by solving the eigenvector problem. 
+Finally, the bases of the subspace of the $i$-th object in the database, $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$, 
+    are obtained as the $r$ eigenvectors of largest eigenvalue. 
+
+\subsubsection{Calculation of Similarity}
+The first step in the recognition process is to compute 
+    one Color-CHLAC feature vector from the whole of a query part in a 3D scene. % ???
+Then the compressed feature vector $\bm{z}$ is computed using the projection matrix which is 
+    generated from all Color-CHLAC feature vectors of each database object in the pre-processing phase.
+Let the similarity between the query part and the $i$-th object in the database be $y_i$. 
+$y_i$ is defined as the cosine of the angle between $\bm{z}$ and the subspace of the $i$-th object.
+$y_i$ is calculated by the following equation: 
+\begin{eqnarray}\label{eq:y_calc}
+  %\hspace{-1mm}
+  y_i = \frac{\| P_i^T \bm{z} \|}{\| \bm{z} \|}
+\end{eqnarray}
+
+
 \subsection{Support Vector Machine-based Classification}
 
 
@@ -189,6 +288,13 @@ sphere (not present), and dark blue - rim (i.e. boundary, transition between sur
   \end{center}
 \end{figure}
 
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/GRSD_CCHLAC.png}
+    \caption{Examples of GRSD-ColorCHLAC histograms.}
+    \label{fig:grsd_cchlac}
+  \end{center}
+\end{figure}
 
 \section{Conclusions and Future Work} 
 The conclusion goes here.
