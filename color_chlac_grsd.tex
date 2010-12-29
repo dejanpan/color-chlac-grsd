@@ -10,6 +10,7 @@
 \usepackage{amssymb}
 \usepackage{url}
 \usepackage{bm}
+\usepackage{color}
 
 \def\cH{\mathcal{H}}
 \def\cL{\mathcal{L}}
@@ -89,7 +90,7 @@
 %Telephone: (800) 555--1212, Fax: (888) 555--1212}
 %\authorblockA{\authorrefmark{4}Tyrell Inc., 123 Replicant Street, Los Angeles, California 90210--4321}}
 
-
+\newcommand{\todo}[1]{\textbf{\textcolor{red}{TODO: #1}}}
 \maketitle
 
 \begin{abstract}
@@ -118,7 +119,7 @@ realistic tasks such as setting the table or preparing a meal.
   \end{center}
 \end{figure}
 
-
+\todo{Dejan - make text}
 \subsection{What}
 Problem statement:
 \begin{itemize}
@@ -165,12 +166,12 @@ Object Segmentation and Recognition Using Random Forests - the emphasize is on c
 \end{itemize}
 
 \section{System Overview} 
-
+\todo{Dejan}
 
 \section{Feature Estimation}
 
 \subsection{Color CHLAC}
-
+\todo{Asako - explain the difference between viewpoint variant and invariant}\\
 Color-CHLAC features are computed from color 3D voxel data by measuring 
     the autocorrelation function of the 3D target object at specific points, 
     represented by local patterns.
@@ -228,20 +229,14 @@ Then the dimension of Color-CHLAC feature vector becomes 981 (=6+480+6+489).
 
 
 \subsection{GRSD}
-%
 Compute radiuses as in \cite{Marton10CAD}.
+\todo{Zoli: explain additivity}
 
 Since these values have physical meaning, we can categorize surfaces using
 simple, intuitive rules, into: planes (large $r_{min}$), cylinders (medium $r_{min}$,
 large $r_{max}$), edges (small $r_{min}$ and $r_{max}$), rims (small $r_{min}$,
 medium to large $r_{max}$), and spheres (similar $r_{min}$ and $r_{max}$).
 Figure~\ref{fig:gfpfh} shows annotated the surface types.
-
-Once all voxels are annotated locally using a geometric class, our
-processing pipeline constructs a global feature by counting the transitions
-between these local labels (and free space). Since we do not use raycasting
-as previously in \cite{Humanoids} but consider only the direct neighbors
-of each occupied cell, the computation of this \emph{simplified} GRSD is much faster.
 
 \begin{figure}[htb!]
   \begin{center}
@@ -252,7 +247,7 @@ of each occupied cell, the computation of this \emph{simplified} GRSD is much fa
     \includegraphics[width=.3\columnwidth]{figures/grsd/mug.png}
 \hfill
     \includegraphics[width=.48\columnwidth]{figures/grsd/mug_global.png}
-\caption{REDO: Example of RSD classes and GRSD plots for a big flat box (i.e. book, upper row) and a short cylinder (i.e. mug, bottom row).
+\caption{Example of RSD classes and GRSD plots for a big flat box (i.e. book, upper row) and a short cylinder (i.e. mug, bottom row).
 The histogram bin values are scaled between -1 and 1 according to the
 training data, and the colors represent the following local surfaces:
 red - sharp edge (or noise), yellow - plane, green - cylinder, light blue -
@@ -262,6 +257,24 @@ sphere (not present), and dark blue - rim (i.e. boundary, transition between sur
     \label{fig:gfpfh}
   \end{center}
 \vspace{-2ex}
+\end{figure}
+
+Once all voxels are annotated locally using a geometric class, our
+processing pipeline constructs a global feature by counting the transitions
+between these local labels (and free space). Since we do not use raycasting
+as previously in \cite{Humanoids} but consider only the direct neighbors
+of each occupied cell, the computation of this \emph{simplified} GRSD is much faster.
+
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/purple.png}
+    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/torus.png}
+    \caption{Examples of GRSD-ColorCHLAC histograms. Left: different categories 
+of objects result in having different first 20 bins of the respective histogram.
+Right: different colors of the same category of an object have different 117 last bins 
+of the histogram}
+    \label{fig:grsd_cchlac}
+  \end{center}
 \end{figure}
 
 \subsection{Comparison}
@@ -325,11 +338,12 @@ $y_i$ is calculated by the following equation:
 
 
 \subsection{Support Vector Machine-based Classification}
-
+\todo{Zoli}
 
 \section{Results}
 
 \subsection{Data Acquisition and Training}
+\todo{Dejan}
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.45\columnwidth]{figures/rot_table/barilla.png}
@@ -340,8 +354,16 @@ $y_i$ is calculated by the following equation:
     \label{fig:data_acquisition}
   \end{center}
 \end{figure}
-\subsection{Online Testing/Object Recognition}
 
+\subsection{Testing}
+\subsubsection{Cross-Validation}
+\todo{ALL}
+
+\subsubsection{Find One Object Test}
+\todo{Dejan}
+
+\subsection{Object Recognition Pipeline (in Clutter)}
+\todo{Asako}
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.45\columnwidth]{figures/colorCHLAC/detection7.png}
@@ -354,20 +376,9 @@ $y_i$ is calculated by the following equation:
   \end{center}
 \end{figure}
 
-\begin{figure}[htb!]
-  \begin{center}
-    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/purple.png}
-    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/torus.png}
-    \caption{Examples of GRSD-ColorCHLAC histograms. Left: different categories 
-of objects result in having different first 20 bins of the respective histogram.
-Right: different colors of the same category of an object have different 117 last bins 
-of the histogram}
-    \label{fig:grsd_cchlac}
-  \end{center}
-\end{figure}
 
 \section{Conclusions and Future Work} 
-The conclusion goes here.
+\todo{ALL}
 
 \section*{Acknowledgments}
 CoTeSys
