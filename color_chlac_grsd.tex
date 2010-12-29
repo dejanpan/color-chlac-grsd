@@ -108,6 +108,17 @@ different objects of daily use, to handle them in typical situations
 for example when opening a fridge to get the milk or when performing
 realistic tasks such as setting the table or preparing a meal.
 
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=.9\columnwidth]{figures/objects/pr2_rot_table.jpg}
+    \includegraphics[width=.9\columnwidth]{figures/objects/objects.jpg}
+    \caption{Top: an autonomous service robot PR2 with a mounted Kinect sensor
+    acquiring training data of the objects shown in bottom part of Figure}
+    \label{fig:robot}
+  \end{center}
+\end{figure}
+
+
 \subsection{What}
 Problem statement:
 \begin{itemize}
@@ -153,7 +164,7 @@ normalization of the latter by number 27 (number of transitions)
 Object Segmentation and Recognition Using Random Forests - the emphasize is on classifier Random Forests~\cite{stueckler10combining}
 \end{itemize}
 
-\section{System Overview}
+\section{System Overview} 
 
 
 \section{Feature Estimation}
@@ -363,8 +374,12 @@ $y_i$ is calculated by the following equation:
 
 \begin{figure}[htb!]
   \begin{center}
-    \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/GRSD_CCHLAC.png}
-    \caption{Examples of GRSD-ColorCHLAC histograms.}
+    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/purple.png}
+    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/torus.png}
+    \caption{Examples of GRSD-ColorCHLAC histograms. Left: different categories 
+of objects result in having different first 20 bins of the respective histogram.
+Right: different colors of the same category of an object have different 117 last bins 
+of the histogram}
     \label{fig:grsd_cchlac}
   \end{center}
 \end{figure}
