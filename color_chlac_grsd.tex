@@ -343,7 +343,21 @@ $y_i$ is calculated by the following equation:
 \section{Results}
 
 \subsection{Data Acquisition and Training}
-\todo{Dejan}
+%\todo{Dejan}
+Our database of 3D objects, available at \url{http://semantic-3d.cs.tum.edu},
+(\todo{upload}) was obtained using the Kinect sensor. 
+
+The set of objects (see Figure~\ref{fig:robot}) encompasses the ones commonly used 
+in a typical household environment (mugs, utensils, books, etc) and is envisioned for a
+larger expansion in the future.  In a pursue to account for a wide variety
+of view angles, we rotated the objects on the rotating table with a given
+angle-step ($15^\circ$ in the preliminary version) and acquired partial
+snapshots from a human-eye perspective, i.e. the ones that the best
+approximate the robot's view point during its working cycle.  We consider
+this to be an important point as opposed to similar initiatives (e.g.,
+\cite{kit}) where the datasets are acquired using high-precision but
+non-affordable, fixed sensors, and thus not usable for applications such as ours.
+
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.45\columnwidth]{figures/rot_table/barilla.png}
