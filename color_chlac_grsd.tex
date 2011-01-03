@@ -229,7 +229,7 @@ Then the dimension of Color-CHLAC feature vector becomes 981 (=6+480+6+489).
 
 
 \subsection{GRSD}
-Compute radiuses as in \cite{Marton10CAD}.
+Compute radiuses as in \cite{Marton10IROS}.
 \todo{Zoli: explain additivity}
 
 Since these values have physical meaning, we can categorize surfaces using
@@ -262,7 +262,7 @@ sphere (not present), and dark blue - rim (i.e. boundary, transition between sur
 Once all voxels are annotated locally using a geometric class, our
 processing pipeline constructs a global feature by counting the transitions
 between these local labels (and free space). Since we do not use raycasting
-as previously in \cite{Humanoids} but consider only the direct neighbors
+as previously in \cite{GRSD10Humanoids} but consider only the direct neighbors
 of each occupied cell, the computation of this \emph{simplified} GRSD is much faster.
 
 \begin{figure}[htb!]
@@ -343,7 +343,6 @@ $y_i$ is calculated by the following equation:
 \section{Results}
 
 \subsection{Data Acquisition and Training}
-%\todo{Dejan}
 Our database of 3D objects, available at \url{http://semantic-3d.cs.tum.edu},
 (\todo{upload}) was obtained using the Kinect sensor. 
 
@@ -370,10 +369,20 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 \end{figure}
 
 \subsection{Testing}
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd.png}
+    \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd2.png}
+    \caption{Examples of GRSD-ColorCHLAC histograms for a Tomato Soup can.}
+    \label{fig:grsd_colorchlac_tomato}
+  \end{center}
+\end{figure}
+
 \subsubsection{Cross-Validation}
 \todo{ALL}
 
 \subsubsection{Find One Object Test}
+
 \todo{Dejan}
 
 \subsection{Object Recognition Pipeline (in Clutter)}
