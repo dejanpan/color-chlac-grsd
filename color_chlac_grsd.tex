@@ -386,7 +386,37 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 \todo{Dejan}
 
 \subsection{Object Recognition Pipeline (in Clutter)}
-\todo{Asako}
+We applied our object recognition method on an object detection scheme in a cluttered environment. 
+The system computes the similarities between each target object and all recutangular-solid sub-regions in the environment, and then it outputs all the regions that have higher similarities than a certain threshold as the candidates of the target object.
+Each sub-region has the same size as that of the bounding box of the target object. 
+To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, which is a simple extention of ``Integral Image''~\cite{viola2001} from 2D to 3D.
+The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional compressed feature vector extracted from the voxel area 
+    ranging from $(0,0,0)$ to $(x,y,z)$.
+Let the feature vector of the voxel area with $x$ ranging from $x_1$ to $x_2$, 
+    $y$ ranging from $y_1$ to $y_2$, and $z$ ranging from $z_1$ to $z_2$, be $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$. 
+This is computed by the following equation: 
+\begin{eqnarray*}\label{eq:sat}
+\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2) = \bm{I}(x_2,y_2,z_2) - \bm{I}(x_1,y_2,z_2) 
+                           \\ - \bm{I}(x_2,y_1,z_2) - \bm{I}(x_2,y_2,z_1)
+                           \\ + \bm{I}(x_1,y_1,z_2) + \bm{I}(x_1,y_2,z_1) 
+                           \\ + \bm{I}(x_2,y_1,z_1) - \bm{I}(x_1,y_1,z_1)  
+\end{eqnarray*}
+Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can always be computed by adding the 8 cached feature vectors, 
+    regardless of the size of the target object. 
+Note that this is not effective when the number of sub-regions included in the detection box is smaller than 8.
+Within the large color voxel data of an environment, 
+   only the voxels on the surface of each object have RGB values, while other voxels have the è¢∏empty°∆ property. 
+This means that the object detection process can be accelerated by skipping empty regions. 
+Similarly to the ``Integral Feature Table'', we create a table that stores 
+   the number of voxels with the è¢∏occupied°∆ property, in the area ranging from $(0,0,0)$ to $(x,y,z)$.
+Using this table, the number of voxels with the è¢∏occupied°∆ property in the detection box can be computed quickly by adding 8 scalar values. 
+If the number is less than a certain threshold $h$, 
+   the system skips the similarity calculation and moves the detection box forwards. 
+In this work, we set $h$ to the minimum value of the è¢∏occupied°∆ voxel number in the training samples of the target object. 
+
+\todo{Asako: description for the results}
+
+
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.45\columnwidth]{figures/colorCHLAC/detection7.png}
