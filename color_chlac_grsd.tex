@@ -119,9 +119,8 @@ realistic tasks such as setting the table or preparing a meal.
   \end{center}
 \end{figure}
 
-\todo{Dejan - make text}
 \subsection{What}
-Problem statement:
+The problem Problem statement:
 \begin{itemize}
 \item Recogniton and localization of objects of daily use in households
 \item Categorization and classification with \emph{one} descriptor
@@ -150,8 +149,16 @@ normalization of the latter by number 27 (number of transitions)
 
 \subsection{Novelty}
 
+The remainder of the paper is built as following. After the overview of the related
+work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
+which is followed by Section~\ref{sec:features} that elaborates on the construction of the
+GRSDColorCHLAC descriptor. In Section~\ref{sec:classification} we present the usage of this descriptor
+for the classification of objects using two state-of-the-art classification methods which we
+then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
+we conclude and give the future outlook.
 
 \section{Related Work}
+\label{sec:rl}
 \begin{itemize}
 \item VFH~\cite{vfh}
 \item GRSD (Humanoids10GRSD~)\cite{GRSD10Humanoids}
@@ -166,9 +173,11 @@ Object Segmentation and Recognition Using Random Forests - the emphasize is on c
 \end{itemize}
 
 \section{System Overview} 
+\label{sec:overview}
 \todo{Dejan}
 
 \section{Feature Estimation}
+\label{sec:features}
 
 \subsection{Color CHLAC}
 \todo{Asako - explain the difference between viewpoint variant and invariant}\\
@@ -304,7 +313,7 @@ Same approach (if using rotation invariant ColorCHLAC), but different things are
 \end{figure}
 
 \section{Classification Methods}
-
+\label{sec:classification}
 \subsection{Linear Subspace Method}
 \label{sec:subspace}
 \subsubsection{Creating subspaces of objects in a database}
@@ -353,7 +362,7 @@ $y_i$ is calculated by the following equation:
 \todo{Zoli}
 
 \section{Results}
-
+\label{sec:results}
 \subsection{Data Acquisition and Training}
 Our database of 3D objects, available at \url{http://semantic-3d.cs.tum.edu},
 (\todo{upload}) was obtained using the Kinect sensor. 
@@ -442,11 +451,13 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 \end{figure}
 
 
-\section{Conclusions and Future Work} 
+\section{Conclusions and Future Work}
+\label{sec:conclusion}
 \todo{ALL}
 
 \section*{Acknowledgments}
 CoTeSys
+\todo{Asako: Dow we need to ack someone from ISI Lab}
 %% Use plainnat to work nicely with natbib. 
 
 \bibliographystyle{plainnat}
