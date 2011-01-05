@@ -125,7 +125,8 @@ and recognition of objects of daily use in households using a multidimensional d
 that captures the geometrical as well visual appearance properties of the objects. The 
 descriptor is the composite of our previously designed Global Radius-based Surface Descriptor
 (GRSD~\cite{GRSD10Humanoids}) and Color Cubic Higher-order Local Auto-Correlation descriptor 
-(Color-CHLAC~\cite{kanezaki2010tvc}). The powerfullness of the descriptor is thus in that
+(Color-CHLAC~\cite{kanezaki2010tvc}) which we simply coined GRSDColor-CHLAC. 
+The powerfullness of the descriptor is thus in that
 it can categorize as well classify the objects at once, unlike other approaches that perform
 this in separate steps~\cite{stueckler10combining, GRSD10Humanoids}. Further important 
 improvement over our previous work is the moving-bounding-box-based recognition pipeline
@@ -135,27 +136,40 @@ per second for the amount of objects show in the bottom part of Figure~\ref{fig:
 
 \subsection{Why}
 There are strong features that bloom in the field of perception for personal robots, 
-both in 2D as well in 3D data domain. From various versions of Point Feature Histograms~\cite{FPFH},
-Viewpoint Feature Histogram~\cite{vfh}, NARF~\cite{steder10irosws}, SIFT~\cite{lowe04distinctive} 
-and SURF~\cite{surf} are just to name a few. Yet it seems that there is none that can capture 
+both in 2D as well in 3D data domain. From various versions of Point Feature Histograms~\cite{Rusu09ICRA},
+Viewpoint Feature Histogram~\cite{vfh} to features for range images such as Normal Aligned Radial 
+Feature~\cite{steder10irosws} to features for 2D images such as SIFT~\cite{lowe04distinctive} or
+ SURF~\cite{surf} are just to name a few. Yet it seems that there is none that can capture 
 all important and obvious properties (such as geometry and color are) and can be out-of-the 
-box applied on the data coming out of the new sensing technologies such Kinect~\cite{kinect}. 
-% \item to equipp the service robots with the boostrapped recognition models and capabilities
-% to acquire additional models
-% \item to enable manipulation tasks in realistic environments under realistic conditions
-% \item to exploit new sensing technology (e.g. Kinect) and to thus avoid decoupling of gemetrical and
-% visual appearance data
-
+box applied on the data coming out of the new sensing technologies such Kinect. The approach
+proposed in this paper solves exactly this problem and thus lays the fundation stone for a
+multitude of applications such as later presented recognition of a priori learnt object models, 
+or equipping the service robots (such as PR2 shown in top part of Figure~\ref{fig:robot}) with 
+the capabilities to acquire additional models which further more opens ways to allow manipulation tasks 
+in realistic environments under realistic conditions.
 
 \subsection{How}
+% \item Combination of view-variant ColorCHLAC and GRSD with the
+% normalization of the latter by number 27 (number of transitions)
+% \item Combination of view-invariant version of ColorCHLAC and GRSD
+% \item Comparisson of Linear Subspace Method and SVM Classifier
+
+
+\subsection{Performance and Novelty}
+Our approach takes \todo{X} seconds for the training of objects and \todo{Y} seconds
+for the recognition of already segmented single object. Moving-bounding-box-based
+recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed 
+in Section~\ref{sec:recognition}.
+
+The main novel contributions of this paper are the following:
 \begin{itemize}
-\item Combination of view-variant ColorCHLAC and GRSD with the
-normalization of the latter by number 27 (number of transitions)
-\item Combination of view-invariant version of ColorCHLAC and GRSD
-\item Comparisson of Linear Subspace Method and SVM Classifier
+\item novel, multidimensional descriptor GRSDColor-CHLAC that accunts for
+geometrical as well as visual appearance  properties of objects in question
+\item comparison of classification results for two state-of-the-art classification
+frameworks; Linear Subspace Method and SVM
+\item an extensive database of objects of daily use captured with the Kinect sensor.
 \end{itemize}
 
-\subsection{Novelty}
 The remainder of the paper is built as following. After the overview of the related
 work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
 which is followed by Section~\ref{sec:features} that elaborates on the construction of the
