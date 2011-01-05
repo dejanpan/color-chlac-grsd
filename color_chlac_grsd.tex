@@ -149,6 +149,29 @@ the capabilities to acquire additional models which further more opens ways to a
 in realistic environments under realistic conditions.
 
 \subsection{How}
+Since the focus of the paper is on three parts, i.e. i)GRSDColor-CHLAC descriptor 
+construction, ii)database assembly and training of object models and iii)testing 
+we had to solve each of them individually. In the first case we combined
+the view-variant and view-invariant version of the ColorCHLAC descriptor with the 
+view-invariant version of GRSD descriptor and thus generated a novel descriptor 
+histogram with 1002 and 117 bins respectively. After the deliberate consideration
+that involved computational costs, time needed for the data acquisition, and 
+classification performance we finally settled for the latter version with 117
+bins which is being used throughout this paper. 
+
+In the second case, we assembled of a large database of
+object models (Figure~\ref{fig:robot} bottom), by creating a rotating 
+table using a DP PTU47 pan-tilt unit that is controlled by the robot over the 
+network.  Objects placed on this rotating table were scanned at a given
+angle-step ($15^\circ$) and dumped to the disk. The resultant database of 
+object models was then used to categorize and classify objects found in 
+natural table setting scenes while performing manipulation
+tasks.  For this third case we also performed a test on objects that were
+nicely segmented. Our approach is built as part of the Robot Operating System
+(ROS)\footnote{\url{http://www.ros.org}} open source initiative, and makes
+use of modular and robust components that can be reused on other robotic
+systems different than ours.
+
 % \item Combination of view-variant ColorCHLAC and GRSD with the
 % normalization of the latter by number 27 (number of transitions)
 % \item Combination of view-invariant version of ColorCHLAC and GRSD
