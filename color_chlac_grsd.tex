@@ -49,7 +49,7 @@
 \title{Multidimensional Descriptor for Classification of Objects of Daily Use}
 
 % You will get a Paper-ID when submitting a pdf file to the conference system
-\author{Author Names Omitted for Anonymous Review. Paper-ID [add your ID here]}
+\author{Paper-ID \todo{[add your ID here]}}
 
 %\author{\authorblockN{Michael Shell}
 %\authorblockA{School of Electrical and\\Computer Engineering\\
@@ -120,23 +120,31 @@ realistic tasks such as setting the table or preparing a meal.
 \end{figure}
 
 \subsection{What}
-The problem Problem statement:
-\begin{itemize}
-\item Recogniton and localization of objects of daily use in households
-\item Categorization and classification with \emph{one} descriptor
-\item Omits a supporting-table assumption and performs in cluttered and occluded scenes
-\item Runs online
-\end{itemize}
-
+The problem we are thus tackling and report in this paper is the one on the localization 
+and recognition of objects of daily use in households using a multidimensional descriptor
+that captures the geometrical as well visual appearance properties of the objects. The 
+descriptor is the composite of our previously designed Global Radius-based Surface Descriptor
+(GRSD~\cite{GRSD10Humanoids}) and Color Cubic Higher-order Local Auto-Correlation descriptor 
+(Color-CHLAC~\cite{kanezaki2010tvc}). The powerfullness of the descriptor is thus in that
+it can categorize as well classify the objects at once, unlike other approaches that perform
+this in separate steps~\cite{stueckler10combining, GRSD10Humanoids}. Further important 
+improvement over our previous work is the moving-bounding-box-based recognition pipeline
+(Section \ref{sec:recognition}) which enables the recognition of objects without having
+to find the supported planes first. Finally, the recognition runs online at 2 frames
+per second for the amount of objects show in the bottom part of Figure~\ref{fig:robot}.
 
 \subsection{Why}
-\begin{itemize}
-\item to equipp the service robots with the boostrapped recognition models and capabilities
-to acquire additional models
-\item to enable manipulation tasks in realistic environments under realistic conditions
-\item to exploit new sensing technology (e.g. Kinect) and to thus avoid decoupling of gemetrical and
-visual appearance data
-\end{itemize}
+There are strong features that bloom in the field of perception for personal robots, 
+both in 2D as well in 3D data domain. From various versions of Point Feature Histograms~\cite{FPFH},
+Viewpoint Feature Histogram~\cite{vfh}, NARF~\cite{steder10irosws}, SIFT~\cite{lowe04distinctive} 
+and SURF~\cite{surf} are just to name a few. Yet it seems that there is none that can capture 
+all important and obvious properties (such as geometry and color are) and can be out-of-the 
+box applied on the data coming out of the new sensing technologies such Kinect~\cite{kinect}. 
+% \item to equipp the service robots with the boostrapped recognition models and capabilities
+% to acquire additional models
+% \item to enable manipulation tasks in realistic environments under realistic conditions
+% \item to exploit new sensing technology (e.g. Kinect) and to thus avoid decoupling of gemetrical and
+% visual appearance data
 
 
 \subsection{How}
@@ -148,7 +156,6 @@ normalization of the latter by number 27 (number of transitions)
 \end{itemize}
 
 \subsection{Novelty}
-
 The remainder of the paper is built as following. After the overview of the related
 work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
 which is followed by Section~\ref{sec:features} that elaborates on the construction of the
@@ -407,6 +414,7 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 \todo{Dejan}
 
 \subsection{Object Recognition Pipeline (in Clutter)}
+\label{sec:recognition}
 We applied our object recognition method on an object detection scheme in a cluttered environment. 
 The system computes the similarities between each target object and all recutangular-solid sub-regions in the environment, and then it outputs all the regions that have higher similarities than a certain threshold as the candidates of the target object.
 Each sub-region has the same size as that of the bounding box of the target object. 
