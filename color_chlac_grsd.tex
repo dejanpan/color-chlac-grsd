@@ -99,7 +99,7 @@ such as setting the table or preparing a meal.
 \subsection{What}
 In this paper, we address the problem of localization and recognition of
 objects of daily use in households. To this effect, we employ a multidimensional
-feature descriptor that captures both the geometrcial and visual appearance
+feature descriptor that captures both the geometrical and visual appearance
 properties of the objects.
 This descriptor is the composition of our previously presented Global Radius-based Surface Descriptor
 (GRSD~\cite{GRSD10Humanoids}) and Color Cubic Higher-order Local Auto-Correlation descriptor
@@ -117,7 +117,7 @@ transitions at the same time.
 
 Other advancements over our previous work include the ability to deal with
 cluttered scenes while eliminating the requirement for region of interest
-selection (e.g. horizontal supporting structures) and spatially seperable object
+selection (e.g. horizontal supporting structures) and spatially separable object
 clusters. This has been achieved using a moving-bounding-box-based approach, and
 a sub-space-matching-based classification scheme (Section
 \ref{sec:recognition}). The resulting approach performs at 2 frames per second
@@ -137,8 +137,8 @@ Histograms (PFH, FPFH)~\cite{Rusu09ICRA} and Viewpoint Feature Histograms
 Yet it seems that there is none that can capture
 all important and obvious properties (such as geometry and color are) and can be out-of-the
 box applied on the data coming out of the new sensing technologies such Kinect. The approach
-proposed in this paper solves exactly this problem and thus lays the fundation stone for a
-multitude of applications such as later presented recognition of a priori learnt object models,
+proposed in this paper solves exactly this problem and thus lays the foundation stone for a
+multitude of applications such as later presented recognition of a priori learned object models,
 or equipping the service robots (such as PR2 shown in top part of Figure~\ref{fig:robot}) with
 the capabilities to acquire additional models which further more opens ways to allow manipulation tasks
 in realistic environments under realistic conditions.
@@ -448,9 +448,9 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 \subsection{Object Recognition Pipeline (in Clutter)}
 \label{sec:recognition}
 We applied our object recognition method on an object detection scheme in a cluttered environment.
-The system computes the similarities between each target object and all recutangular-solid sub-regions in the environment, and then it outputs all the regions that have higher similarities than a certain threshold as the candidates of the target object.
+The system computes the similarities between each target object and all rectangular-solid sub-regions in the environment, and then it outputs all the regions that have higher similarities than a certain threshold as the candidates of the target object.
 Each sub-region has the same size as that of the bounding box of the target object.
-To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, which is a simple extention of ``Integral Image''~\cite{viola2001} from 2D to 3D.
+To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, which is a simple extension of ``Integral Image''~\cite{viola2001} from 2D to 3D.
 The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional compressed feature vector extracted from the voxel area
     ranging from $(0,0,0)$ to $(x,y,z)$.
 Let the feature vector of the voxel area with $x$ ranging from $x_1$ to $x_2$,
@@ -497,7 +497,7 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 
 \section*{Acknowledgments}
 This work was supported by the DFG cluster of excellence \emph{CoTeSys} (Cognition for Technical Systems).\\
-\todo{Asako: Dow we need to ack someone from ISI Lab}
+\todo{Asako: Do we need to ack someone from ISI Lab}
 %% Use plainnat to work nicely with natbib.
 
 \bibliographystyle{plainnat}
