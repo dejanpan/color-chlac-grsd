@@ -229,14 +229,25 @@ Then the dimension of Color-CHLAC feature vector becomes 981 (=6+480+6+489).
 
 
 \subsection{GRSD}
-Compute radiuses as in \cite{Marton10IROS}.
-\todo{Zoli: explain additivity}
+GRSD is a histogram, that counts the number of transitions between different types of voxels.
+This approach is similar to Color-CHLAC, but in order to efficiently merge the two features,
+the original GRSD has to be simplified. As presented in \cite{GRSD10Humanoids} we were using
+raytracing in order to find transitions between surface types of voxels. To merge the features,
+raytracing was abandoned for simple checks of neighboring voxels, and the feature is no longer normalized.
 
-Since these values have physical meaning, we can categorize surfaces using
-simple, intuitive rules, into: planes (large $r_{min}$), cylinders (medium $r_{min}$,
-large $r_{max}$), edges (small $r_{min}$ and $r_{max}$), rims (small $r_{min}$,
-medium to large $r_{max}$), and spheres (similar $r_{min}$ and $r_{max}$).
-Figure~\ref{fig:gfpfh} shows annotated the surface types.
+These modifications allow us to create histograms which, like Color-CHLAC, are roughly additive.
+If we break up objects into reasonable sizes, its histogram can be approximated by the sum of the
+histograms of its partitioning. Unlike in Color-CHLAC, free space is considered, but we are looking
+at the neighbors of occupied voxels only.
+
+As the feature is rotation invariant, the number of bins $b$ depends on the number of possible surface types $s$ (including emph-empty):
+\begin{equation}
+b=\frac{s(s+1)}{2}-s
+\end{equation}
+Previously only predifined surface types with an intuitive description were used (cylinder, sphere, plane, rim and corner),
+based on an estimation of the radiuses of the 2 principal curves defining the surface, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
+Since these values have physical meaning, we can categorize surfaces into predifined types, but 
+\todo{now we are dividing => more surface types, chosen to roughly match Color-CHLAC to have the same "weighting"}
 
 \begin{figure}[htb!]
   \begin{center}
@@ -261,8 +272,8 @@ sphere (not present), and dark blue - rim (i.e. boundary, transition between sur
 
 Once all voxels are annotated locally using a geometric class, our
 processing pipeline constructs a global feature by counting the transitions
-between these local labels (and free space). Since we do not use raycasting
-as previously in \cite{GRSD10Humanoids} but consider only the direct neighbors
+between these local labels (and free space), as shown in Figure~\ref{fig:gfpfh}.
+Since we do not use raycasting but consider only the direct neighbors
 of each occupied cell, the computation of this \emph{simplified} GRSD is much faster.
 
 \begin{figure}[htb!]
@@ -405,14 +416,14 @@ Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can alwa
     regardless of the size of the target object. 
 Note that this is not effective when the number of sub-regions included in the detection box is smaller than 8.
 Within the large color voxel data of an environment, 
-   only the voxels on the surface of each object have RGB values, while other voxels have the è¢∏empty°∆ property. 
+   only the voxels on the surface of each object have RGB values, while other voxels have the empty property. 
 This means that the object detection process can be accelerated by skipping empty regions. 
 Similarly to the ``Integral Feature Table'', we create a table that stores 
-   the number of voxels with the è¢∏occupied°∆ property, in the area ranging from $(0,0,0)$ to $(x,y,z)$.
-Using this table, the number of voxels with the è¢∏occupied°∆ property in the detection box can be computed quickly by adding 8 scalar values. 
+   the number of voxels with the occupied property, in the area ranging from $(0,0,0)$ to $(x,y,z)$.
+Using this table, the number of voxels with the occupied property in the detection box can be computed quickly by adding 8 scalar values. 
 If the number is less than a certain threshold $h$, 
    the system skips the similarity calculation and moves the detection box forwards. 
-In this work, we set $h$ to the minimum value of the è¢∏occupied°∆ voxel number in the training samples of the target object. 
+In this work, we set $h$ to the minimum value of the occupied voxel number in the training samples of the target object. 
 
 \todo{Asako: description for the results}
 
