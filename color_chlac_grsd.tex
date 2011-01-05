@@ -29,7 +29,7 @@
 \def\mr{{\mathsf r}}
 
 
-% numbers option provides compact numerical references in the text. 
+% numbers option provides compact numerical references in the text.
 \usepackage[numbers]{natbib}
 \usepackage{multicol}
 \usepackage[bookmarks=true]{hyperref}
@@ -75,10 +75,10 @@
 
 % for over three affiliations, or if they all won't fit within the width
 % of the page, use this alternative format:
-% 
+%
 %\author{\authorblockN{Michael Shell\authorrefmark{1},
 %Homer Simpson\authorrefmark{2},
-%James Kirk\authorrefmark{3}, 
+%James Kirk\authorrefmark{3},
 %Montgomery Scott\authorrefmark{3} and
 %Eldon Tyrell\authorrefmark{4}}
 %\authorblockA{\authorrefmark{1}School of Electrical and Computer Engineering\\
@@ -101,70 +101,89 @@ The abstract goes here.
 \IEEEpeerreviewmaketitle
 
 \section{Introduction}
-One of the great challenges faced by autonomous mobile robot
-manipulation is the scaling of the technology to realistic tasks, in
-realistic environments under realistic conditions. This challenge
-implies that an autonomous household robot is required to act on many
-different objects of daily use, to handle them in typical situations
-for example when opening a fridge to get the milk or when performing
-realistic tasks such as setting the table or preparing a meal.
+One of the great challenges in autonomous mobile robot manipulation is scaling
+technology to realistic tasks, in real-world environments under realistic
+conditions. This means that an autonomous household robot must act on many
+different objects of daily use, handle them in typical situations such as
+opening a fridge to get the milk or when performing challenging everyday tasks
+such as setting the table or preparing a meal.
 
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.9\columnwidth]{figures/objects/pr2_rot_table.jpg}
     \includegraphics[width=.9\columnwidth]{figures/objects/objects.jpg}
-    \caption{Top: an autonomous service robot PR2 with a mounted Kinect sensor
-    acquiring training data of the objects shown in bottom part of Figure}
+    \caption{Our autonomous service robot (PR2) equipped with a Kinect sensor
+    acquiring training data of the objects shown in the bottom image}
     \label{fig:robot}
   \end{center}
 \end{figure}
 
 \subsection{What}
-The problem we are thus tackling and report in this paper is the one on the localization 
-and recognition of objects of daily use in households using a multidimensional descriptor
-that captures the geometrical as well visual appearance properties of the objects. The 
-descriptor is the composite of our previously designed Global Radius-based Surface Descriptor
-(GRSD~\cite{GRSD10Humanoids}) and Color Cubic Higher-order Local Auto-Correlation descriptor 
-(Color-CHLAC~\cite{kanezaki2010tvc}) which we simply coined GRSDColor-CHLAC. 
-The powerfullness of the descriptor is thus in that
-it can categorize as well classify the objects at once, unlike other approaches that perform
-this in separate steps~\cite{stueckler10combining, GRSD10Humanoids}. Further important 
-improvement over our previous work is the moving-bounding-box-based recognition pipeline
-(Section \ref{sec:recognition}) which enables the recognition of objects without having
-to find the supported planes first. Finally, the recognition runs online at 2 frames
-per second for the amount of objects show in the bottom part of Figure~\ref{fig:robot}.
+In this paper, we address the problem of localization and recognition of
+objects of daily use in households. To this effect, we employ a multidimensional
+feature descriptor that captures both the geometrcial and visual appearance
+properties of the objects.
+This descriptor is the composition of our previously presented Global Radius-based Surface Descriptor
+(GRSD~\cite{GRSD10Humanoids}) and Color Cubic Higher-order Local Auto-Correlation descriptor
+(ColorCHLAC~\cite{kanezaki2010tvc}) which we call GRSD-ColorCHLAC.
+
+The strength of the descriptor lies in its ability to consider geometric and
+visual features in a unified manner to facilitate object classification. The two
+underlying features have been carefully selected for their similar structures in
+how they are computed from voxelized 3D data. In this way, their combination is
+not a mere concatenation of two different features, but their computation is
+performed in a single step because of the common underlying algorithmic
+properties. Both features, though independently developed, count relations
+between neighboring voxels, capturing geometric surface type and texture
+transitions at the same time.
+
+\todo{find other way to cite ~\cite{stueckler10combining}}.
+
+Other advancements over our previous work include the ability to deal with
+cluttered scenes while eliminating the requirement for region of interest
+selection (e.g. horizontal supporting structures) and spatially seperable object
+clusters. This has been achieved using a moving-bounding-box-based approach, and
+a sub-space-matching-based classification scheme (Section
+\ref{sec:recognition}). The resulting approach performs at 2 frames per second
+while taking into account an object database of roughly 100 different objects
+(see Figure~\ref{fig:robot}).
 
 \subsection{Why}
-There are strong features that bloom in the field of perception for personal robots, 
-both in 2D as well in 3D data domain. From various versions of Point Feature Histograms~\cite{Rusu09ICRA},
-Viewpoint Feature Histogram~\cite{vfh} to features for range images such as Normal Aligned Radial 
-Feature~\cite{steder10irosws} to features for 2D images such as SIFT~\cite{lowe04distinctive} or
- SURF~\cite{surf} are just to name a few. Yet it seems that there is none that can capture 
-all important and obvious properties (such as geometry and color are) and can be out-of-the 
+In the past, strong features have been proposed in perception for personal robots,
+both working on 2D and 3D data. Prominent examples include
+SIFT~\cite{lowe04distinctive} and SURF~\cite{surf} for camera images, Normal Aligned Radial
+Features (NARF)\cite{steder10irosws} for range images, and several versions of Point Feature
+Histograms (PFH, FPFH)~\cite{Rusu09ICRA} and Viewpoint Feature Histograms
+(VFH)~\cite{vfh} for unordered fully-3D point clouds.
+\todo{snip}
+
+
+Yet it seems that there is none that can capture
+all important and obvious properties (such as geometry and color are) and can be out-of-the
 box applied on the data coming out of the new sensing technologies such Kinect. The approach
 proposed in this paper solves exactly this problem and thus lays the fundation stone for a
-multitude of applications such as later presented recognition of a priori learnt object models, 
-or equipping the service robots (such as PR2 shown in top part of Figure~\ref{fig:robot}) with 
-the capabilities to acquire additional models which further more opens ways to allow manipulation tasks 
+multitude of applications such as later presented recognition of a priori learnt object models,
+or equipping the service robots (such as PR2 shown in top part of Figure~\ref{fig:robot}) with
+the capabilities to acquire additional models which further more opens ways to allow manipulation tasks
 in realistic environments under realistic conditions.
 
 \subsection{How}
-Since the focus of the paper is on three parts, i.e. i)GRSDColor-CHLAC descriptor 
-construction, ii)database assembly and training of object models and iii)testing 
+Since the focus of the paper is on three parts, i.e. i)GRSDColor-CHLAC descriptor
+construction, ii)database assembly and training of object models and iii)testing
 we had to solve each of them individually. In the first case we combined
-the view-variant and view-invariant version of the ColorCHLAC descriptor with the 
-view-invariant version of GRSD descriptor and thus generated a novel descriptor 
+the view-variant and view-invariant version of the ColorCHLAC descriptor with the
+view-invariant version of GRSD descriptor and thus generated a novel descriptor
 histogram with 1002 and 117 bins respectively. After the deliberate consideration
-that involved computational costs, time needed for the data acquisition, and 
+that involved computational costs, time needed for the data acquisition, and
 classification performance we finally settled for the latter version with 117
-bins which is being used throughout this paper. 
+bins which is being used throughout this paper.
 
 In the second case, we assembled of a large database of
-object models (Figure~\ref{fig:robot} bottom), by creating a rotating 
-table using a DP PTU47 pan-tilt unit that is controlled by the robot over the 
+object models (Figure~\ref{fig:robot} bottom), by creating a rotating
+table using a DP PTU47 pan-tilt unit that is controlled by the robot over the
 network.  Objects placed on this rotating table were scanned at a given
-angle-step ($15^\circ$) and dumped to the disk. The resultant database of 
-object models was then used to categorize and classify objects found in 
+angle-step ($15^\circ$) and dumped to the disk. The resultant database of
+object models was then used to categorize and classify objects found in
 natural table setting scenes while performing manipulation
 tasks.  For this third case we also performed a test on objects that were
 nicely segmented. Our approach is built as part of the Robot Operating System
@@ -181,7 +200,7 @@ systems different than ours.
 \subsection{Performance and Novelty}
 Our approach takes \todo{X} seconds for the training of objects and \todo{Y} seconds
 for the recognition of already segmented single object. Moving-bounding-box-based
-recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed 
+recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
 in Section~\ref{sec:recognition}.
 
 The main novel contributions of this paper are the following:
@@ -209,14 +228,14 @@ we conclude and give the future outlook.
 \item Color CHLAC (Asako)~\cite{kanezaki2010icra}\cite{kanezaki2010tvc}
 \item NARF~\cite{steder10irosws}
 \item textured-spin images~\cite{Johnson_spin_images}
-\item SIFT~\cite{Lowe04distinctive}
+\item SIFT~\cite{lowe04distinctive}
 \item A sparse texture representation using local affine regions~\cite{Lazebnik05asparse}
 \item sift-keypoint \url{http://www.ros.org/doc/api/pcl/html/sift__keypoint_8h_source.html}
 \item Combining Depth and Color Cues for Scale and Viewpoint-Invariant
 Object Segmentation and Recognition Using Random Forests - the emphasize is on classifier Random Forests~\cite{stueckler10combining}
 \end{itemize}
 
-\section{System Overview} 
+\section{System Overview}
 \label{sec:overview}
 \todo{Dejan}
 
@@ -225,17 +244,17 @@ Object Segmentation and Recognition Using Random Forests - the emphasize is on c
 
 \subsection{Color CHLAC}
 \todo{Asako - explain the difference between viewpoint variant and invariant}\\
-Color-CHLAC features are computed from color 3D voxel data by measuring 
-    the autocorrelation function of the 3D target object at specific points, 
+Color-CHLAC features are computed from color 3D voxel data by measuring
+    the autocorrelation function of the 3D target object at specific points,
     represented by local patterns.
 Local descriptors are represented by correlation values of the colors of neighboring voxels.
 
-Letting $\bm{x}=(x,y,z)^T$ be the position of a voxel, 
-    we use the notation $p(\bm{x})=1$ if the voxel is occupied, and $p(\bm{x})=0$ otherwise. 
+Letting $\bm{x}=(x,y,z)^T$ be the position of a voxel,
+    we use the notation $p(\bm{x})=1$ if the voxel is occupied, and $p(\bm{x})=0$ otherwise.
 When $p(\bm{x})=1$, the voxel has RGB color values.
-We represent them as $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$, 
+We represent them as $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$,
     which are normalized between 0 and 1.
-By defining $r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$ and $b'(\bm{x}) \equiv 1 - b(\bm{x})$, 
+By defining $r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$ and $b'(\bm{x}) \equiv 1 - b(\bm{x})$,
     a voxel status $\bm{f}(\bm{x})\in R^6$ is defined as follows:
 %\vspace{-2mm}
 \begin{eqnarray*}
@@ -250,35 +269,35 @@ By defining $r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$
 \end{eqnarray*}
 %
 Color-CHLAC features are the integral of $\bm{f}(\bm{x})$ or correlations of $\bm{f}(\bm{x})$ between neighboring voxels.
-They are calculated by following equations:  
+They are calculated by following equations:
 \begin{equation}\label{eq:0th}
-  {\bm q} = \int \bm{f}({\bm x}) d{\bm x} 
+  {\bm q} = \int \bm{f}({\bm x}) d{\bm x}
 \end{equation}
 %\vspace{-4mm}
 \begin{equation}\label{eq:1st}
   {\bm q}({\bm a}) = \int \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a}) d{\bm x} \\
 \end{equation}
 %
-The dimension of Color-CHLAC features calculated by (\ref{eq:0th}) is 6. 
-14 patterns are used for the displacement vectors ${\bm a}$ in (\ref{eq:1st}) (Fig. \ref{fig:displacement_vectors}). 
-Note that not only $\bm{f}(\bm{x})$ correlation between two neighboring voxels 
-    but also the correlation between two elements of $\bm{f}(\bm{x})$ of one voxel is integrated. 
+The dimension of Color-CHLAC features calculated by (\ref{eq:0th}) is 6.
+14 patterns are used for the displacement vectors ${\bm a}$ in (\ref{eq:1st}) (Fig. \ref{fig:displacement_vectors}).
+Note that not only $\bm{f}(\bm{x})$ correlation between two neighboring voxels
+    but also the correlation between two elements of $\bm{f}(\bm{x})$ of one voxel is integrated.
 
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=0.43\textwidth]{figures/colorCHLAC/displacement_vectors.png}
     %\vspace{-2mm}
-    \caption{Patterns of displacement vectors. Position of the center voxel is ${\bm x}$, 
+    \caption{Patterns of displacement vectors. Position of the center voxel is ${\bm x}$,
       while position of the other highlighted voxel is ${\bm x}+{\bm a}$. }
     \label{fig:displacement_vectors}
   \end{center}
 \end{figure}
 
-As a pre-processing of features extraction, $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ can be binarized. 
-Excluding redundant elements, the dimension of Color-CHLAC features calculated by (\ref{eq:1st}) is 
+As a pre-processing of features extraction, $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ can be binarized.
+Excluding redundant elements, the dimension of Color-CHLAC features calculated by (\ref{eq:1st}) is
     480 if color values are binarized, and 489 otherwise.
-In this paper, we extract Color-CHLAC features both from binarized color voxel data and from original color voxel data. 
-Then the dimension of Color-CHLAC feature vector becomes 981 (=6+480+6+489). 
+In this paper, we extract Color-CHLAC features both from binarized color voxel data and from original color voxel data.
+Then the dimension of Color-CHLAC feature vector becomes 981 (=6+480+6+489).
 
 
 \subsection{GRSD}
@@ -300,7 +319,7 @@ b=\frac{s(s+1)}{2}-s
 \end{equation}
 Previously only predefined surface types with an intuitive description were used (cylinder, sphere, plane, rim and corner),
 based on an estimation of the radii of the 2 principal curves defining the surface, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
-Since these values have physical meaning, we can categorize surfaces into predefined types, but 
+Since these values have physical meaning, we can categorize surfaces into predefined types, but
 \todo{now we are dividing, so we get more surface types, chosen to roughly match ColorCHLAC to have the same "weighting"}
 
 \begin{figure}[htb!]
@@ -334,9 +353,9 @@ of each occupied cell, the computation of this \emph{simplified} GRSD is much fa
   \begin{center}
     \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
     \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
-    \caption{Examples of GRSD-ColorCHLAC histograms. Left: different categories 
+    \caption{Examples of GRSD-ColorCHLAC histograms. Left: different categories
 of objects result in having different first 20 bins of the respective histogram.
-Right: different colors of the same category of an object have different 117 last bins 
+Right: different colors of the same category of an object have different 117 last bins
 of the histogram}
     \label{fig:grsd_cchlac}
   \end{center}
@@ -361,41 +380,41 @@ Same approach (if using rotation invariant ColorCHLAC), but different things are
 \subsection{Linear Subspace Method}
 \label{sec:subspace}
 \subsubsection{Creating subspaces of objects in a database}
-First, the voxel data of each object in a database is subdivided into a voxel grid of a certain size, 
-    e.g. $10 \times 10 \times 10$ voxels. 
+First, the voxel data of each object in a database is subdivided into a voxel grid of a certain size,
+    e.g. $10 \times 10 \times 10$ voxels.
 Suppose the $i$-th object in the database is divided into $M_i$ subdivisions.
-Then $M_i$ Color-CHLAC feature vectors are extracted. 
-To achieve robustness to rotation, 
-    features extraction is repeated with various poses of the object. 
+Then $M_i$ Color-CHLAC feature vectors are extracted.
+To achieve robustness to rotation,
+    features extraction is repeated with various poses of the object.
 The feature vector of an object which is rotated by 90 degrees can be obtained rapidly
     through a simple exchange of the elements of the feature vector in the initial posture.
 This is possible because each displacement vector in Fig.~\ref{fig:displacement_vectors}
     is equivalent to another, rotated by 90 degrees.
 In this paper, we use this 90 degrees rotation in 24 ways,
-    and rotations of 30 and 60 degrees in 21 ways, 
-    resulting in achieving 504($=24 \times 21$) varieties of postures for an object. 
-Therefore, the number of Color-CHLAC feature vectors 
-    generated from each object is $N_i \equiv 504M_i$. 
+    and rotations of 30 and 60 degrees in 21 ways,
+    resulting in achieving 504($=24 \times 21$) varieties of postures for an object.
+Therefore, the number of Color-CHLAC feature vectors
+    generated from each object is $N_i \equiv 504M_i$.
 
-We represent a Color-CHLAC feature vector compressed by PCA as $\bm{z}_t \in R^d, t=1,2,...N_i$, 
+We represent a Color-CHLAC feature vector compressed by PCA as $\bm{z}_t \in R^d, t=1,2,...N_i$,
     where $d$ is the dimension of a compressed feature vector.
-The auto-correlation matrix of these feature vectors is calculated by the following equation: 
+The auto-correlation matrix of these feature vectors is calculated by the following equation:
 \begin{eqnarray*}
   %\hspace{-1mm}
   R_i = \frac{1}{N_i} \sum^{N_i}_{t=1} \bm{z}_t \bm{z}_t^T
 \end{eqnarray*}
-The eigenvectors of $R_i$ are then computed by solving the eigenvector problem. 
-Finally, the bases of the subspace of the $i$-th object in the database, $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$, 
-    are obtained as the $r$ eigenvectors of largest eigenvalue. 
+The eigenvectors of $R_i$ are then computed by solving the eigenvector problem.
+Finally, the bases of the subspace of the $i$-th object in the database, $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$,
+    are obtained as the $r$ eigenvectors of largest eigenvalue.
 
 \subsubsection{Calculation of Similarity}
-The first step in the recognition process is to compute 
+The first step in the recognition process is to compute
     one Color-CHLAC feature vector from the whole of a query part in a 3D scene. % ???
-Then the compressed feature vector $\bm{z}$ is computed using the projection matrix which is 
+Then the compressed feature vector $\bm{z}$ is computed using the projection matrix which is
     generated from all Color-CHLAC feature vectors of each database object in the pre-processing phase.
-Let the similarity between the query part and the $i$-th object in the database be $y_i$. 
+Let the similarity between the query part and the $i$-th object in the database be $y_i$.
 $y_i$ is defined as the cosine of the angle between $\bm{z}$ and the subspace of the $i$-th object.
-$y_i$ is calculated by the following equation: 
+$y_i$ is calculated by the following equation:
 \begin{eqnarray}\label{eq:y_calc}
   %\hspace{-1mm}
   y_i = \frac{\| P_i^T \bm{z} \|}{\| \bm{z} \|}
@@ -409,9 +428,9 @@ $y_i$ is calculated by the following equation:
 \label{sec:results}
 \subsection{Data Acquisition and Training}
 Our database of 3D objects, available at \url{http://semantic-3d.cs.tum.edu},
-(\todo{upload}) was obtained using the Kinect sensor. 
+(\todo{upload}) was obtained using the Kinect sensor.
 
-The set of objects (see Figure~\ref{fig:robot}) encompasses the ones commonly used 
+The set of objects (see Figure~\ref{fig:robot}) encompasses the ones commonly used
 in a typical household environment (mugs, utensils, books, etc) and is envisioned for a
 larger expansion in the future.  In a pursue to account for a wide variety
 of view angles, we rotated the objects on the rotating table with a given
@@ -452,33 +471,33 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 
 \subsection{Object Recognition Pipeline (in Clutter)}
 \label{sec:recognition}
-We applied our object recognition method on an object detection scheme in a cluttered environment. 
+We applied our object recognition method on an object detection scheme in a cluttered environment.
 The system computes the similarities between each target object and all recutangular-solid sub-regions in the environment, and then it outputs all the regions that have higher similarities than a certain threshold as the candidates of the target object.
-Each sub-region has the same size as that of the bounding box of the target object. 
+Each sub-region has the same size as that of the bounding box of the target object.
 To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, which is a simple extention of ``Integral Image''~\cite{viola2001} from 2D to 3D.
-The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional compressed feature vector extracted from the voxel area 
+The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional compressed feature vector extracted from the voxel area
     ranging from $(0,0,0)$ to $(x,y,z)$.
-Let the feature vector of the voxel area with $x$ ranging from $x_1$ to $x_2$, 
-    $y$ ranging from $y_1$ to $y_2$, and $z$ ranging from $z_1$ to $z_2$, be $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$. 
-This is computed by the following equation: 
+Let the feature vector of the voxel area with $x$ ranging from $x_1$ to $x_2$,
+    $y$ ranging from $y_1$ to $y_2$, and $z$ ranging from $z_1$ to $z_2$, be $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$.
+This is computed by the following equation:
 \begin{eqnarray*}\label{eq:sat}
-\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2) = \bm{I}(x_2,y_2,z_2) - \bm{I}(x_1,y_2,z_2) 
+\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2) = \bm{I}(x_2,y_2,z_2) - \bm{I}(x_1,y_2,z_2)
                            \\ - \bm{I}(x_2,y_1,z_2) - \bm{I}(x_2,y_2,z_1)
-                           \\ + \bm{I}(x_1,y_1,z_2) + \bm{I}(x_1,y_2,z_1) 
-                           \\ + \bm{I}(x_2,y_1,z_1) - \bm{I}(x_1,y_1,z_1)  
+                           \\ + \bm{I}(x_1,y_1,z_2) + \bm{I}(x_1,y_2,z_1)
+                           \\ + \bm{I}(x_2,y_1,z_1) - \bm{I}(x_1,y_1,z_1)
 \end{eqnarray*}
-Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can always be computed by adding the 8 cached feature vectors, 
-    regardless of the size of the target object. 
+Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can always be computed by adding the 8 cached feature vectors,
+    regardless of the size of the target object.
 Note that this is not effective when the number of sub-regions included in the detection box is smaller than 8.
-Within the large color voxel data of an environment, 
-   only the voxels on the surface of each object have RGB values, while other voxels have the empty property. 
-This means that the object detection process can be accelerated by skipping empty regions. 
-Similarly to the ``Integral Feature Table'', we create a table that stores 
+Within the large color voxel data of an environment,
+   only the voxels on the surface of each object have RGB values, while other voxels have the empty property.
+This means that the object detection process can be accelerated by skipping empty regions.
+Similarly to the ``Integral Feature Table'', we create a table that stores
    the number of voxels with the occupied property, in the area ranging from $(0,0,0)$ to $(x,y,z)$.
-Using this table, the number of voxels with the occupied property in the detection box can be computed quickly by adding 8 scalar values. 
-If the number is less than a certain threshold $h$, 
-   the system skips the similarity calculation and moves the detection box forwards. 
-In this work, we set $h$ to the minimum value of the occupied voxel number in the training samples of the target object. 
+Using this table, the number of voxels with the occupied property in the detection box can be computed quickly by adding 8 scalar values.
+If the number is less than a certain threshold $h$,
+   the system skips the similarity calculation and moves the detection box forwards.
+In this work, we set $h$ to the minimum value of the occupied voxel number in the training samples of the target object.
 
 \todo{Asako: description for the results}
 
@@ -503,7 +522,7 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 \section*{Acknowledgments}
 CoTeSys
 \todo{Asako: Dow we need to ack someone from ISI Lab}
-%% Use plainnat to work nicely with natbib. 
+%% Use plainnat to work nicely with natbib.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
