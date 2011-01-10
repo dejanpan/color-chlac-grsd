@@ -67,15 +67,15 @@
 \maketitle
 
 \begin{abstract}
-The greatest bottleneck momentarily in the area of mobile manipulation is robust perception. % bottleneck already suggests that it should be more efficient
-In this paper contribute to the solving of this problem of efficiency and accuracy
+The greatest bottleneck momentarily in the area of mobile manipulation is robust perception.
+In this paper we contribute to the solving of this problem of efficiency and accuracy
 by proposing a novel feature called Voxelized Shape and Color Histograms for RGBD 
 (VOSCH-RGBD) that is capable of capturing both the geometric and visual appearance
 properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
 and evaluate two classification approaches.
 For the experiments we make use of a new RGB-D device called Kinect, and achieve recognition
-rates higher than 90\% of 64 objects.
+rates higher than 90\% for a set of 64 objects.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -253,7 +253,7 @@ which is necessary for identifying each cluster in environments as an object. Th
 
 There are several approaches that use both geometry and color descriptors to represent 3D shapes~\cite{park2006}, 
 however, to properly balance these two different properties is difficult. 
-Caputo and Dorko~\cite{caputo2002} learned respective kernels for shape and color representations and combined them for recongnizing object,
+Caputo and Dorko~\cite{caputo2002} learned respective kernels for shape and color representations and combined them for recognition object,
  while Huang and Hilton~\cite{huang2009} balanced them by normalizing bins of shape-color histograms.
 Alternative solution for combining geometry and color information at a proper balance is to extract descriptors represented by patterns of shape-and-color co-occurrence.
 For example, Textured spin-image~\cite{cortelazzo2006} splits well-known spin-image~\cite{Johnson_spin_images} descriptors into several layer corresponding to a given level of luminance. 
