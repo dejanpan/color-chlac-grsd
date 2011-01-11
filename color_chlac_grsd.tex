@@ -75,7 +75,7 @@ properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
 and evaluate two classification approaches.
 For the experiments we make use of a new RGB-D device called Kinect, and achieve recognition
-rates higher than 90\% for a set of 64 objects.
+rates higher than 90\% for a set of 63 objects.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -211,6 +211,7 @@ The main novel contributions of this paper are the following:
 geometrical as well as visual appearance  properties of objects in question
 \item comparison of classification results for two state-of-the-art classification
 frameworks; Linear Subspace Method and SVM
+\todo{The word for ``state-of-the-art'' is not proper for these two, I think. They are traditional, especially subspace method is. from Asako.}
 \item an extensive database of objects of daily use captured with the Kinect sensor.
 \end{itemize}
 
@@ -238,7 +239,7 @@ Object Segmentation and Recognition Using Random Forests - the emphasize is on c
 \end{itemize}
 
 Expressiveness and efficiency of the descriptor are both crucially important for a real-time object recognition system. 
-Though these is a trade-off between these two abilities, it will dramatically improve both of them 
+Though there is a trade-off between these two abilities, it will dramatically improve both of them 
 to select a proper matching method taking advantage of the characteristics of the descriptor. 
 In the recent decade a bunch of powerful 2D and 3D descriptors for recognizing real objects have been developed, however, few of them take into account 
 the compatibility with the matching method used with them.
@@ -259,7 +260,9 @@ Alternative solution for combining geometry and color information at a proper ba
 For example, Textured spin-image~\cite{cortelazzo2006} splits well-known spin-image~\cite{Johnson_spin_images} descriptors into several layer corresponding to a given level of luminance. 
 Color-CHLAC~\cite{kanezaki2010icra} splits CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns depending on relative position of neighboring voxels, into 
 RGB channels and correlation space of these channels. 
-
+In \cite{kanezaki2010icra} Color-CHLAC descriptor is used as local descriptors in the training process and as a global descriptor describing each object cluster in the recognition process, 
+   taking advantage of the combination of linear subspace method and the descriptor's additive property. 
+We also use the same approach that uses linear subspace method to enable efficient processing, with more accuracy achieved by the newly developed histogram-based descriptor.
 
 \section{System Overview}
 \label{sec:overview}
@@ -270,18 +273,12 @@ RGB channels and correlation space of these channels.
 
 \subsection{Color CHLAC}
 \todo{Asako - explain the difference between viewpoint variant and invariant}\\
-Color-CHLAC features are computed from color 3D voxel data by measuring
-    the autocorrelation function of the 3D target object at specific points,
-    represented by local patterns.
-Local descriptors are represented by correlation values of the colors of neighboring voxels.
-
-Letting $\bm{x}=(x,y,z)^T$ be the position of a voxel,
-    we use the notation $p(\bm{x})=1$ if the voxel is occupied, and $p(\bm{x})=0$ otherwise.
-When $p(\bm{x})=1$, the voxel has RGB color values.
-We represent them as $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$,
-    which are normalized between 0 and 1.
-By defining $r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$ and $b'(\bm{x}) \equiv 1 - b(\bm{x})$,
-    a voxel status $\bm{f}(\bm{x})\in R^6$ is defined as follows:
+Color-CHLAC descriptor is a high-dimentional vector measuring the summation of the multiplicated RGB values of neighboring voxels around a voxel grid of arbitrary size. 
+Each bin in a Color-CHLAC descriptor is differentiated by RGB color space and the relative position of the two neighboring voxels. 
+Let $\bm{x}=(x,y,z)^T$ be the position of a voxel, $p(\bm{x})$ be the flag for occupancy of the voxel, 
+ and $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ be its RGB values normalized between 0 and 1, respectively. 
+By defining $r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$ and $b'(\bm{x}) \equiv 1 - b(\bm{x})$, 
+    a voxel status $\bm{f}(\bm{x})\in R^6$ is defined as follows: 
 %\vspace{-2mm}
 \begin{eqnarray*}
   \label{eq:voxel}
@@ -294,37 +291,28 @@ By defining $r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$
   \end{array}\right.
 \end{eqnarray*}
 %
-Color-CHLAC features are the integral of $\bm{f}(\bm{x})$ or correlations of $\bm{f}(\bm{x})$ between neighboring voxels.
-They are calculated by following equations:
+%Color-CHLAC features are the integral of $\bm{f}(\bm{x})$ or correlations of $\bm{f}(\bm{x})$ between neighboring voxels.
+Letting ${\bm a}$ be a displacement vector from the reference voxel to its neighboring voxel, 
+   the containts of a Color-CHLAC descriptor are calculated by following equations:
 \begin{equation}\label{eq:0th}
-  {\bm q} = \int \bm{f}({\bm x}) d{\bm x}
+  {\bm q} = \sum \bm{f}({\bm x})
 \end{equation}
-%\vspace{-4mm}
+\begin{equation}\label{eq:0th_1}
+  {\bm q} = \sum \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}) \\
+\end{equation}
 \begin{equation}\label{eq:1st}
-  {\bm q}({\bm a}) = \int \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a}) d{\bm x} \\
+  {\bm q}({\bm a}) = \sum \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a}) \\
 \end{equation}
 %
-The dimension of Color-CHLAC features calculated by (\ref{eq:0th}) is 6.
-14 patterns are used for the displacement vectors ${\bm a}$ in (\ref{eq:1st}) (Fig. \ref{fig:displacement_vectors}).
-Note that not only $\bm{f}(\bm{x})$ correlation between two neighboring voxels
-    but also the correlation between two elements of $\bm{f}(\bm{x})$ of one voxel is integrated.
+Since these values are summed up around a voxel grid, there is a redundancy that checks the same value twice over symmetric pairs of ${(\bm a}$. 
+As the result, the number of variations in ${\bm a}$ is 13, which is a half of all the 26 neighbors.
+The dimension of the vector calculated by (\ref{eq:0th}) is 6, while that by (\ref{eq:1st}) is 468 (=6*6*13).
 
-\begin{figure}[htb!]
-  \begin{center}
-    \includegraphics[width=0.43\textwidth]{figures/colorCHLAC/displacement_vectors.png}
-    %\vspace{-2mm}
-    \caption{Patterns of displacement vectors. Position of the center voxel is ${\bm x}$,
-      while position of the other highlighted voxel is ${\bm x}+{\bm a}$. }
-    \label{fig:displacement_vectors}
-  \end{center}
-\end{figure}
-
-As a pre-processing of features extraction, $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ can be binarized.
-Excluding redundant elements, the dimension of Color-CHLAC features calculated by (\ref{eq:1st}) is
-    480 if color values are binarized, and 489 otherwise.
-In this paper, we extract Color-CHLAC features both from binarized color voxel data and from original color voxel data.
-Then the dimension of Color-CHLAC feature vector becomes 981 (=6+480+6+489).
-
+Color-CHLAC descriptor is also computed from a voxel grid where $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ are binarized as a pre-processing of features extraction. See details in \cite{kanezaki2010icra}. 
+Excluding redundant elements, the dimension of Color-CHLAC features calculated by (\ref{eq:0th_1}) is 12 if color values are binarized, and 21 otherwise. 
+Finally a full Color-CHLAC vector is obtained by concatenating the two vectors from binarized color voxel data and from original color voxel data. 
+Then the dimension of Color-CHLAC feature vector becomes 981 (=6+6+468+468+12+21).
+\todo{Asako: Explain rotation-invariant version in a new Section for VOSCH-RGBD. The dimention is 117 (=6+6+36+36+12+21).}
 
 \subsection{GRSD}
 %
@@ -405,6 +393,7 @@ Same approach (if using rotation invariant ColorCHLAC), but different things are
 \label{sec:classification}
 \subsection{Linear Subspace Method}
 \label{sec:subspace}
+\todo{Asako: revise this subsection.}
 \subsubsection{Creating subspaces of objects in a database}
 First, the voxel data of each object in a database is subdivided into a voxel grid of a certain size,
     e.g. $10 \times 10 \times 10$ voxels.
@@ -452,7 +441,11 @@ $y_i$ is calculated by the following equation:
 
 \section{Results}
 \label{sec:results}
-\subsection{Data Acquisition and Training}
+\subsection{Synthetic Data}
+
+\subsection{Real Data}
+\subsubsection{Data Aquisition and Training}
+
 Our database of 3D objects, available at \url{http://semantic-3d.cs.tum.edu},
 (\todo{upload}) was obtained using the Kinect sensor.
 
@@ -478,7 +471,6 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
   \end{center}
 \end{figure}
 
-\subsection{Testing}
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd.png}
@@ -488,7 +480,8 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
   \end{center}
 \end{figure}
 
-\subsubsection{Cross-Validation}
+
+\subsubsection{Leave-one-out Test}
 \todo{ALL}
 
 \subsubsection{Find One Object Test}
@@ -496,7 +489,7 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 d)varying lighting conditions}
 %\todo{Dejan}
 
-\subsection{Object Recognition Pipeline (in Clutter)}
+\subsection{Object Detection Pipeline (in Clutter)}
 \label{sec:recognition}
 We applied our object recognition method on an object detection scheme in a cluttered environment.
 The system computes the similarities between each target object and all rectangular-solid sub-regions in the environment, and then it outputs all the regions that have higher similarities than a certain threshold as the candidates of the target object.
