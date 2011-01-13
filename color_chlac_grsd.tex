@@ -88,7 +88,7 @@ different objects of daily use, handle them in typical situations such as
 opening a fridge to get the milk or when performing challenging everyday tasks
 such as setting the table or preparing a meal.
 
-\todo{Provide the definition of descriptor vs detector vs feature}\\
+%\todo{Provide the definition of descriptor vs detector vs feature}\\
 
 Descriptor-based object recognition has proved over last years to be very successful.
 SIFT~\cite{lowe04distinctive}, SURF~\cite{surf} and others can
@@ -223,42 +223,58 @@ we conclude and give the future outlook.
 
 \section{Related Work}
 \label{sec:rl}
-\begin{itemize}
-\item VFH~\cite{vfh}
-\item GRSD (Humanoids10GRSD~)\cite{GRSD10Humanoids}
-\item Color CHLAC (Asako)~\cite{kanezaki2010icra}\cite{kanezaki2010tvc}
-\item textured-spin images~\cite{Johnson_spin_images}
-\item A sparse texture representation using local affine regions~\cite{Lazebnik05asparse}
-\item sift-keypoint \url{http://www.ros.org/doc/api/pcl/html/sift__keypoint_8h_source.html}
-\item Combining Depth and Color Cues for Scale and Viewpoint-Invariant
-Object Segmentation and Recognition Using Random Forests - the emphasize is on classifier Random Forests~\cite{stueckler10combining}
-\end{itemize}
+%\item Color CHLAC (Asako)~\cite{kanezaki2010icra}\cite{kanezaki2010tvc}
+% \item textured-spin images~\cite{Johnson_spin_images}
+% \item A sparse texture representation using local affine
+% regions~\cite{Lazebnik05asparse}
+% \item sift-keypoint
+% \url{http://www.ros.org/doc/api/pcl/html/sift__keypoint_8h_source.html}
+Expressiveness and efficiency of the descriptor are both crucially important for
+a real-time object recognition system.  Though there is a trade-off between
+these two abilities, it will dramatically improve both of them to select a
+proper matching method taking advantage of the characteristics of the
+descriptor. In the recent decade a bunch of powerful 2D and 3D descriptors for
+recognizing real objects have been developed, however, few of them take into
+account the compatibility with the matching method used with them.
 
-Expressiveness and efficiency of the descriptor are both crucially important for a real-time object recognition system. 
-Though there is a trade-off between these two abilities, it will dramatically improve both of them 
-to select a proper matching method taking advantage of the characteristics of the descriptor. 
-In the recent decade a bunch of powerful 2D and 3D descriptors for recognizing real objects have been developed, however, few of them take into account 
-the compatibility with the matching method used with them.
+SIFT~\cite{lowe04distinctive} descriptor, one of the most well-known 2D
+descriptors for object recognition, basically used with detecting keypoints in
+scenes and comparing them with those of reference objects to identify the
+objects currently observed. A combination of the visual appearance
+descriptor and 2D shape is presented by Bosch et al. in~\cite{Bosch07shape}
+where they use random forests to achieve around 80\% of classification 
+accuracy. Half-way through to 3D domain an effective descriptor
+NARF~\cite{steder10irosws}, which detects salient points in range images of
+real environments, has recently been developed.  Instead of their dominant
+repeatability in point-to-point matching, there still remains difficulty in
+cluster-to-cluster matching, which is necessary for identifying each cluster in
+environments as an object. This also causes computational expensiveness
+especially when the target object database is large. In 3D domain a recently 
+developed VFH~\cite{vfh} descriptor was presented as an extension 
+of~\cite{Rusu09ICRA}. The feature's discriminative power is boosted up
+by an inclusion of viewpoint which on the other side however represents
+the deficiency in that it becomes orientation variant. 
 
-SIFT~\cite{lowe04distinctive} descriptor, one of the most well-known 2D descriptors for object recognition, 
-basically used with detecting keypoints in scenes and comparing them with those of reference objects to identify the objects currently observed.
-Similarly an effective 3D descriptor NARF~\cite{steder10irosws}, which detects salient points in a 3D point cloud of real environments, has recently developed. 
-Instead of their dominant repeatability in point-to-point matching, there still remains difficulty in cluster-to-cluster matching, 
-which is necessary for identifying each cluster in environments as an object. This also causes computational expensiveness especially when the target object database is large.
-
-\todo{Dejan?: VFH, sparse texture representation, random forests, and etc.}
-
-There are several approaches that use both geometry and color descriptors to represent 3D shapes~\cite{park2006}, 
-however, to properly balance these two different properties is difficult. 
-Caputo and Dorko~\cite{caputo2002} learned respective kernels for shape and color representations and combined them for recognition object,
- while Huang and Hilton~\cite{huang2009} balanced them by normalizing bins of shape-color histograms.
-Alternative solution for combining geometry and color information at a proper balance is to extract descriptors represented by patterns of shape-and-color co-occurrence.
-For example, Textured spin-image~\cite{cortelazzo2006} splits well-known spin-image~\cite{Johnson_spin_images} descriptors into several layer corresponding to a given level of luminance. 
-Color-CHLAC~\cite{kanezaki2010icra} splits CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns depending on relative position of neighboring voxels, into 
-RGB channels and correlation space of these channels. 
-In \cite{kanezaki2010icra} Color-CHLAC descriptor is used as local descriptors in the training process and as a global descriptor describing each object cluster in the recognition process, 
-   taking advantage of the combination of linear subspace method and the descriptor's additive property. 
-We also use the same approach that uses linear subspace method to enable efficient processing, with more accuracy achieved by the newly developed histogram-based descriptor.
+There are several approaches that use both geometry and color descriptors to
+represent 3D shapes~\cite{park2006}, however, to properly balance these two
+different properties is difficult.  Caputo and Dorko~\cite{caputo2002} learned
+respective kernels for shape and color representations and combined them for
+recognition object, while Huang and Hilton~\cite{huang2009} balanced them by
+normalizing bins of shape-color histograms.  Alternative solution for combining
+geometry and color information at a proper balance is to extract descriptors
+represented by patterns of shape-and-color co-occurrence.  For example, Textured
+spin-image~\cite{cortelazzo2006} splits well-known
+spin-image~\cite{Johnson_spin_images} descriptors into several layer
+corresponding to a given level of luminance. Color-CHLAC~\cite{kanezaki2010icra} 
+splits CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns 
+depending on relative position of neighboring voxels, into RGB channels and correlation 
+space of these channels.  In \cite{kanezaki2010icra} Color-CHLAC descriptor is used as local
+descriptors in the training process and as a global descriptor describing each
+object cluster in the recognition process, taking advantage of the combination
+of linear subspace method and the descriptor's additive property.  We also use
+the same approach that uses linear subspace method to enable efficient
+processing, with more accuracy achieved by the newly developed histogram-based
+descriptor.
 
 \section{System Overview}
 \label{sec:overview}
