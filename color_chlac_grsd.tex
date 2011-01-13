@@ -332,30 +332,9 @@ based on an estimation of the radii of the 2 principal curves defining the surfa
 Since these values have physical meaning, we can categorize surfaces into predefined types, but
 \todo{now we are dividing, so we get more surface types, chosen to roughly match ColorCHLAC to have the same "weighting"}
 
-\begin{figure}[htb!]
-  \begin{center}
-    \includegraphics[width=.4\columnwidth]{figures/grsd/book.png}
-\hfill
-    \includegraphics[width=.48\columnwidth]{figures/grsd/book_global.png} \\
-\hfill
-    \includegraphics[width=.3\columnwidth]{figures/grsd/mug.png}
-\hfill
-    \includegraphics[width=.48\columnwidth]{figures/grsd/mug_global.png}
-\caption{Example of RSD classes and GRSD plots for a big flat box (i.e. book, upper row) and a short cylinder (i.e. mug, bottom row).
-The histogram bin values are scaled between -1 and 1 according to the
-training data, and the colors represent the following local surfaces:
-red - sharp edge (or noise), yellow - plane, green - cylinder, light blue -
-sphere (not present), and dark blue - rim (i.e. boundary, transition between surfaces).
-\emph{Best viewed in color.}
-}
-    \label{fig:grsd}
-  \end{center}
-\vspace{-2ex}
-\end{figure}
-
 Once all voxels are annotated locally using a geometric class, our
 processing pipeline constructs a global feature by counting the transitions
-between these local labels (and free space), as shown in Figure~\ref{fig:grsd}.
+between these local labels (and free space), as shown in Figure\todo{~\ref{fig:grsd}}.
 Since we do not use ray-casting but consider only the direct neighbors
 of each occupied cell, the computation of this \emph{simplified} GRSD is much faster.
 
