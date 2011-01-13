@@ -90,18 +90,18 @@ different objects of daily use, handle them in typical situations such as
 opening a fridge to get the milk or when performing challenging everyday tasks
 such as setting the table or preparing a meal.
 
-\todo{Provide the definition of descriptor vs detector vs feature}\\
+%\todo{Provide the definition of descriptor vs detector vs feature}\\
 
 Descriptor-based object recognition has proved over last years to be very successful.
 SIFT~\cite{lowe04distinctive}, SURF~\cite{surf} and others can
 detect, localize and recognize many types of textured objects efficiently, reliably
 and under varying lighting conditions. Likewise descriptors have been developed 
-for perceiving objects based on their shapes (e.g. plates, coffee cups, bowls).
+for perceiving objects based on their shapes (e.g. circles, cylinders, spheres and hybrid variants).
 Normal Aligned Radial Features (NARF)\cite{steder10irosws} for range images, 
 and several versions of Point Feature  Histograms (PFH, FPFH)~\cite{Rusu09ICRA} and 
 Viewpoint Feature Histograms (VFH)~\cite{vfh} for unordered fully-3D point clouds are just 
 to name a few. While these descriptors were successful too, they are still limited because they
-typically work only in restricted feature spaces. So in order to have perception system
+typically work only in restricted feature spaces. So, in order to have perception system
 based on SIFT features, one needs to restrict search space to objects that are detected by
 texture, if we apply 3D feature the objects must be distinctive with respect to their shapes. 
 If we really want to install a perception system for autonomous robots we need to aim 
@@ -111,10 +111,10 @@ various descriptors~\cite{stueckler10combining, GRSD10Humanoids}, the more promi
 is to develop descriptors that work in multiple feature spaces. The reason for this is 
 that objects might be easily discriminated in combined feature space whereas it is impossible 
 to discriminate them in individual spaces as depicted in Figure~\ref{fig:grsd_cchlac}.
-In this paper we propose a novel descriptor which is the composition of our previously 
-presented Global Radius-based Surface Descriptor
-(GRSD~\cite{GRSD10Humanoids}) and Color Cubic Higher-order Local Auto-Correlation descriptor
-(ColorCHLAC~\cite{kanezaki2010tvc}) which we call GRSD-ColorCHLAC.
+In this paper we propose a novel descriptor which builds off the idea of the previously 
+published Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and 
+Color Cubic Higher-order Local Auto-Correlation descriptor (ColorCHLAC~\cite{kanezaki2010tvc}), 
+and which we call Voxelized Shape and Color Histograms (VOSCH).
 
 \begin{figure}[htb!]
   \begin{center}
@@ -134,21 +134,21 @@ presented Global Radius-based Surface Descriptor
 
 The strength of the descriptor lies in its ability to consider geometric and
 visual features in a unified manner to facilitate object classification. The two
-underlying features have been carefully selected for their similar structures in
-how they are computed from voxelized 3D data. In this way, their combination is
+underlying features have been carefully selected because of their similar structures
+and the way they are computed from voxelized 3D data. In this way, their combination is
 not a mere concatenation of two different features, but their computation is
 performed in a single step because of the common underlying algorithmic
-properties. Both features, though independently developed, count relations
-between neighboring voxels, capturing geometric surface type and texture
+properties. Both features %though independently developed, 
+count relations between neighboring voxels, capturing geometric surface type and texture
 transitions at the same time.
 
-Other advancements over our previous work include the ability to deal with
+Further contributions of work presented herein include the ability to deal with
 cluttered scenes while eliminating the requirement for region of interest
 selection (e.g. horizontal supporting structures) and spatially separable object
 clusters. This has been achieved using a moving-bounding-box-based approach, and
 a sub-space-matching-based classification scheme (Section
 \ref{sec:recognition}). The resulting approach performs at 2 frames per second
-while taking into account an object database of roughly 100 different objects
+while taking into account an object database of 63 different objects
 (see Figure~\ref{fig:robot}).
 
 % \subsection{Why}
@@ -163,34 +163,32 @@ while taking into account an object database of roughly 100 different objects
 
 % Yet it seems that there is none that can capture
 % all important and obvious properties (such as geometry and color are)
-Furthermore, our descriptor can be out-of-the box applied on the data coming out of the 
-new sensing technologies such as Kinect and lays the foundation stone for a
+Lastly, our descriptor can be out-of-the box applied on the data coming out of the 
+new sensing technologies such as Kinect device and lays the foundation stone for a
 multitude of applications such as later presented recognition of a priori learned object models
-(Section~\ref{sec:recognition}). GRSD-ColorCHLAC also enables equipping of service robots 
+(Section~\ref{sec:recognition}). VOSCH also enables equipping of service robots 
 (such as PR2 shown in top part of Figure~\ref{fig:robot}) with the 
 capabilities to acquire additional object models which furthermore opens ways 
 for manipulation tasks in realistic environments under realistic conditions.
 
 \subsection{How}
-Since the focus of the paper is on three parts, i.e. i)GRSD-ColorCHLAC descriptor
-construction, ii)database assembly and training of object models and iii)testing
-we had to solve each of them individually. In the first case we combined
-the view-variant and view-invariant version of the ColorCHLAC descriptor with the
-view-invariant version of GRSD descriptor and thus generated a novel descriptor
-histogram with 1001 and 137 bins respectively. After the deliberate consideration
-that involved computational costs, time needed for the data acquisition, and
-classification performance we finally settled for the latter version with 137
-bins which is being used throughout this paper.
-
-In the second case, we assembled of a large database of
+Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
+construction, ii)database assembly and training of object models and iii)testing,
+we solved each of them individually. In the first case we had to unify underlying
+structures such that the ColorCHLAC became rotation invariant and GRSD 
+additive~\cite{kanezaki2010tvc}. We thus obtained a descriptor histogram with 
+137 bins representing the transitions between its different dimensions.
+In the second case, we assembled a large database of
 object models (Figure~\ref{fig:robot} bottom), by creating a rotating
 table using a DP PTU47 pan-tilt unit that is controlled by the robot over the
-network.  Objects placed on this rotating table were scanned at a given
+network. Objects placed on this rotating table were scanned at a given
 angle-step ($15^\circ$) and dumped to the disk. The resultant database of
-object models was then used to categorize and classify objects found in
+object models was then used to classify objects found in
 natural table setting scenes while performing manipulation
-tasks.  For this third case we also performed a test on objects that were
-nicely segmented. Our approach is built as part of the Robot Operating System
+tasks. For this third case we also performed a test on objects that were
+segmented in the euclidean sense. 
+
+Our approach is realized as part of the Robot Operating System
 (ROS)\footnote{\url{http://www.ros.org}} open source initiative, and makes
 use of modular and robust components that can be reused on other robotic
 systems different than ours.
@@ -202,66 +200,83 @@ systems different than ours.
 
 
 \subsection{Performance and Novelty}
-Our approach takes \todo{X} seconds for the training of objects and \todo{Y} seconds
+Our approach takes 404 seconds for the training of 63 objects and \todo{Y} seconds
 for the recognition of already segmented single object. Moving-bounding-box-based
 recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
 in Section~\ref{sec:recognition}.
 
 The main novel contributions of this paper are the following:
 \begin{itemize}
-\item novel, multidimensional descriptor GRSD-ColorCHLAC that accounts for
+\item novel, multidimensional descriptor VOSCH that accounts for
 geometrical as well as visual appearance  properties of objects in question
 \item comparison of classification results for two established classification
 frameworks; Linear Subspace Method~\cite{watanabe1973} and Support Vector Machine~\cite{svm99}.
-\item an extensive database of objects of daily use captured with the Kinect sensor.
+\item an extensive database of objects of daily use captured with the Kinect sensor 
+(which we intend to publish after the review process).
 \end{itemize}
 
 The remainder of the paper is built as following. After the overview of the related
 work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
 which is followed by Section~\ref{sec:features} that elaborates on the construction of the
-GRSD-ColorCHLAC descriptor. In Section~\ref{sec:classification} we present the usage of this descriptor
+VOSCH descriptor. In Section~\ref{sec:classification} we present the usage of this descriptor
 for the classification of objects using two state-of-the-art classification methods which we
 then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
 we conclude and give the future outlook.
 
 \section{Related Work}
 \label{sec:rl}
-\begin{itemize}
-\item VFH~\cite{vfh}
-\item GRSD (Humanoids10GRSD~)\cite{GRSD10Humanoids}
-\item Color CHLAC (Asako)~\cite{kanezaki2010icra}\cite{kanezaki2010tvc}
-\item textured-spin images~\cite{Johnson_spin_images}
-\item A sparse texture representation using local affine regions~\cite{Lazebnik05asparse}
-\item sift-keypoint \url{http://www.ros.org/doc/api/pcl/html/sift__keypoint_8h_source.html}
-\item Combining Depth and Color Cues for Scale and Viewpoint-Invariant
-Object Segmentation and Recognition Using Random Forests - the emphasize is on classifier Random Forests~\cite{stueckler10combining}
-\end{itemize}
+%\item Color CHLAC (Asako)~\cite{kanezaki2010icra}\cite{kanezaki2010tvc}
+% \item textured-spin images~\cite{Johnson_spin_images}
+% \item A sparse texture representation using local affine
+% regions~\cite{Lazebnik05asparse}
+% \item sift-keypoint
+% \url{http://www.ros.org/doc/api/pcl/html/sift__keypoint_8h_source.html}
+Expressiveness and efficiency of the descriptor are both crucially important for
+a real-time object recognition system.  Though there is a trade-off between
+these two abilities, it will dramatically improve both of them to select a
+proper matching method taking advantage of the characteristics of the
+descriptor. In the recent decade a bunch of powerful 2D and 3D descriptors for
+recognizing real objects have been developed, however, few of them take into
+account the compatibility with the matching method used with them.
 
-Expressiveness and efficiency of the descriptor are both crucially important for a real-time object recognition system. 
-Though there is a trade-off between these two abilities, it will dramatically improve both of them 
-to select a proper matching method taking advantage of the characteristics of the descriptor. 
-In the recent decade a bunch of powerful 2D and 3D descriptors for recognizing real objects have been developed, however, few of them take into account 
-the compatibility with the matching method used with them.
+SIFT~\cite{lowe04distinctive} descriptor, one of the most well-known 2D
+descriptors for object recognition, basically used with detecting keypoints in
+scenes and comparing them with those of reference objects to identify the
+objects currently observed. A combination of the visual appearance
+descriptor and 2D shape is presented by Bosch et al. in~\cite{Bosch07shape}
+where they use random forests to achieve around 80\% of classification 
+accuracy. Half-way through to 3D domain an effective descriptor
+NARF~\cite{steder10irosws}, which detects salient points in range images of
+real environments, has recently been developed.  Instead of their dominant
+repeatability in point-to-point matching, there still remains difficulty in
+cluster-to-cluster matching, which is necessary for identifying each cluster in
+environments as an object. This also causes computational expensiveness
+especially when the target object database is large. In 3D domain a recently 
+developed VFH~\cite{vfh} descriptor was presented as an extension 
+of~\cite{Rusu09ICRA}. The feature's discriminative power is boosted up
+by an inclusion of viewpoint which on the other side however represents
+the deficiency in that it becomes orientation variant. 
 
-SIFT~\cite{lowe04distinctive} descriptor, one of the most well-known 2D descriptors for object recognition, 
-basically used with detecting keypoints in scenes and comparing them with those of reference objects to identify the objects currently observed.
-Similarly an effective 3D descriptor NARF~\cite{steder10irosws}, which detects salient points in a 3D point cloud of real environments, has recently developed. 
-Instead of their dominant repeatability in point-to-point matching, there still remains difficulty in cluster-to-cluster matching, 
-which is necessary for identifying each cluster in environments as an object. This also causes computational expensiveness especially when the target object database is large.
-
-\todo{Dejan?: VFH, sparse texture representation, random forests, and etc.}
-
-There are several approaches that use both geometry and color descriptors to represent 3D shapes~\cite{park2006}, 
-however, to properly balance these two different properties is difficult. 
-Caputo and Dorko~\cite{caputo2002} learned respective kernels for shape and color representations and combined them for recognition object,
- while Huang and Hilton~\cite{huang2009} balanced them by normalizing bins of shape-color histograms.
-Alternative solution for combining geometry and color information at a proper balance is to extract descriptors represented by patterns of shape-and-color co-occurrence.
-For example, Textured spin-image~\cite{cortelazzo2006} splits well-known spin-image~\cite{Johnson_spin_images} descriptors into several layer corresponding to a given level of luminance. 
-Color-CHLAC~\cite{kanezaki2010icra} splits CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns depending on relative position of neighboring voxels, into 
-RGB channels and correlation space of these channels. 
-In \cite{kanezaki2010icra} Color-CHLAC descriptor is used as local descriptors in the training process and as a global descriptor describing each object cluster in the recognition process, 
-   taking advantage of the combination of linear subspace method and the descriptor's additive property. 
-We also use the same approach that uses linear subspace method to enable efficient processing, with more accuracy achieved by the newly developed histogram-based descriptor.
+There are several approaches that use both geometry and color descriptors to
+represent 3D shapes~\cite{park2006}, however, to properly balance these two
+different properties is difficult.  Caputo and Dorko~\cite{caputo2002} learned
+respective kernels for shape and color representations and combined them for
+recognition object, while Huang and Hilton~\cite{huang2009} balanced them by
+normalizing bins of shape-color histograms.  Alternative solution for combining
+geometry and color information at a proper balance is to extract descriptors
+represented by patterns of shape-and-color co-occurrence.  For example, Textured
+spin-image~\cite{cortelazzo2006} splits well-known
+spin-image~\cite{Johnson_spin_images} descriptors into several layer
+corresponding to a given level of luminance. Color-CHLAC~\cite{kanezaki2010icra} 
+splits CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns 
+depending on relative position of neighboring voxels, into RGB channels and correlation 
+space of these channels.  In \cite{kanezaki2010icra} Color-CHLAC descriptor is used as local
+descriptors in the training process and as a global descriptor describing each
+object cluster in the recognition process, taking advantage of the combination
+of linear subspace method and the descriptor's additive property.  We also use
+the same approach that uses linear subspace method to enable efficient
+processing, with more accuracy achieved by the newly developed histogram-based
+descriptor.
 
 \section{System Overview}
 \label{sec:overview}
@@ -335,30 +350,9 @@ based on an estimation of the radii of the 2 principal curves defining the surfa
 Since these values have physical meaning, we can categorize surfaces into predefined types, but
 \todo{now we are dividing, so we get more surface types, chosen to roughly match ColorCHLAC to have the same "weighting"}
 
-\begin{figure}[htb!]
-  \begin{center}
-    \includegraphics[width=.4\columnwidth]{figures/grsd/book.png}
-\hfill
-    \includegraphics[width=.48\columnwidth]{figures/grsd/book_global.png} \\
-\hfill
-    \includegraphics[width=.3\columnwidth]{figures/grsd/mug.png}
-\hfill
-    \includegraphics[width=.48\columnwidth]{figures/grsd/mug_global.png}
-\caption{Example of RSD classes and GRSD plots for a big flat box (i.e. book, upper row) and a short cylinder (i.e. mug, bottom row).
-The histogram bin values are scaled between -1 and 1 according to the
-training data, and the colors represent the following local surfaces:
-red - sharp edge (or noise), yellow - plane, green - cylinder, light blue -
-sphere (not present), and dark blue - rim (i.e. boundary, transition between surfaces).
-\emph{Best viewed in color.}
-}
-    \label{fig:grsd}
-  \end{center}
-\vspace{-2ex}
-\end{figure}
-
 Once all voxels are annotated locally using a geometric class, our
 processing pipeline constructs a global feature by counting the transitions
-between these local labels (and free space), as shown in Figure~\ref{fig:grsd}.
+between these local labels (and free space), as shown in Figure\todo{~\ref{fig:grsd}}.
 Since we do not use ray-casting but consider only the direct neighbors
 of each occupied cell, the computation of this \emph{simplified} GRSD is much faster.
 
