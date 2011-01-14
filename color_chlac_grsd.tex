@@ -170,57 +170,17 @@ multitude of applications such as later presented recognition of a priori learne
 capabilities to acquire additional object models which furthermore opens ways 
 for manipulation tasks in realistic environments under realistic conditions.
 
-\subsection{How}
-Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
-construction, ii)database assembly and training of object models and iii)testing,
-we solved each of them individually. In the first case we had to unify underlying
-structures such that the ColorCHLAC became rotation invariant and GRSD 
-additive~\cite{kanezaki2010tvc}. We thus obtained a descriptor histogram with 
-137 bins representing the transitions between its different dimensions.
-In the second case, we assembled a large database of
-object models (Figure~\ref{fig:robot} bottom), by creating a rotating
-table using a DP PTU47 pan-tilt unit that is controlled by the robot over the
-network. Objects placed on this rotating table were scanned at a given
-angle-step ($15^\circ$) and dumped to the disk. The resultant database of
-object models was then used to classify objects found in
-natural table setting scenes while performing manipulation
-tasks. For this third case we also performed a test on objects that were
-segmented in the euclidean sense. 
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
+    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
+    \caption{Examples of \todo{scaled} VOSCH histograms.
+Left: different categories of objects result in having different first 20 bins of the respective histogram.
+Right: different colors of the same category of an object have different 137 last bins of the histogram}
+    \label{fig:grsd_cchlac}
+  \end{center}
+\end{figure}
 
-Our approach is realized as part of the Robot Operating System
-(ROS)\footnote{\url{http://www.ros.org}} open source initiative, and makes
-use of modular and robust components that can be reused on other robotic
-systems different than ours.
-
-% \item Combination of view-variant ColorCHLAC and GRSD with the
-% normalization of the latter by number 27 (number of transitions)
-% \item Combination of view-invariant version of ColorCHLAC and GRSD
-% \item Comparisson of Linear Subspace Method and SVM Classifier
-
-
-\subsection{Performance and Novelty}
-Our approach takes 404 seconds for the training of 63 objects and \todo{Y} seconds
-for the recognition of already segmented single object. Moving-bounding-box-based
-recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
-in Section~\ref{sec:recognition}.
-
-The main novel contributions of this paper are the following:
-\begin{itemize}
-\item novel, multidimensional descriptor VOSCH that accounts for
-geometrical as well as visual appearance  properties of objects in question
-\item comparison of classification results for two established classification
-frameworks; Linear Subspace Method~\cite{watanabe1973} and Support Vector Machine~\cite{svm99}.
-\item an extensive database of objects of daily use captured with the Kinect sensor 
-(which we intend to publish after the review process).
-\end{itemize}
-
-The remainder of the paper is built as following. After the overview of the related
-work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
-which is followed by Section~\ref{sec:features} that elaborates on the construction of the
-VOSCH descriptor. In Section~\ref{sec:classification} we present the usage of this descriptor
-for the classification of objects using two state-of-the-art classification methods which we
-then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
-we conclude and give the future outlook.
 
 \section{Related Work}
 \label{sec:rl}
@@ -280,6 +240,58 @@ descriptor.
 \section{System Overview}
 \label{sec:overview}
 \todo{Dejan}
+
+\subsection{How}
+Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
+construction, ii)database assembly and training of object models and iii)testing,
+we solved each of them individually. In the first case we had to unify underlying
+structures such that the ColorCHLAC became rotation invariant and GRSD 
+additive~\cite{kanezaki2010tvc}. We thus obtained a descriptor histogram with 
+137 bins representing the transitions between its different dimensions.
+In the second case, we assembled a large database of
+object models (Figure~\ref{fig:robot} bottom), by creating a rotating
+table using a DP PTU47 pan-tilt unit that is controlled by the robot over the
+network. Objects placed on this rotating table were scanned at a given
+angle-step ($15^\circ$) and dumped to the disk. The resultant database of
+object models was then used to classify objects found in
+natural table setting scenes while performing manipulation
+tasks. For this third case we also performed a test on objects that were
+segmented in the euclidean sense. 
+
+Our approach is realized as part of the Robot Operating System
+(ROS)\footnote{\url{http://www.ros.org}} open source initiative, and makes
+use of modular and robust components that can be reused on other robotic
+systems different than ours.
+
+% \item Combination of view-variant ColorCHLAC and GRSD with the
+% normalization of the latter by number 27 (number of transitions)
+% \item Combination of view-invariant version of ColorCHLAC and GRSD
+% \item Comparison of Linear Subspace Method and SVM Classifier
+
+
+\subsection{Performance and Novelty}
+Our approach takes 404 seconds for the training of 63 objects and \todo{Y} seconds
+for the recognition of already segmented single object. Moving-bounding-box-based
+recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
+in Section~\ref{sec:recognition}.
+
+The main novel contributions of this paper are the following:
+\begin{itemize}
+\item novel, multidimensional descriptor VOSCH that accounts for
+geometrical as well as visual appearance  properties of objects in question
+\item comparison of classification results for two established classification
+frameworks; Linear Subspace Method~\cite{watanabe1973} and Support Vector Machine~\cite{svm99}.
+\item an extensive database of objects of daily use captured with the Kinect sensor 
+(which we intend to publish after the review process).
+\end{itemize}
+
+The remainder of the paper is built as following. After the overview of the related
+work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
+which is followed by Section~\ref{sec:features} that elaborates on the construction of the
+VOSCH descriptor. In Section~\ref{sec:classification} we present the usage of this descriptor
+for the classification of objects using two state-of-the-art classification methods which we
+then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
+we conclude and give the future outlook.
 
 \section{Feature Estimation}
 \label{sec:features}
@@ -359,18 +371,6 @@ between these local labels (and free space), as shown in Figure\todo{~\ref{fig:g
 Since we do not use ray-casting but consider only the direct neighbors
 of each occupied cell, the computation of this \emph{simplified} GRSD is much faster.
 
-\begin{figure}[htb!]
-  \begin{center}
-    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
-    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
-    \caption{Examples of GRSD-ColorCHLAC histograms. Left: different categories
-of objects result in having different first 20 bins of the respective histogram.
-Right: different colors of the same category of an object have different 137 last bins
-of the histogram}
-    \label{fig:grsd_cchlac}
-  \end{center}
-\end{figure}
-
 \subsection{Comparison}
 %
 Same approach (if using rotation invariant ColorCHLAC), but different things are counted (color vs surface type). Also, GRSD considers free space as well.
@@ -379,7 +379,8 @@ Same approach (if using rotation invariant ColorCHLAC), but different things are
     \includegraphics[width=.3\columnwidth]{figures/comparison/cube.png}
     \includegraphics[width=.32\columnwidth]{figures/comparison/dice1.png}
     \includegraphics[width=.32\columnwidth]{figures/comparison/dice2.png}
-    \caption{Color-CHLAC: can not differentiate the dice from the cube. GRSD: can not differentiate the different colors. Combination solves both.}
+    \caption{Color-CHLAC can not differentiate the dice from the cube, while GRSD can not differentiate the different colors.
+             Their combination however produces different signatures for all of them (Figure~\ref{fig:grsd_cchlac}).}
     \label{fig:comparison}
   \end{center}
 \vspace{-2ex}
@@ -437,13 +438,25 @@ $y_i$ is calculated by the following equation:
 
 \section{Results}
 \label{sec:results}
+
 \subsection{Feature Extraction}
-Synthetic Data: (49 views of objects), 0.0000363877551020408 sec/point, average number of points: 19124
-Real Data (1512 views of objects), 0.0000577394179894179  sec/point,  average number of points: 4632
+
+Search radius for normals: 2 cm
+
+Search radius for RSD: 1 cm
+
+Voxel size: 1 cm
+
+Synthetic Data: (49 views of objects), 0.0000363877551020408 sec/point, average number of points: 19124, average time per object: (0.695879429 seconds)
+
+Real Data (1512 views of objects), 0.0000577394179894179  sec/point,  average number of points: 4632, average time per object: (0.267448984 seconds)
 
 \subsection{Synthetic Data}
 
 \todo{used 1 example of each object as training data and evaluated the model on 5 examples of each objects with 10 noise levels}
+
+\todo{NOTE:} Since objects were uniformly colored and quite symmetrical, the fact that ColorCHLAC is not rotation invariant did not show up in the table.
+In the original implementation ColorCHLAC was trained with artificial rotations to achieve rotation invariance.
 
 \begin{table*}[ht]
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
@@ -451,7 +464,7 @@ Real Data (1512 views of objects), 0.0000577394179894179  sec/point,  average nu
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}\hline
 % use packages: color,colortbl
-\rowcolor{tcA} \textbf{} & \textbf{} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{GRSD}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{Color-CHLAC}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{MERGED}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{VOSCH}}\\
+\rowcolor{tcA} \textbf{} & \textbf{} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{GRSD (20D)}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{Color-CHLAC (981D)}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{Concatenated (1001D)}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{VOSCH (137D)}}\\
 \cline{3-10}
 \rowcolor{tcA} \textbf{Noise STD} & \textbf{Rotation} & \textbf{LSM} & \textbf{SVM} & \textbf{LSM} & \textbf{SVM} & \textbf{LSM} & \textbf{SVM} & \textbf{LSM} & \textbf{SVM}\\
 \hline
@@ -512,11 +525,10 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 
 \begin{figure}[htb!]
   \begin{center}
-    \includegraphics[width=.45\columnwidth]{figures/rot_table/barilla.png}
-\hfill
-    \includegraphics[width=.45\columnwidth]{figures/rot_table/barilla1.png} \\
-    \includegraphics[width=.45\columnwidth]{figures/rot_table/barilla2.png}
-\caption{Acquisition of Training Data}
+    \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla.png}
+    \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla1.png}
+    \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla2.png}
+    \caption{Acquisition of training data using a rotating table controlled by the robot.}
     \label{fig:data_acquisition}
   \end{center}
 \end{figure}
@@ -525,7 +537,7 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
   \begin{center}
     \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd.png}
     \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd2.png}
-    \caption{Examples of GRSD-ColorCHLAC histograms for a Tomato Soup can.}
+    \caption{Examples of \todo{scaled} VOSCH histograms for a Tomato Soup can.}
     \label{fig:grsd_colorchlac_tomato}
   \end{center}
 \end{figure}
@@ -577,11 +589,9 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.45\columnwidth]{figures/colorCHLAC/detection7.png}
-\hfill
     \includegraphics[width=.45\columnwidth]{figures/colorCHLAC/detection5.png} \\
-\hfill
     \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/detection2.png}
-\caption{An example of the detection of tetrahedral package of milk}
+    \caption{An example of the detection of tetrahedral package of milk.}
     \label{fig:milk_testing}
   \end{center}
 \end{figure}
