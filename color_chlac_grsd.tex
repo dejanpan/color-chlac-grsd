@@ -437,9 +437,9 @@ Real Data (1512 views of objects), 0.0000577394179894179  sec/point,  average nu
 \todo{NOTE:} Since objects were uniformly colored and quite symmetrical, the fact that ColorCHLAC is not rotation invariant did not show up in the table.
 In the original implementation ColorCHLAC was trained with artificial rotations to achieve rotation invariance.
 
-\begin{table*}[ht]
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
 \definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
+\begin{table*}[ht]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}\hline
 % use packages: color,colortbl
@@ -478,7 +478,7 @@ In the original implementation ColorCHLAC was trained with artificial rotations 
 \rowcolor{tcA} \textbf{mm} & \textbf{Random:} & 5.7142\% & 6.12245\% & 17.9591\% & 28.5714\% & 48.5714\% & 52.6531\% & 42.0408\% & 52.2449\% \\
 \hline
 \end{tabular}
-\caption{Comparison of Features and Classifiers}
+\caption{Comparison of Features and Classifiers \todo{precision vs 1-recall for VOSCH?}}
 \label{tbl:synthetic}
 \end{center}
 \end{table*}
@@ -525,6 +525,25 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 \subsubsection{Evaluation on Training Data}
 
 \todo{ALL: split training data into 2 groups and evaluate classification of one using the model computed for the other. Or complete cross-correlation.}
+
+\begin{table*}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\rowcolor{tcA} & \textbf{GRSD (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (1001D)} & \textbf{VOSCH (137D)} \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & \todo{X} (98.21\%) & \todo{X} (99.93\%) & \todo{X} (100\%) & \todo{X} (100\%) \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.2063\% (66.9974\%) & \todo{X (X)}  & \todo{X (X)} & 100\% (99.1402\%) \\
+\hline
+\end{tabular}
+\caption{Model Accuracy on Real Training Data (and Leave-One-Out Test) for VOSCH \todo{less decimals and 1 column}}
+\label{tbl:training}
+\end{center}
+\end{table*}
+
+Table~\ref{tbl:training} shows the percentage of correctly classified training examples using the model computed for them,
+and the percentage of correctly classified views using the model constructed using the remaining views.
 
 \subsubsection{Evaluation on Novel Views}
 
