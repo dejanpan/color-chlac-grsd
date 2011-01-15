@@ -70,8 +70,8 @@
 \begin{abstract}
 The greatest bottleneck momentarily in the area of mobile manipulation is robust perception.
 In this paper we contribute to the solving of this problem of efficiency and accuracy
-by proposing a novel feature called Voxelized Shape and Color Histograms for RGBD 
-(VOSCH-RGBD) that is capable of capturing both the geometric and visual appearance
+by proposing a novel feature called Voxelized Shape and Color Histograms 
+(VOSCH) that is capable of capturing both the geometric and visual appearance
 properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
 and evaluate two classification approaches.
@@ -90,7 +90,6 @@ opening a fridge to get the milk or when performing challenging everyday tasks
 such as setting the table or preparing a meal.
 
 %\todo{Provide the definition of descriptor vs detector vs feature}\\
-
 Descriptor-based object recognition has proved over last years to be very successful.
 SIFT~\cite{lowe04distinctive}, SURF~\cite{surf} and others can
 detect, localize and recognize many types of textured objects efficiently, reliably
@@ -119,8 +118,12 @@ and which we call Voxelized Shape and Color Histograms (VOSCH).
   \begin{center}
     \includegraphics[width=.99\columnwidth]{figures/firstpage/firstpage.pdf}
     \includegraphics[width=.99\columnwidth]{figures/objects/objects.jpg}
-    \caption{Our autonomous service robot (PR2) equipped with a Kinect sensor
-    acquiring training data of the objects shown in the bottom image}
+    \caption{Top: Autonomous service robot equipped with a Kinect sensor
+    acquiring training data of the objects shown in the bottom image. For 
+  every view of the object VOSCH descriptor was estimated and a database
+of 63 objects was generated. Object detection pipeline with Support Vector
+Machine or Linear Subspace Method classifiers was then use to detect objects
+in natural scenes.}
     \label{fig:robot}
   \end{center}
 \end{figure}
@@ -133,8 +136,8 @@ and which we call Voxelized Shape and Color Histograms (VOSCH).
 
 The strength of the descriptor lies in its ability to consider geometric and
 visual features in a unified manner to facilitate object classification. The two
-underlying features have been carefully selected because of their similar structures
-and the way they are computed from voxelized 3D data. In this way, their combination is
+underlying features (GRSD, ColorCHLAC) have been carefully selected because of their similar structures
+and the way they are computed from voxelized 3D data. Their combination is
 not a mere concatenation of two different features, but their computation is
 performed in a single step because of the common underlying algorithmic
 properties. Both features %though independently developed, 
@@ -166,7 +169,7 @@ Lastly, our descriptor can be out-of-the box applied on the data coming out of t
 new sensing technologies such as Kinect device and lays the foundation stone for a
 multitude of applications such as later presented recognition of a priori learned object models
 (Section~\ref{sec:recognition}). VOSCH also enables equipping of service robots 
-(such as PR2 shown in top part of Figure~\ref{fig:robot}) with the 
+(such as the robot shown in top part of Figure~\ref{fig:robot}) with the 
 capabilities to acquire additional object models which furthermore opens ways 
 for manipulation tasks in realistic environments under realistic conditions.
 
@@ -175,11 +178,21 @@ for manipulation tasks in realistic environments under realistic conditions.
     \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
     \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
     \caption{Examples of \todo{scaled} VOSCH histograms.
-Left: different categories of objects result in having different first 20 bins of the respective histogram.
-Right: different colors of the same category of an object have different 137 last bins of the histogram}
+Left: different categories of objects (top-down: cone, cube, cylinder, plane, sphere, torus, dice) 
+result in having different first 20 bins of the respective histogram.
+Right: different colors of the same category of an object torus have different 137 right-most bins of the histogram}
     \label{fig:grsd_cchlac}
   \end{center}
 \end{figure}
+
+The remainder of the paper is built as following. After the overview of the related
+work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
+which is followed by Section~\ref{sec:features} that elaborates on the construction of the
+VOSCH descriptor. In Section~\ref{sec:classification} we present the usage of this descriptor
+for the classification of objects using two state-of-the-art classification methods which we
+then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
+we conclude and give the future outlook.
+
 
 
 \section{Related Work}
@@ -194,29 +207,29 @@ Expressiveness and efficiency of the descriptor are both crucially important for
 a real-time object recognition system.  Though there is a trade-off between
 these two abilities, it will dramatically improve both of them to select a
 proper matching method taking advantage of the characteristics of the
-descriptor. In the recent decade a bunch of powerful 2D and 3D descriptors for
+descriptor. In the recent decade a corpus of powerful 2D and 3D descriptors for
 recognizing real objects have been developed, however, few of them take into
 account the compatibility with the matching method used with them.
 
 SIFT~\cite{lowe04distinctive} descriptor, one of the most well-known 2D
-descriptors for object recognition, basically used with detecting keypoints in
-scenes and comparing them with those of reference objects to identify the
+descriptors for object recognition, makes use of detected keypoints in
+scenes and compares them with those of reference objects to identify the
 objects currently observed. A combination of the visual appearance
 descriptor and 2D shape is presented by Bosch et al. in~\cite{Bosch07shape}
 where they use random forests to achieve around 80\% of classification 
 accuracy. Half-way through to 3D domain an effective descriptor
 NARF~\cite{steder10irosws}, which detects salient points in range images of
-real environments, has recently been developed.  Instead of their dominant
+real environments, has recently been developed.  Despite of their dominant
 repeatability in point-to-point matching, there still remains difficulty in
-cluster-to-cluster matching, which is necessary for identifying each cluster in
-environments as an object. This also causes computational expensiveness
+cluster-to-cluster matching, which is necessary for identifying each cluster
+candidates  in environments as objects. This also causes computational expensiveness
 especially when the target object database is large. In 3D domain a recently 
 developed VFH~\cite{vfh} descriptor was presented as an extension 
 of~\cite{Rusu09ICRA}. The feature's discriminative power is boosted up
 by an inclusion of viewpoint which on the other side however represents
 the deficiency in that it becomes orientation variant. 
 
-There are several approaches that use both geometry and color descriptors to
+There are few approaches that use both geometry and color descriptors to
 represent 3D shapes~\cite{park2006}, however, to properly balance these two
 different properties is difficult.  Caputo and Dorko~\cite{caputo2002} learned
 respective kernels for shape and color representations and combined them for
@@ -232,14 +245,19 @@ depending on relative position of neighboring voxels, into RGB channels and corr
 space of these channels.  In \cite{kanezaki2010icra} Color-CHLAC descriptor is used as local
 descriptors in the training process and as a global descriptor describing each
 object cluster in the recognition process, taking advantage of the combination
-of Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property.  We also use
-the same approach that uses LSM to enable efficient
-processing, with more accuracy achieved by the newly developed histogram-based
-descriptor.
+of Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property.  
+
 
 \section{System Overview}
 \label{sec:overview}
-\subsection{How}
+Systematically the idea of the whole work presented herein is depicted in 
+Figure~\ref{fig:robot}. We first acquired the training data of 63 objects
+of daily use using RGBD Kinect sensor. Then we estimated VOSCH descriptor 
+for every object view and generated training models using Support Vector
+Machine or Linear Subspace Method classifiers. The models were used
+in the evaluation part for cross-validation checks and detection of 
+objects in natural scenes.
+
 Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
 construction, ii)database assembly and training of object models and iii)testing,
 we solved each of them individually. In the first case we had to unify underlying
@@ -261,12 +279,6 @@ Our approach is realized as part of the Robot Operating System
 use of modular and robust components that can be reused on other robotic
 systems different than ours.
 
-% \item Combination of view-variant ColorCHLAC and GRSD with the
-% normalization of the latter by number 27 (number of transitions)
-% \item Combination of view-invariant version of ColorCHLAC and GRSD
-% \item Comparison of Linear Subspace Method and SVM Classifier
-
-
 \subsection{Performance and Novelty}
 Our approach takes 404 seconds for the training of 63 objects and \todo{Y} seconds
 for the recognition of already segmented single object. Moving-bounding-box-based
@@ -282,14 +294,6 @@ frameworks; Linear Subspace Method~\cite{watanabe1973} and Support Vector Machin
 \item an extensive database of objects of daily use captured with the Kinect sensor 
 (which we intend to publish after the review process).
 \end{itemize}
-
-The remainder of the paper is built as following. After the overview of the related
-work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
-which is followed by Section~\ref{sec:features} that elaborates on the construction of the
-VOSCH descriptor. In Section~\ref{sec:classification} we present the usage of this descriptor
-for the classification of objects using two state-of-the-art classification methods which we
-then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
-we conclude and give the future outlook.
 
 \section{Feature Estimation}
 \label{sec:features}
