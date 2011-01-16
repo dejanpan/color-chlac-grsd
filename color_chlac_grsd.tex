@@ -302,6 +302,7 @@ ColorCHLAC and GRSD features. For the sake of clarity we will thus briefly recap
 their respective construction too.
 
 \subsection{Color CHLAC}
+\label{sec:color_chlac}
 Color-CHLAC descriptor is a high-dimentional vector measuring the summation of the 
 multiplicated RGB values of neighboring voxels around a voxel grid of arbitrary size. 
 Each bin in a Color-CHLAC descriptor is differentiated by RGB color space and the 
@@ -363,46 +364,60 @@ By doing so the refined Color-CHLAC descriptor is well concerted with GRSD which
 robustness to rotation and still shows a powerful expressivity for color textures.
 
 \subsection{GRSD}
-%
+\label{sec:grsd}
 GRSD is a histogram, that counts the number of transitions between different types of voxels.
-This approach is similar to ColorCHLAC, but in order to efficiently merge the two features,
-the original GRSD has to be simplified. As presented in \cite{GRSD10Humanoids} we were using
-ray-tracing in order to find transitions between surface types of voxels. To merge the features,
-ray-tracing was abandoned for simple checks of neighboring voxels, and the feature is no longer normalized.
+While its applicability has wide-range we used it in this case to count the transitions between 
+the following geometric classes of voxel's surface: cylinder, sphere, plane, rim, free space, and noise. 
+The types of surfaces were carefully selected based on the analysis of GRSD's   
+2 principal curves defining the surface, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
+This approach is similar to ColorCHLAC, but in order to efficiently merge the two features, 
+the original GRSD has to be altered. As shown  in~\cite{GRSD10Humanoids} the original version used
+ray-tracing in order to find transitions between surface types. To make it fit into VOSCH 
+we i)omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)discarded
+the normalization of histogram bins.
 
 These modifications allow us to create histograms which, like ColorCHLAC, are roughly additive.
 If we break up objects into reasonable sizes, its histogram can be approximated by the sum of the
-histograms of its partitioning. Unlike in ColorCHLAC, free space is considered, but we are looking
+histograms of its subcells. Unlike in ColorCHLAC, free space is considered, but we are looking
 at the neighbors of occupied voxels only.
 
-As the feature is rotation invariant, the number of bins $b$ depends on the number of possible surface types $s$ (including emph-empty):
+As the feature is rotation-invariant, the number of bins $b$ depends on the number of possible 
+surface types $s$ (including free space-free space transition):
 \begin{equation}
-b=\frac{s(s+1)}{2}-s
+b=\frac{s(s+1)}{2} %-s
 \end{equation}
-Previously only predefined surface types with an intuitive description were used (cylinder, sphere, plane, rim and corner),
-based on an estimation of the radii of the 2 principal curves defining the surface, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
-Since these values have physical meaning, we can categorize surfaces into predefined types, but
-\todo{now we are dividing, so we get more surface types, chosen to roughly match ColorCHLAC to have the same "weighting"}
-
-Once all voxels are annotated locally using a geometric class, our
-processing pipeline constructs a global feature by counting the transitions
-between these local labels (and free space), as shown in Figure\todo{~\ref{fig:grsd}}.
+which results in \todo{correct: 21?} dimensions for the shape part VOSCH.
+% Previously only predefined surface types with an intuitive description were used 
+% (cylinder, sphere, plane, rim and corner), based on an estimation of the radii of 
+% the .
+%\todo{now we are dividing, so we get more surface types, chosen to roughly match ColorCHLAC to have the same "weighting"}
+% Once all voxels are annotated locally using a geometric class, we 
+% processing pipeline constructs a global feature by counting the transitions
+% between these local labels (and free space), as shown in Figure\todo{~\ref{fig:grsd}}.
 Since we do not use ray-casting but consider only the direct neighbors
-of each occupied cell, the computation of this \emph{simplified} GRSD is much faster.
+of each occupied cell, the computation of this \emph{altered} GRSD is in 
+$ms$ range which is 2 orders of magnitude faster than the original implementation
+reported in~\cite{GRSD10Humanoids}.
 
-\subsection{Comparison}
-%
-Same approach (if using rotation invariant ColorCHLAC), but different things are counted (color vs surface type). Also, GRSD considers free space as well.
+The power of VOSCH feature is depicted in Figure~\ref{fig:comparison}
+where we see that the visual appearance-based feature such as colorCHLAC can not
+discern the orange cube from the orange dice (note that the histograms in 1st and
+2nd row are identical). On the other side we have a shape-based feature GRSD
+which can not discern between the orange and the blue dice (likewise the
+histogram in 3rd and 4th row are identical too).
+
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.3\columnwidth]{figures/comparison/cube.png}
     \includegraphics[width=.32\columnwidth]{figures/comparison/dice1.png}
     \includegraphics[width=.32\columnwidth]{figures/comparison/dice2.png}
-    \caption{Color-CHLAC can not differentiate the dice from the cube, while GRSD can not differentiate the different colors.
-             Their combination however produces different signatures for all of them (Figure~\ref{fig:grsd_cchlac}).}
-    \label{fig:comparison}
-  \end{center}
-\vspace{-2ex}
+    \includegraphics[width=.95\columnwidth]{figures/comparison/orange_cube_vs_orange_dice.png}
+    \includegraphics[width=.95\columnwidth]{figures/comparison/blue_vs_orange_dice_grsd.png}
+  \caption{Color-CHLAC can not differentiate the dice from the cube (identical histograms in row 1 and 2), 
+    while GRSD can not differentiate the different colors ((identical histograms in row 3 and 4)). 
+    Their combination however produces different signatures for all of them (Figure~\ref{fig:grsd_cchlac}).}
+  \label{fig:comparison}
+\end{center}
 \end{figure}
 
 \section{Classification Methods}
@@ -427,28 +442,47 @@ the similarity between the query part and the $i$-th object in the database is c
   %\hspace{-1mm}
   y_i = \frac{\| P_i^T \bm{z} \|}{\| \bm{z} \|}
 \end{eqnarray}
-
-\todo{Asako: Explain the advantage of additivity here.}
-
-
+%\todo{Asako: Explain the advantage of additivity here.}
 \subsection{Support Vector Machine-based Classification}
 \todo{Zoli}
 
 \section{Results}
 \label{sec:results}
-
+To evaluate VOSCH feature we ran \todo{WHICH ONE: cross-correlation?} tests 
+using SVM and LSM classifiers on the two sets of data: 
+i)set of 7 articially generated objects depicted in Figure~\ref{fig:grsd_cchlac}
+with 7 different colors and ii)set of 63 objects of daily use scanned using
+a Kinect device and a rotating table. We measured its recognition rate against
+original implementations of ColorCHLAC and GRSD, and a simple concatentation
+of histograms of both.
 \subsection{Feature Extraction}
+\label{sec:feature_extraction}
+In all tests we parametrized the computation of the feature with the following parameters:
+\begin{itemize}
+\item search radius for normals: $2cm$
+\item search radius for $r_{min}$ and $r_{max}$ estimation: $1cm$
+\item voxel size: $1cm$
+\end{itemize}
 
-Search radius for normals: 2 cm
-
-Search radius for RSD: 1 cm
-
-Voxel size: 1 cm
-
-Synthetic Data: (49 views of objects), 0.0000363877551020408 sec/point, average number of points: 19124, average time per object: (0.695879429 seconds)
-
-Real Data (1512 views of objects), 0.0000577394179894179  sec/point,  average number of points: 4632, average time per object: (0.267448984 seconds)
-
+Following we performed the test on the computation times for the estimation
+of VOSCH feature. The execution times are shown in the following table where $t1$
+denotes the average estimation time per point, p an average number of points per object
+and $t2$ denotes the average estimation time needed for 1 object:
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+ & $t1$ & $p$ & $t2$ \\
+\hline
+synthetic data (49 objects/49 views) & 36$\mu s$ & 19124 & 0.69s \\
+\hline
+real data (63 objects/1512 views) & 57$\mu s$ & 4632 & 0.26s \\
+\hline
+\end{tabular}
+\caption{Time profile for the estimation of VOSCH feature}
+\label{tbl:timing}
+\end{center}
+\end{table}
 \subsection{Synthetic Data}
 
 \todo{used 1 example of each object as training data and evaluated the model on 5 examples of each objects with 10 noise levels}
@@ -506,10 +540,7 @@ In the original implementation ColorCHLAC was trained with artificial rotations 
 \subsection{Real Data}
 \subsubsection{Data Acquisition and Training}
 
-\todo{anonymous!}
-Our database of 3D objects, available at \url{http://semantic-3d.cs.tum.edu},
-(\todo{upload}) was obtained using the Kinect sensor.
-
+Our database of 3D objects was obtained using the Kinect sensor.
 The set of objects (see Figure~\ref{fig:robot}) encompasses the ones commonly used
 in a typical household environment (mugs, utensils, books, etc) and is envisioned for a
 larger expansion in the future.  In a pursue to account for a wide variety
@@ -637,3 +668,4 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 
 %TODO:
 %Check the original template and see what the meant with the hyperlinks
+%GRSD: 20 or 21 dimensions
