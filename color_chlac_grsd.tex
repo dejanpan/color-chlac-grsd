@@ -280,8 +280,8 @@ use of modular and robust components that can be reused on other robotic
 systems different than ours.
 
 \subsection{Performance and Novelty}
-Our approach takes 404 seconds for the training of 63 objects and \todo{Y} seconds
-for the recognition of already segmented single object. Moving-bounding-box-based
+Our approach takes 404 seconds for the training of 63 objects and 3.15 seconds
+for the classification using Support Vector Machine classifier. Moving-bounding-box-based
 recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
 in Section~\ref{sec:recognition}.
 
@@ -297,29 +297,35 @@ frameworks; Linear Subspace Method~\cite{watanabe1973} and Support Vector Machin
 
 \section{Feature Estimation}
 \label{sec:features}
+As already mentioned earlier the construction of VOSCH feature is based on the idea of 
+ColorCHLAC and GRSD features. For the sake of clarity we will thus briefly recap
+their respective construction too.
 
 \subsection{Color CHLAC}
-Color-CHLAC descriptor is a high-dimentional vector measuring the summation of the multiplicated RGB values of neighboring voxels around a voxel grid of arbitrary size. 
-Each bin in a Color-CHLAC descriptor is differentiated by RGB color space and the relative position of the two neighboring voxels. 
-Let $\bm{x}=(x,y,z)^T$ be the position of a voxel, $p(\bm{x})$ be the flag for occupancy of the voxel, 
- and $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ be its RGB values normalized between 0 and 1, respectively. 
-By defining $r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$ and $b'(\bm{x}) \equiv 1 - b(\bm{x})$, 
-    a voxel status $\bm{f}(\bm{x})\in R^6$ is defined as follows: 
+Color-CHLAC descriptor is a high-dimentional vector measuring the summation of the 
+multiplicated RGB values of neighboring voxels around a voxel grid of arbitrary size. 
+Each bin in a Color-CHLAC descriptor is differentiated by RGB color space and the 
+relative position of the two neighboring voxels. 
+Let $\bm{x}=(x,y,z)^T$ be the position of a voxel, $p(\bm{x})$ be the flag for occupancy 
+of the voxel, and $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ be its RGB values normalized 
+between 0 and 1, respectively.  By defining 
+$r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$ and $b'(\bm{x}) \equiv 1 - b(\bm{x})$, 
+a voxel status $\bm{f}(\bm{x})\in R^6$ is defined as follows: 
 %\vspace{-2mm}
-\begin{eqnarray*}
+\begin{eqnarray}
   \label{eq:voxel}
 %  \hspace{-1mm}
   \bm{f}({\bm x})\hspace{-1mm}=\hspace{-1mm}\left\{
   \begin{array}{cc}
     \hspace{-1mm}
-    (r({\bm x})\hspace{1mm} r'({\bm x}) \hspace{1mm}g({\bm x}) \hspace{1mm}g'({\bm x}) \hspace{1mm}b({\bm x}) \hspace{1mm}b'({\bm x}))^T & \hspace{-2mm}(p({\bm x})\hspace{-1mm}=\hspace{-1mm}1) \\
-    (0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0)^T & \hspace{-2mm}(p({\bm x})\hspace{-1mm}=\hspace{-1mm}0)
+    (r({\bm x})\hspace{1mm} r'({\bm x}) \hspace{1mm}g({\bm x}) \hspace{1mm}g'({\bm x}) \hspace{1mm}b({\bm x}) \hspace{1mm}b'({\bm x}))^T & \hspace{-2mm}p({\bm x})\hspace{-1mm}=\hspace{-1mm}1 \\
+    (0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0)^T & \hspace{-2mm}p({\bm x})\hspace{-1mm}=\hspace{-1mm}0
   \end{array}\right.
-\end{eqnarray*}
+\end{eqnarray}
 %
 %Color-CHLAC features are the integral of $\bm{f}(\bm{x})$ or correlations of $\bm{f}(\bm{x})$ between neighboring voxels.
 Letting ${\bm a}$ be a displacement vector from the reference voxel to its neighboring voxel, 
-   the containts of a Color-CHLAC descriptor are calculated by following equations:
+the elements of a Color-CHLAC descriptor are calculated by following equations:
 \begin{equation}\label{eq:0th}
   {\bm q} = \sum \bm{f}({\bm x})
 \end{equation}
@@ -330,20 +336,27 @@ Letting ${\bm a}$ be a displacement vector from the reference voxel to its neigh
   {\bm q}({\bm a}) = \sum \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a}) \\
 \end{equation}
 %
-Since these values are summed up around a voxel grid, there is a redundancy that checks the same value twice over symmetric pairs of ${\bm a}$. 
+Since these values are summed up around a voxel grid, there is a redundancy that checks 
+the same value twice over symmetric pairs of ${\bm a}$. 
 As the result, the number of variations in ${\bm a}$ is 13, which is a half of all the 26 neighbors.
-The matix computed by (\ref{eq:1st}) is expanded into a column vector of 36 elements.
-Therefore the dimension of the vector calculated by (\ref{eq:0th}) is 6, while that by (\ref{eq:1st}) is 468 (=36*13).
- 
- Color-CHLAC descriptor is also computed from a voxel grid where $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ are binarized as a pre-processing of features extraction. See details in \cite{kanezaki2010icra}. 
- Excluding redundant elements, the dimension of Color-CHLAC features calculated by (\ref{eq:0th_1}) is 12 if color values are binarized, and 21 otherwise. 
- Finally a full Color-CHLAC vector is obtained by concatenating the two vectors from binarized color voxel data and from original color voxel data. 
- Then the dimension of Color-CHLAC feature vector becomes 981 (=6+6+468+468+12+21).
- \todo{Rotation-invariant version in VOSCH-RGBD from here.}
- To produce a new descriptor based on Color-CHLAC and GRSD, we refined Color-CHLAC descriptor to be rotation-invariant by bringing all the 13 different vectors given by (\ref{eq:1st}) together. 
- Then the dimention of this descriptor becomes 117 (=6+6+36+36+12+21). 
- This is the similar way that GRSD takes, where the transitions between the reference voxel and all the 26 nighbors are combined together. 
- Therefore this refined Color-CHLAC descriptor is well concerted with GRSD, gives significant robustness to rotation and still shows a powerful expressivity for color textures.
+The matrix computed by (\ref{eq:1st}) is expanded into a column vector of 36 elements.
+Therefore the dimension of the vector calculated by (\ref{eq:0th}) is 6, while that by 
+(\ref{eq:1st}) is 468 (=36*13).
+The second part of the Color-CHLAC descriptor is computed from the binarized values of $r(\bm{x})$, $g(\bm{x})$ 
+and $b(\bm{x})$ (See~\cite{kanezaki2010icra} for details). 
+Excluding redundant elements, the dimension of Color-CHLAC features calculated by (\ref{eq:0th_1}) 
+is thus 12 if color values are binarized, and 21 otherwise. 
+Finally a full Color-CHLAC vector is obtained by concatenating the two vectors from binarized 
+color voxel data and from original color voxel data. Then the dimension of Color-CHLAC feature vector 
+becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data). 
+
+In order to generate VOSCH we refined Color-CHLAC descriptor to be rotation-invariant by bringing all  
+13 different vectors given by (\ref{eq:1st}) together which reduces the dimensionality of the 
+descriptor down to 117 (6+36+12 for non-binarized data plus 6+36+21 for binarized data). 
+% This is the similar way that GRSD takes as described in the next subsection, where the transitions between the reference 
+% voxel and all the 26 nighbors are combined together. 
+By doing so the refined Color-CHLAC descriptor is well concerted with GRSD which gives a significant 
+robustness to rotation and still shows a powerful expressivity for color textures.
 
 \subsection{GRSD}
 %
