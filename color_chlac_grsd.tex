@@ -68,10 +68,14 @@
 \maketitle
 
 \begin{abstract}
-Object detection plays an important role in autonomous manipulation,
-but it faces many challenges. Several objects have similar color
-or shape, so a descriptor is needed that takes both into account
-efficiently and with high discriminating power. In this paper we
+Real world environments typically include objects with different perceptual appearances.
+A household for example, includes textured, textureless and even partially transparent objects.
+While perception methods exist that work well on one such class of objects, the perception of
+scenes including different class of objects is still a challenge.
+It is our view that a step towards solving these problems is the
+construction of a descriptor that takes both color and shape
+into account efficiently and with high discriminating power.
+In this paper we
 present an approach to efficiently capture these two dimensions
 into a single feature
 that is capable of capturing both the geometric and visual appearance
@@ -84,14 +88,7 @@ on novel views show recognition rates of 76.4\%.
 % recognition rate on novel views is 58% for LSM if computed correctly
 \end{abstract}
 
-%Real world enviroments typically include objects with different perceptoual appearances.
-%A household for example, includes textured, textturless and even partially transparent objects.
-%While perception methods exist that work well on 1 class of such objects the perception of
-
-
 \IEEEpeerreviewmaketitle
-
-perception of scenes including diff class of objects is still a challenge
 
 \section{Introduction}
 One of the great challenges in autonomous mobile robot manipulation is scaling
