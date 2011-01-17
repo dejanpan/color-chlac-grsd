@@ -4,7 +4,6 @@
 \usepackage{tweaklist}
 \usepackage{xspace}
 \usepackage{graphicx}
-\usepackage{subfigure}
 \usepackage{tabularx}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -12,6 +11,7 @@
 \usepackage{bm}
 \usepackage{color}
 \usepackage{colortbl}
+\usepackage{subfig}
 
 \def\cH{\mathcal{H}}
 \def\cL{\mathcal{L}}
@@ -640,17 +640,15 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 
 \todo{Asako: description for the results}
 
-
-% \begin{figure}[htb!]
-%   \begin{center}
-%     \includegraphics[width=.45\columnwidth]{figures/colorCHLAC/detection7.png}
-%     \includegraphics[width=.45\columnwidth]{figures/colorCHLAC/detection5.png} \\
-%     \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/detection2.png}
-%     \caption{An example of the detection of tetrahedral package of milk.}
-%     \label{fig:milk_testing}
-%   \end{center}
-% \end{figure}
-
+\begin{figure*}[htb!]
+  \centering
+  \subfloat[Textured objects]{\label{fig:textured}\includegraphics[width=.45\textwidth]{figures/novel_view_scenes/text_view2.png}}
+  \subfloat[Textureless objects]{\label{fig:textureless}\includegraphics[width=.45\textwidth]{figures/novel_view_scenes/textureless_view2.png}}\\
+  \subfloat[Two categories of objects with similar shapes]{\label{fig:similar_shapes}\includegraphics[width=.45\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
+  \subfloat[Altered light conditions]{\label{fig:light}\includegraphics[width=.45\textwidth]{figures/novel_view_scenes/diff_light_view2.png}}
+ \caption{Screenshots of the novel view scenes}
+ \label{fig:novel_views}
+\end{figure*}
 
 \section{Conclusions and Future Work}
 \label{sec:conclusion}
@@ -668,7 +666,6 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 
 \bibliographystyle{plainnat}
 \bibliography{references}
-
 \end{document}
 
 
