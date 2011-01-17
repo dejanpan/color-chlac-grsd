@@ -68,11 +68,11 @@
 \maketitle
 
 \begin{abstract}
-Object detection plays an important rolein autonomous manipulation,
+Object detection plays an important role in autonomous manipulation,
 but it faces many challanges. Several objects have similar color
 or shape, so a descriptor is needed that takes both into account
 efficienlty and with high discriminating power. In this paper we
-present an approach to efficiently capture these two appearance dimensions
+present an approach to efficiently capture these two dimensions
 into a single feature
 % % % The greatest bottleneck momentarily in the area of mobile manipulation is robust perception.
 % % % In this paper we contribute to the solving of this problem of efficiency and accuracy
@@ -83,7 +83,7 @@ properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
 and evaluate two classification approaches.
 For the experiments we make use of a new RGB-D device called Kinect, and achieve recognition
-rates higher than 90\% for a set of 63 objects.
+rates higher than 85\% for a set of 63 objects.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -106,25 +106,25 @@ Normal Aligned Radial Features (NARF)\cite{steder10irosws} for range images,
 and several versions of Point Feature  Histograms (PFH, FPFH)~\cite{Rusu09ICRA} and 
 Viewpoint Feature Histograms (VFH)~\cite{vfh} for unordered fully-3D point clouds are just 
 to name a few. While these descriptors were successful too, they are still limited because they
-typically work only in restricted feature spaces. So, in order to have perception system
+typically work only in restricted feature spaces. So, in order to have a perception system
 based on SIFT features, one needs to restrict search space to objects that are detected by
 texture, if we apply 3D feature the objects must be distinctive with respect to their shapes. 
 If we really want to install a perception system for autonomous robots we need to aim 
 at one that can perceive all objects, that is textured, texture-less, different shapes, etc.
 
-\todo{Michael's ideas}
-While it seems feasible that we can simply develop perception routines by combining
-various descriptors~\cite{stueckler10combining, GRSD10Humanoids}, the more promising idea 
+While it seems feasible that one can simply develop perception routines by combining
+various descriptors~\cite{stueckler10combining, GRSD10Humanoids}, but a promising idea 
 is to develop descriptors that work in multiple feature spaces. The reason for this is 
 that objects might be easily discriminated in a combined feature space whereas it is impossible 
 to discriminate them in individual spaces as depicted in Figure~\ref{fig:grsd_cchlac}.
+Our approach is thus to be seen as an alternative to the bag-of-experts type
+of approaches~\cite{Varma07learningthe}.
 
-In this paper we propose a novel descriptor which builds off the idea of the previously 
+In this paper we report on our work on the two variations of a novel descriptor
+which builds off the idea of the previously 
 published Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and 
 Color Cubic Higher-order Local Auto-Correlation descriptor (ColorCHLAC~\cite{kanezaki2010tvc}), 
-and which we call Voxelized Shape and Color Histograms (VOSCH).
-
-\todo{do we push concatenation?}
+and which we termed (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
 
 \begin{figure}[htb!]
   \begin{center}
@@ -132,9 +132,9 @@ and which we call Voxelized Shape and Color Histograms (VOSCH).
     \includegraphics[width=.99\columnwidth]{figures/objects/objects.jpg}
     \caption{Top: Autonomous service robot equipped with a Kinect sensor
     acquiring training data of the objects shown in the bottom image. For 
-  every view of the object VOSCH descriptor was estimated and a database
+  every view of the object VOSCH or ConVOSCH descriptor was estimated and a database
 of 63 objects was generated. Object detection pipeline with Support Vector
-Machine or Linear Subspace Method classifiers was then use to detect objects
+Machine or Linear Subspace Method classifiers was then used to detect objects
 in natural scenes.}
     \label{fig:robot}
   \end{center}
@@ -148,23 +148,23 @@ in natural scenes.}
 
 The strength of the descriptor lies in its ability to consider geometric and
 visual features in a unified manner to facilitate object classification. The two
-underlying features (GRSD, ColorCHLAC) have been carefully selected because of their similar structures
-and the way they are computed from voxelized 3D data. Their combination is
-not a mere concatenation of two different features, but their computation is
-performed in a single step because of the common underlying algorithmic
-properties. Both features %though independently developed, 
-count relations between neighboring voxels, capturing geometric surface type and texture
-transitions at the same time.
+underlying features (GRSD, ColorCHLAC) have been carefully selected because of 
+their similar structures and the way they are computed from voxelized 3D data. 
+While ConVOSCH is a mere concatenation of GRSD and ColorCHLAC histograms, we 
+developed VOSCH such that allows for its computation in a single step because 
+of the modified underlying algorithmic properties for GRSD and ColorCHLAC. 
+Both features count relations between neighboring voxels, capturing geometric 
+surface type and texture transitions at the same time.
 
 Further contributions of work presented herein include the ability to deal with
 cluttered scenes while eliminating the requirement for region of interest
 selection (e.g. horizontal supporting structures) and spatially separable object
-clusters. This has been achieved by ensuring that VOSCH is additive, and using a
-moving-bounding-box-based approach together with
-a sub-space-matching-based classification scheme (Section
+clusters. This has been achieved by ensuring that the descriptor is additive, and using a
+moving-bounding-box-based approach together with a sub-space-matching-based classification scheme (Section
 \ref{sec:recognition}). The resulting approach performs at 2 frames per second
 while taking into account an object database of 63 different objects
 (see Figure~\ref{fig:robot}).
+
 
 % \subsection{Why}
 % In the past, strong features have been proposed in perception for personal robots,
@@ -194,20 +194,18 @@ multitude of applications such as later presented recognition of a priori learne
     \caption{Examples of \todo{scaled} VOSCH histograms.
 Left: different categories of objects (top-down: cone, cube, cylinder, plane, sphere, torus, dice) 
 result in having different first 20 bins of the respective histogram.
-Right: different colors of the same category of an object torus have different 137 right-most bins of the histogram}
+Right: different colors of the same category of an object torus have different 117 right-most bins of the histogram}
     \label{fig:grsd_cchlac}
   \end{center}
 \end{figure}
 
 The remainder of the paper is built as following. After the overview of the related
-work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
+work in Section~\ref{sec:rl} we present a system overview in Section~\ref{sec:overview}
 which is followed by Section~\ref{sec:features} that elaborates on the construction of the
-VOSCH descriptor. In Section~\ref{sec:classification} we present the usage of this descriptor
+ConVOSCH and VOSCH descriptor variants. In Section~\ref{sec:classification} we present the usage of this descriptor
 for the classification of objects using two classification methods which we
 then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
 we conclude and give the future outlook.
-
-
 
 \section{Related Work}
 \label{sec:rl}
@@ -265,20 +263,20 @@ which means a global descriptor for an object cluster is computed by summing up 
 \section{System Overview}
 \label{sec:overview}
 The general idea of the work presented herein is depicted in 
-Figure~\ref{fig:robot}. We first acquired the training data of 63 objects
-of daily use using RGBD Kinect sensor. Then we estimated VOSCH descriptor 
-for every object view and generated training models using Support Vector
-Machine or Linear Subspace Method classifiers. The models were used
+Figure~\ref{fig:robot}. We first acquire the training data of 63 objects
+of daily use using RGBD Kinect sensor. Then we estimate ConVOSCH and VOSCH descriptors 
+for every object view and generate training models using Support Vector
+Machine or Linear Subspace Method classifiers. The models are then used
 in the evaluation part for cross-validation checks and detection of 
 objects in natural scenes.
 
 % % % Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
 % % % construction, ii)database assembly and training of object models and iii)testing,
 % % % we solved each of them individually.
-To construct the VOSCH descriptor, we had to modify the original algorithms
+To construct the ConVOSCH and VOSCH descriptors, we had to modify the original algorithms
 such that the ColorCHLAC became rotation invariant and GRSD 
-additive. We thus obtained a descriptor histogram with 
-137 bins representing the transitions between its different dimensions.
+additive. We thus obtained descriptor histograms with 
+\emph{1001} bins for ConVOSCH and \emph{137} bins for VOSCH representing the transitions between its different dimensions.
 For constructing a database of object models (Figure~\ref{fig:robot} bottom)
 containing training examples, we used a rotating
 table using a DP PTU47 pan-tilt unit that is controlled by the robot over the
@@ -294,28 +292,32 @@ use of modular and robust components that can be reused on other robotic
 systems different than ours.
 
 \subsection{Performance and Novelty}
-Our approach takes 404 seconds for the training of 63 objects \todo{which method?}
-and \todo{under 50 milliseconds}
-for the classification using Support Vector Machine classifier. Moving-bounding-box-based
+An important factor of the perception system for robotics is to perform fast. We thus optimized
+the proposed descriptor to bring the estimation time down to \emph{0.26s} for a cluster consisting of 
+\emph{4632} points on average and to have the classification time of under \emph{50} milliseconds
+for the Support Vector Machine classifier. Moving-bounding-box-based
 recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
 in Section~\ref{sec:recognition}.
 
 The main novel contributions of this paper are the following:
 \begin{itemize}
-\item novel, rotation-invariant descriptor VOSCH that accounts for
+\item novel, rotation-invariant descriptor with ConVOSCH and VOSCH variants that accounts for
 geometrical as well as visual appearance  properties of objects in question
 using a relatively small number of dimensions;
 \item comparison of classification results for two established classification
 frameworks -- Linear Subspace Method~\cite{watanabe1973} and Support Vector Machine~\cite{svm99};
-\item an extensive database of objects of daily use captured with the Kinect sensor
+\item an extensive database of 63 objects of daily use captured with the Kinect sensor
 used as training examples (which we intend to publish after the review process).
 \end{itemize}
 
 \section{Feature Estimation}
 \label{sec:features}
-As already mentioned earlier, the construction of VOSCH feature is based on the idea of 
+As already mentioned earlier, the construction of ConVOSCH and VOSCH features is based on the idea of 
 ColorCHLAC and GRSD features. For the sake of clarity we will thus briefly present
 their respective construction too.
+Next, we will present the necessary modifications to them in order to obtain the proposed features.
+Since both approaches work on voxelized data, making their computation a single process
+and combining them in a single feature is an efficient solution.
 
 \subsection{Color CHLAC}
 \label{sec:color_chlac}
@@ -367,62 +369,63 @@ Finally a full Color-CHLAC vector is obtained by concatenating the two vectors f
 color voxel data and from original color voxel data. Then the dimension of Color-CHLAC feature vector 
 becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data). 
 
+\subsection{GRSD}
+\label{sec:grsd}
+GRSD is a histogram, that counts the number of transitions between different types of voxels.
+While its applicability has wide-range we used it in this case to count the transitions between 
+the following geometric classes of voxel's surface: \emph{free space, plane, cylinder, sphere, rim, and noise}.
+The types of surfaces were carefully selected based on the analysis of GRSD's   
+2 principal curves defining the surface, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
+This approach is similar to ColorCHLAC, but in order to efficiently merge the two features, 
+the original GRSD had to be altered (see next subsection). 
+
+As the feature is rotation-invariant, the number of bins $b$ depends on the number of possible 
+surface types $s$:
+\begin{equation}
+b=\frac{s(s+1)}{2}
+\end{equation}
+which results in 21 dimensions for the above stated 6 types of surfaces. However,
+transitions from \emph{free space} to \emph{free space} are not considered, hence
+the actual dimensionality is 20.
+
+\subsection{VOSCH}
+\label{sec:VOSCH}
 In order to generate VOSCH we refined Color-CHLAC descriptor to be rotation-invariant by bringing all  
 13 different vectors given by (\ref{eq:1st}) together by following equation: 
 \begin{equation}\label{eq:1st_new}
   {\bm q_4} = \sum_{i=0}^{12} {\bm q_3}({\bm a}_i) = \sum_{i=0}^{12} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \\
 \end{equation}
 %
-This reduces the dimensionality of the descriptor down to 117 (6+36+12 for non-binarized data plus 6+36+21 for binarized data). 
+This reduces the dimensionality of the descriptor down to 117 (6+36+12 for non-binarized data plus 6+36+21 
+for binarized data) with respect to the original implementation. 
 % This is the similar way that GRSD takes as described in the next subsection, where the transitions between the reference 
 % voxel and all the 26 nighbors are combined together. 
 By doing so the refined Color-CHLAC descriptor is well concerted with GRSD which gives a significant 
 robustness to rotation and still shows a powerful expressivity for color textures.
 
-\subsection{GRSD}
-\label{sec:grsd}
-GRSD is a histogram, that counts the number of transitions between different types of voxels.
-While its applicability has wide-range we used it in this case to count the transitions between 
-the following geometric classes of voxel's surface: cylinder, sphere, plane, rim, free space, and noise. 
-The types of surfaces were carefully selected based on the analysis of GRSD's   
-2 principal curves defining the surface, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
-This approach is similar to ColorCHLAC, but in order to efficiently merge the two features, 
-the original GRSD has to be altered. As shown  in~\cite{GRSD10Humanoids} the original version used
+GRSD, as shown in~\cite{GRSD10Humanoids}, originally used
 ray-tracing in order to find transitions between surface types. To make it fit into VOSCH 
 we i)omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)discarded
 the normalization of histogram bins.
 
-These modifications allow us to create histograms which, like ColorCHLAC, are roughly additive.
+These modifications allow us to create histograms which, like in case of ColorCHLAC, are roughly additive.
 If we break up objects into reasonable sizes, its histogram can be approximated by the sum of the
 histograms of its subcells. Unlike in ColorCHLAC, free space is considered, but we are looking
-at the neighbors of occupied voxels only.
-
-As the feature is rotation-invariant, the number of bins $b$ depends on the number of possible 
-surface types $s$ (including free space-free space transition):
-\begin{equation}
-b=\frac{s(s+1)}{2} %-s
-\end{equation}
-which results in \todo{correct: 21?} dimensions for the shape part VOSCH.
-% Previously only predefined surface types with an intuitive description were used 
-% (cylinder, sphere, plane, rim and corner), based on an estimation of the radii of 
-% the .
-%\todo{now we are dividing, so we get more surface types, chosen to roughly match ColorCHLAC to have the same "weighting"}
-% Once all voxels are annotated locally using a geometric class, we 
-% processing pipeline constructs a global feature by counting the transitions
-% between these local labels (and free space), as shown in Figure\todo{~\ref{fig:grsd}}.
-Since we do not use ray-casting but consider only the direct neighbors
-of each occupied cell, the computation of this \emph{altered} GRSD is in 
+at the neighbors of occupied voxels only. Furthermore, since we do not use ray-casting but 
+consider only the direct neighbors of each occupied cell, the computation of this \emph{altered} GRSD is in 
 $ms$ range which is 2 orders of magnitude faster than the original implementation
 reported in~\cite{GRSD10Humanoids}.
 
-\subsection{VOSCH}
-\label{sec:VOSCH}
-Since both approaches work on voxelized data, making their computation a single process
-and combining them in a single feature is an efficient solution. Furthermore,
-\todo{explain rotation invariant and additive}.
+\subsection{ConVOSCH}
+The idea of ConVOSCH is to simply estimate ColorCHLAC and GRSD in two separate steps, 
+concatenate resulting histograms and normalize the final result. This preserves the 
+high dimensionality and thus accuracy for the color space, but on the other side 
+makes the feature to the extent rotation-invariant and sllightly slower for use 
+in the classification schemes.
+\vspace{2ex}
 
-The power of VOSCH feature is depicted in Figure~\ref{fig:comparison}
-where we see that the visual appearance-based feature such as ColorCHLAC can not
+The advantage of the VOSCH and ConVOSCH features is depicted in Figure~\ref{fig:comparison},
+where we see that the visual appearance-based feature such as colorCHLAC can not
 discern the orange cube from the orange dice (note that the histograms in 1st and
 2nd row are identical). On the other side we have a shape-based feature GRSD
 which can not discern between the orange and the blue dice (likewise the
@@ -537,7 +540,7 @@ we used full 20 dimensions of GRSD. The dimension of subspace $t$ was set to 3.
 The results of the test are presented in the table~\ref{tbl:synthetic},
 showing VOSCH (right-most two columns) outperforming all other features.
 
-Since GRSD is insensitive to color, it can identify at most $1/7 \approximate 14.2857\%$ of the data.
+Since GRSD is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
 Additionally, since objects were uniformly colored and symmetrical, the fact that ColorCHLAC 
 is not rotation invariant did not expose in the table. In the original implementation ColorCHLAC 
 had to be trained with the artificial rotations to achieve rotation invariance.
@@ -775,4 +778,3 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 
 %TODO:
 %Check the original template and see what the meant with the hyperlinks
-%GRSD: 20 or 21 dimensions
