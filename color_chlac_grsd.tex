@@ -69,9 +69,9 @@
 
 \begin{abstract}
 Object detection plays an important role in autonomous manipulation,
-but it faces many challanges. Several objects have similar color
+but it faces many challenges. Several objects have similar color
 or shape, so a descriptor is needed that takes both into account
-efficienlty and with high discriminating power. In this paper we
+efficiently and with high discriminating power. In this paper we
 present an approach to efficiently capture these two dimensions
 into a single feature
 that is capable of capturing both the geometric and visual appearance
@@ -85,6 +85,8 @@ on novel views show recognition rates of 76.4\%.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
+
+perception of scenes including diff class of objects is still a challenge
 
 \section{Introduction}
 One of the great challenges in autonomous mobile robot manipulation is scaling
@@ -687,6 +689,8 @@ For these experiments we set 15 as the dimension of subspace $t$ in LSM.
 
 In total we tested on 72 views, achieving a highest rates with SVM, as shown in Table~\ref{tbl:novel}.
 The results for ColorCHLAC and VOSCH were slightly behind, but more testing is needed to make a final judgment.
+One way to try to improve the results is to treat each view as a separate sub-class, which should then increase
+the actual classification results by avoiding having to put very different views of the same object into the same class.
 
 \begin{table}[ht]
 \begin{scriptsize}
@@ -801,7 +805,7 @@ our database with novel objects.
 Future work will include incorporation of other promising 2.5/3D approaches like VFH and NARF
 into the voxelized feature extraction process, and evaluating using more test and training data.
 
-\todo{color stabilization?}
+% % % \todo{color stabilization?}
 
 
 % \section*{Acknowledgments}
