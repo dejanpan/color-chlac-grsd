@@ -303,7 +303,7 @@ their respective construction too.
 
 \subsection{Color CHLAC}
 \label{sec:color_chlac}
-Color-CHLAC descriptor is a high-dimentional vector measuring the summation of the 
+Color-CHLAC descriptor is a high-dimensional vector measuring the summation of the 
 multiplicated RGB values of neighboring voxels around a voxel grid of arbitrary size. 
 Each bin in a Color-CHLAC descriptor is differentiated by RGB color space and the 
 relative position of the two neighboring voxels. 
@@ -436,7 +436,7 @@ Note that we solve PCA for all the descriptors extracted from all the trained ob
 and use top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
 
 To classify and identify a detected object in environments, the system extracts one feature vector from the whole voxel grid of the object. 
-Letting the feature vector be $\bm{z}$ and the matrix of top $r$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$,
+Letting the feature vector be $\bm{z}$ and the matrix of top $t$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$,
 the similarity between the query part and the $i$-th object in the database is calculated by the following equation:
 \begin{eqnarray}\label{eq:y_calc}
   %\hspace{-1mm}
@@ -555,7 +555,7 @@ real data (63 objects/1512 views) & 57$\mu s$ & 4632 & 0.26s \\
 \end{table}
 
 \subsection{Synthetic Data}
-We first carried out tests on the set of 49 artificially generated objects
+We first carried out tests on the set of 49 artificially generated objects \todo{Why not describe they are in 7 colors and 7 shapes? by Asako.}
 (Figure~\ref{fig:grsd_cchlac}) using the following setup: we used 1 example of 
 each object as a training sample and evaluated the model on 5 examples of each object with 
 10 different noise levels. The noise levels were generated for points' 3D coordinates 
@@ -563,6 +563,8 @@ using Gaussian distribution with the following standard deviations:\\
 \begin{center}
 $\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$ 
 \end{center}
+To perform LSM, we set the dimension of the compressed feature space $d$ as 50 for ColorCHLAC, GRSD-ColorCHLAC concatenated one and VOSCH, while 
+   we used full 20 dimensions of GRSD. The dimension of subspace $t$ was set to 3. 
 The results of the leave-one-out test are presented in the table~\ref{tbl:synthetic}
 and prove that VOSCH feature (right-most two columns) outperforms all other features.
 Additionally, since objects were uniformly colored and symmetrical, the fact that ColorCHLAC 
@@ -608,7 +610,7 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 
 \subsubsection{Evaluation on Training Data}
 
-\todo{ALL: split training data into 2 groups and evaluate classification of one using the model computed for the other. Or complete cross-correlation.}
+%\todo{ALL: split training data into 2 groups and evaluate classification of one using the model computed for the other. Or complete cross-correlation.}
 
 \subsubsection{Evaluation on Novel Views}
 To prove that VOSCH feature works in the wild too we performed the test with the
@@ -618,6 +620,7 @@ altered lighting conditions respectively. We acquired the data from 3 substainta
 as manifest in Figure~\ref{fig:novel_views} as well. Object candidate cluster were detected
 by first finding a major horizontal planar surfaces within the point cloud and detecting
 point clusters that are supported by the planes~\cite{Rusu09IROS_ClosingLoop}.
+We set 15 as the dimension of subspace $t$ in LSM. 
 
 \begin{table*}[ht]
 \begin{center}
@@ -626,16 +629,16 @@ point clusters that are supported by the planes~\cite{Rusu09IROS_ClosingLoop}.
 \rowcolor{tcA} & \textbf{} & \textbf{GRSD} & \textbf{Color-CHLAC} & \textbf{Concatenated} & \textbf{VOSCH} \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(a)}} & {\textbf{LSM}} & 16.7\% & 58.3\% & 75\% & 75\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Textured}} &{\textbf{SVM}} & ***\% & ***\% & ***\% & ***\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Textured}} &{\textbf{SVM}} & 33.3\% & 66.7\% & 75\% & 66.7\% \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(b)}} & {\textbf{LSM}} & 11.1\% & 33.3\% & 38.9\% & 44.4\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Textureless}} &{\textbf{SVM}} & ***\% & ***\% & ***\% & ***\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Textureless}} &{\textbf{SVM}} & 27.8\% & 61.1\% & 61.1\% & 50\% \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(c)}} & {\textbf{LSM}} & 5.56\% & 33.3\% & 44.4\% & 61.1\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Shape}} &{\textbf{SVM}} & ***\% & ***\% & ***\% & ***\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Shape}} &{\textbf{SVM}} & 27.8\% & 77.8\% & 77.8\% & 77.8\% \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(d)}} & {\textbf{LSM}} & 5.56\% & 50\% & 72.2\% & 55.6\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Light}} &{\textbf{SVM}} & ***\% & ***\% & ***\% & ***\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Light}} &{\textbf{SVM}} & 11.1\% & 88.9\% & 88.9\% & 83.3\% \\
 \hline
 \end{tabular}
 \caption{Model Accuracy on Novel View Data \todo{less decimals and 1 column}}
