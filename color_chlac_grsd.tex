@@ -74,16 +74,14 @@ or shape, so a descriptor is needed that takes both into account
 efficienlty and with high discriminating power. In this paper we
 present an approach to efficiently capture these two dimensions
 into a single feature
-% % % The greatest bottleneck momentarily in the area of mobile manipulation is robust perception.
-% % % In this paper we contribute to the solving of this problem of efficiency and accuracy
-% % % by proposing a novel feature called Voxelized Shape and Color Histograms 
-% % % (VOSCH)
 that is capable of capturing both the geometric and visual appearance
 properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
 and evaluate two classification approaches.
-For the experiments we make use of Kinect, a new RGB-D device, and achieve recognition
-rates higher than \todo{85\%} for a set of 63 objects.
+For the experiments we make use of Kinect, a new RGB-D device,
+and build a database of 63 objects. Preliminary results
+on novel views show recognition rates of 76.4\%.
+% recognition rate on novel views is 58% for LSM if computed correctly
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -685,7 +683,10 @@ and textureless objects (a and b), objects with similar shapes (c) and a scene w
 altered lighting conditions (d). We acquired the data from 3 substantially different views 
 as shown in Figure~\ref{fig:novel_views}, and object candidate clusters were detected
 by first finding a major horizontal planar surface within the point cloud, as done in~\cite{Rusu09IROS_ClosingLoop}.
-For these experiments we set 15 as the dimension of subspace $t$ in LSM. 
+For these experiments we set 15 as the dimension of subspace $t$ in LSM.
+
+In total we tested on 72 views, achieving a highest rates with SVM, as shown in Table~\ref{tbl:novel}.
+The results for ColorCHLAC and VOSCH were slightly behind, but more testing is needed to make a final judgment.
 
 \begin{table}[ht]
 \begin{scriptsize}
@@ -702,7 +703,7 @@ For these experiments we set 15 as the dimension of subspace $t$ in LSM.
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{no texture}} & \mc{1}{>{\columncolor{tcA}}c|}{{SVM}} & 27.8\% & 61.1\% & 61.1\% & 50\% \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(c)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 4.1\% & 37.5\% & 45.8\% & 62.5\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{sim. shape}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 27.8\% & 77.8\% & 77.8\% & 77.8\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{sim. shape}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 27.8\% & 77.8\% & 79.2\% & 77.8\% \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(d)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 5.56\% & 50\% & 72.2\% & 55.6\% \\
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{diff. light}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 11.1\% & 88.9\% & 88.9\% & 83.3\% \\
@@ -711,13 +712,13 @@ For these experiments we set 15 as the dimension of subspace $t$ in LSM.
 % \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{free view}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} &  &  &  &  \\
 % \hline
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Average}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} &  &  &  &  \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{and STD}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} &  &  &  &  \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Total SVM}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 24.5\%$^*$ & 74.6\% & 76.4\% & 70.4\% \\
 \hline
 \end{tabular}
 \end{center}
 \end{scriptsize}
-\caption{Model accuracy on novel view data.}
+\caption{Model accuracy on novel view data. $^*$Please note that while in the original implementation GRSD was used for detecting the geometric category,
+         here we used it for classification of objects that were only visually distinguishable (milk boxes for example).}
 \label{tbl:novel}
 \end{table}
 
