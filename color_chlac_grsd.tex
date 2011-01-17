@@ -124,7 +124,7 @@ In this paper we report on our work on the two variations of a novel descriptor
 which builds off the idea of the previously 
 published Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and 
 Color Cubic Higher-order Local Auto-Correlation descriptor (ColorCHLAC~\cite{kanezaki2010tvc}), 
-and which we termed (Concatenated) Voxelized Shape and Color Histograms -- (CON)VOSCH.
+and which we termed (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
 
 \begin{figure}[htb!]
   \begin{center}
@@ -132,7 +132,7 @@ and which we termed (Concatenated) Voxelized Shape and Color Histograms -- (CON)
     \includegraphics[width=.99\columnwidth]{figures/objects/objects.jpg}
     \caption{Top: Autonomous service robot equipped with a Kinect sensor
     acquiring training data of the objects shown in the bottom image. For 
-  every view of the object VOSCH or CONVOSCH descriptor was estimated and a database
+  every view of the object VOSCH or ConVOSCH descriptor was estimated and a database
 of 63 objects was generated. Object detection pipeline with Support Vector
 Machine or Linear Subspace Method classifiers was then used to detect objects
 in natural scenes.}
@@ -150,7 +150,7 @@ The strength of the descriptor lies in its ability to consider geometric and
 visual features in a unified manner to facilitate object classification. The two
 underlying features (GRSD, ColorCHLAC) have been carefully selected because of 
 their similar structures and the way they are computed from voxelized 3D data. 
-While CONVOSCH is a mere concatenation of GRSD and ColorCHLAC histograms, we 
+While ConVOSCH is a mere concatenation of GRSD and ColorCHLAC histograms, we 
 developed VOSCH such that allows for its computation in a single step because 
 of the modified underlying algorithmic properties for GRSD and ColorCHLAC. 
 Both features count relations between neighboring voxels, capturing geometric 
@@ -159,9 +159,8 @@ surface type and texture transitions at the same time.
 Further contributions of work presented herein include the ability to deal with
 cluttered scenes while eliminating the requirement for region of interest
 selection (e.g. horizontal supporting structures) and spatially separable object
-clusters. This has been achieved by ensuring that VOSCH is additive, and using a
-moving-bounding-box-based approach together with
-a sub-space-matching-based classification scheme (Section
+clusters. This has been achieved by ensuring that the descriptor is additive, and using a
+moving-bounding-box-based approach together with a sub-space-matching-based classification scheme (Section
 \ref{sec:recognition}). The resulting approach performs at 2 frames per second
 while taking into account an object database of 63 different objects
 (see Figure~\ref{fig:robot}).
@@ -203,7 +202,7 @@ Right: different colors of the same category of an object torus have different 1
 The remainder of the paper is built as following. After the overview of the related
 work in Section~\ref{sec:rl} we present a system overview in Section~\ref{sec:overview}
 which is followed by Section~\ref{sec:features} that elaborates on the construction of the
-CONVOSCH and VOSCH descriptor variants. In Section~\ref{sec:classification} we present the usage of this descriptor
+ConVOSCH and VOSCH descriptor variants. In Section~\ref{sec:classification} we present the usage of this descriptor
 for the classification of objects using two classification methods which we
 then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
 we conclude and give the future outlook.
