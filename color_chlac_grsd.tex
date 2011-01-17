@@ -442,63 +442,14 @@ the similarity between the query part and the $i$-th object in the database is c
   %\hspace{-1mm}
   y_i = \frac{\| P_i^T \bm{z} \|}{\| \bm{z} \|}
 \end{eqnarray}
-
 There is an advantage of using LSM with this kind of histogram-based descriptors which have additive property. 
 The additive property means that a global descriptor for an object cluster equals the summation of local descriptors of its sub-parts. 
 Owing to the property, one feature vector computed from each object cluster in environments can be classified by projecting it to 
    each subspace of database object, regardless of the size of the object cluster.
 
-%\todo{Asako: Explain the advantage of additivity here.}
-\subsection{Support Vector Machine-based Classification}
-\todo{Zoli}
-
-\section{Results}
-\label{sec:results}
-To evaluate VOSCH feature we ran \todo{WHICH ONE: cross-correlation?} tests 
-using SVM and LSM classifiers on the two sets of data: 
-i)set of 7 articially generated objects depicted in Figure~\ref{fig:grsd_cchlac}
-with 7 different colors and ii)set of 63 objects of daily use scanned using
-a Kinect device and a rotating table. We measured its recognition rate against
-original implementations of ColorCHLAC and GRSD, and a simple concatentation
-of histograms of both.
-\subsection{Feature Extraction}
-\label{sec:feature_extraction}
-In all tests we parametrized the computation of the feature with the following parameters:
-\begin{itemize}
-\item search radius for normals: $2cm$
-\item search radius for $r_{min}$ and $r_{max}$ estimation: $1cm$
-\item voxel size: $1cm$
-\end{itemize}
-
-Following we performed the test on the computation times for the estimation
-of VOSCH feature. The execution times are shown in the following table where $t1$
-denotes the average estimation time per point, p an average number of points per object
-and $t2$ denotes the average estimation time needed for 1 object:
-\begin{table}[ht]
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
- & $t1$ & $p$ & $t2$ \\
-\hline
-synthetic data (49 objects/49 views) & 36$\mu s$ & 19124 & 0.69s \\
-\hline
-real data (63 objects/1512 views) & 57$\mu s$ & 4632 & 0.26s \\
-\hline
-\end{tabular}
-\caption{Time profile for the estimation of VOSCH feature}
-\label{tbl:timing}
-\end{center}
-\end{table}
-\subsection{Synthetic Data}
-
-\todo{used 1 example of each object as training data and evaluated the model on 5 examples of each objects with 10 noise levels}
-
-\todo{NOTE:} Since objects were uniformly colored and quite symmetrical, the fact that ColorCHLAC is not rotation invariant did not show up in the table.
-In the original implementation ColorCHLAC was trained with artificial rotations to achieve rotation invariance.
-
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
 \definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
-\begin{table*}[ht]
+\begin{table*}[ht!]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}\hline
 % use packages: color,colortbl
@@ -543,6 +494,84 @@ In the original implementation ColorCHLAC was trained with artificial rotations 
 \end{table*}
 
 
+\begin{table*}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\rowcolor{tcA} & \textbf{GRSD (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (1001D)} & \textbf{VOSCH (137D)} \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.6958\% (17.2619\%) & 99.0741\% (97.8175\%) & 99.3386\% (96.8915\%) & 97.8836\% (93.1217\%) \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.2063\% (66.9974\%) & 99.8677\% (99.6693\%)  & 99.9339\% (99.6032\%) & 100\% (99.1402\%) \\
+\hline
+\end{tabular}
+\caption{Model Accuracy on \todo{Artificial} Training Data (and Leave-One-Out Test) for VOSCH \todo{less decimals and 1 column}}
+\label{tbl:training}
+\end{center}
+\end{table*}
+
+
+
+\subsection{Support Vector Machine-based Classification}
+\todo{Zoli}
+
+\section{Results}
+\label{sec:results}
+
+To evaluate VOSCH feature we ran \todo{cross-validation and leave-one-out} tests 
+using SVM and LSM classifiers on the two sets of data: 
+i)set of 7 articially generated objects depicted in Figure~\ref{fig:grsd_cchlac}
+with 7 different colors and ii)set of 63 objects of daily use scanned using
+a Kinect device and a rotating table (Shown in bottom part of Figure~\ref{fig:robot}). 
+We measured its recognition rate against original implementations of ColorCHLAC and 
+GRSD, and a simple concatentation of histograms of both.
+\subsection{Feature Extraction}
+\label{sec:feature_extraction}
+In all tests we parametrized the computation of the feature with the following parameters:
+\begin{itemize}
+\item search radius for normals: $2cm$
+\item search radius for $r_{min}$ and $r_{max}$ estimation: $1cm$
+\item voxel size: $1cm$
+\end{itemize}
+
+Following we performed the test on the computation times for the estimation
+of VOSCH feature. The execution times are shown in the following table where $t1$
+denotes the average estimation time per point, p an average number of points per object
+and $t2$ denotes the average estimation time needed for 1 object:
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+ & $t1$ & $p$ & $t2$ \\
+\hline
+synthetic data (49 objects/49 views) & 36$\mu s$ & 19124 & 0.69s \\
+\hline
+real data (63 objects/1512 views) & 57$\mu s$ & 4632 & 0.26s \\
+\hline
+\end{tabular}
+\caption{Time profile for the estimation of VOSCH feature}
+\label{tbl:timing}
+\end{center}
+\end{table}
+
+\subsection{Synthetic Data}
+We first carried out tests on the set of 49 artificially generated objects
+(Figure~\ref{fig:grsd_cchlac}) using the following setup: we used 1 example of 
+each object as a training sample and evaluated the model on 5 examples of each object with 
+10 different noise levels. The noise levels were generated for points' 3D coordinates 
+using Gaussian distribution with the following standard deviations:\\
+\begin{center}
+$\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$ 
+\end{center}
+The results of the leave-one-out test are presented in the table~\ref{tbl:synthetic}
+and prove that VOSCH feature (right-most two columns) outperforms all other features.
+Additionally, since objects were uniformly colored and symmetrical, the fact that ColorCHLAC 
+is not rotation invariant did not expose in the table. In the original implementation ColorCHLAC 
+had to be trained with the artificial rotations to achieve rotation invariance.
+
+Table~\ref{tbl:training} shows the percentage of correctly classified training examples using the model computed for them,
+and the percentage of correctly classified views using the model constructed using the remaining views.
+
 \subsection{Real Data}
 \subsubsection{Data Acquisition and Training}
 
@@ -558,15 +587,15 @@ this to be an important point as opposed to similar initiatives (e.g.,
 \cite{kit}) where the datasets are acquired using high-precision but
 non-affordable, fixed sensors, and thus not usable for applications such as ours.
 
-\begin{figure}[htb!]
-  \begin{center}
-    \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla.png}
-    \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla1.png}
-    \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla2.png}
-    \caption{Acquisition of training data using a rotating table controlled by the robot.}
-    \label{fig:data_acquisition}
-  \end{center}
-\end{figure}
+% \begin{figure}[htb!]
+%   \begin{center}
+%     \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla.png}
+%     \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla1.png}
+%     \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla2.png}
+%     \caption{Acquisition of training data using a rotating table controlled by the robot.}
+%     \label{fig:data_acquisition}
+%   \end{center}
+% \end{figure}
 
 \begin{figure}[htb!]
   \begin{center}
@@ -581,25 +610,6 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 \subsubsection{Evaluation on Training Data}
 
 \todo{ALL: split training data into 2 groups and evaluate classification of one using the model computed for the other. Or complete cross-correlation.}
-
-\begin{table*}[ht]
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-\rowcolor{tcA} & \textbf{GRSD (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (1001D)} & \textbf{VOSCH (137D)} \\
-\hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.6958\% (17.2619\%) & 99.0741\% (97.8175\%) & 99.3386\% (96.8915\%) & 97.8836\% (93.1217\%) \\
-\hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.2063\% (66.9974\%) & 99.8677\% (99.6693\%)  & 99.9339\% (99.6032\%) & 100\% (99.1402\%) \\
-\hline
-\end{tabular}
-\caption{Model Accuracy on Real Training Data (and Leave-One-Out Test) for VOSCH \todo{less decimals and 1 column}}
-\label{tbl:training}
-\end{center}
-\end{table*}
-
-Table~\ref{tbl:training} shows the percentage of correctly classified training examples using the model computed for them,
-and the percentage of correctly classified views using the model constructed using the remaining views.
 
 \subsubsection{Evaluation on Novel Views}
 
