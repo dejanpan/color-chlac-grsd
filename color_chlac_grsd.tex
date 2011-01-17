@@ -82,8 +82,8 @@ that is capable of capturing both the geometric and visual appearance
 properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
 and evaluate two classification approaches.
-For the experiments we make use of a new RGB-D device called Kinect, and achieve recognition
-rates higher than 85\% for a set of 63 objects.
+For the experiments we make use of a new RGB-D device Kinect, and achieve recognition
+rates higher than \emph{85\%} for a set of 63 objects.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -107,9 +107,9 @@ and several versions of Point Feature  Histograms (PFH, FPFH)~\cite{Rusu09ICRA} 
 Viewpoint Feature Histograms (VFH)~\cite{vfh} for unordered fully-3D point clouds are just 
 to name a few. While these descriptors were successful too, they are still limited because they
 typically work only in restricted feature spaces. So, in order to have a perception system
-based on SIFT features, one needs to restrict search space to objects that are detected by
-texture, if we apply 3D feature the objects must be distinctive with respect to their shapes. 
-If we really want to install a perception system for autonomous robots we need to aim 
+based on SIFT features, one needs to restrict the search space to objects that are detected by
+texture ane if we apply 3D feature the objects must be distinctive with respect to their shapes. 
+If we want to install a perception system for autonomous robots we need to aim 
 at one that can perceive all objects, that is textured, texture-less, different shapes, etc.
 
 While it seems feasible that one can simply develop perception routines by combining
@@ -122,9 +122,9 @@ of approaches~\cite{Varma07learningthe}.
 
 In this paper we report on our work on the two variations of a novel descriptor
 which builds off the idea of the previously 
-published Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and 
-Color Cubic Higher-order Local Auto-Correlation descriptor (ColorCHLAC~\cite{kanezaki2010tvc}), 
-and which we termed (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
+published Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and the
+Color Cubic Higher-order Local Auto-Correlation descriptor (ColorCHLAC~\cite{kanezaki2010tvc}).
+We termed it (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
 
 \begin{figure}[htb!]
   \begin{center}
@@ -178,9 +178,9 @@ while taking into account an object database of 63 different objects
 
 % Yet it seems that there is none that can capture
 % all important and obvious properties (such as geometry and color are)
-Lastly, our descriptor can be out-of-the box applied on the data coming out of the 
+Lastly, our descriptor can be out-of-the box applied on the data coming from the 
 new sensing technologies such as Kinect device and lays the foundation stone for a
-multitude of applications such as later presented recognition of a priori learned object models
+multitude of applications such as later discussed detection of a priori learned object models
 (Section~\ref{sec:recognition}).
 % % % VOSCH also enables equipping of service robots 
 % % % (such as the robot shown in top part of Figure~\ref{fig:robot}) with the 
@@ -204,8 +204,8 @@ work in Section~\ref{sec:rl} we present a system overview in Section~\ref{sec:ov
 which is followed by Section~\ref{sec:features} that elaborates on the construction of the
 ConVOSCH and VOSCH descriptor variants. In Section~\ref{sec:classification} we present the usage of this descriptor
 for the classification of objects using two classification methods which we
-then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
-we conclude and give the future outlook.
+then test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
+we conclude and give an outlook on our future work.
 
 \section{Related Work}
 \label{sec:rl}
@@ -217,8 +217,8 @@ we conclude and give the future outlook.
 % \url{http://www.ros.org/doc/api/pcl/html/sift__keypoint_8h_source.html}
 Expressiveness and efficiency of the descriptor are both crucially important for
 a real-time object recognition system.  Though there is a trade-off between
-these two abilities, it will dramatically improve both of them to select a
-proper matching method taking advantage of the characteristics of the
+these two abilities, it will improve both of them to select a
+proper matching method which accounts for the characteristics of the
 descriptor. In the recent decade a corpus of powerful 2D and 3D descriptors for
 recognizing real objects have been developed, however, few of them take into
 account the compatibility with the matching method used with them.
@@ -229,20 +229,21 @@ scenes and compares them with those of reference objects to identify the
 objects currently observed. A combination of the visual appearance
 descriptor and 2D shape is presented by Bosch et al. in~\cite{Bosch07shape}
 where they use random forests to achieve around 80\% of classification 
-accuracy. Half-way through to 3D domain an effective descriptor
-NARF~\cite{steder10irosws}, which detects salient points in range images of
-real environments, has recently been developed.  Despite of their dominant
+accuracy. 
+
+NARF~\cite{steder10irosws} descriptor detects salient points in range images of
+real environments. Despite of its dominant
 repeatability in point-to-point matching, there still remains difficulty in
 cluster-to-cluster matching, which is necessary for identifying each cluster
-candidates  in environments as objects. This also causes computational expensiveness
-especially when the target object database is large. In 3D domain a recently 
+candidate as object in the environment. This also causes high computational cost
+especially when the target object database is large. In a 3D domain a recently 
 developed VFH~\cite{vfh} descriptor was presented as an extension 
 of~\cite{Rusu09ICRA}. The feature's discriminative power is boosted up
-by an inclusion of viewpoint which on the other side however represents
+by inclusion of the viewpoint which on the other side also represents
 the deficiency in that it becomes orientation variant. 
 
 There are few approaches that use both geometry and color descriptors to
-represent 3D shapes~\cite{park2006}, however, to properly balance these two
+represent 3D shapes~\cite{park2006}, however properly balancing these two
 different properties is difficult.  Caputo and Dorko~\cite{caputo2002} learned
 respective kernels for shape and color representations and combined them for
 recognition object, while Huang and Hilton~\cite{huang2009} balanced them by
@@ -251,12 +252,12 @@ geometry and color information at a proper balance is to extract descriptors
 represented by patterns of shape-and-color co-occurrence.  For example, Textured
 spin-image~\cite{cortelazzo2006} splits well-known
 spin-image~\cite{Johnson_spin_images} descriptors into several layer
-corresponding to a given level of luminance. Color-CHLAC~\cite{kanezaki2010icra} 
-splits CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns 
+corresponding to a given level of luminance. ColorCHLAC~\cite{kanezaki2010icra} 
+splits the CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns 
 depending on relative position of neighboring voxels, into RGB channels and correlation 
-space of these channels.  In \cite{kanezaki2010icra} Color-CHLAC descriptor is used as local
+space of these channels.  In \cite{kanezaki2010icra} the ColorCHLAC descriptor is used as local
 descriptors in the training process and as a global descriptor describing each
-object cluster in the recognition process, taking advantage of the combination
+object cluster in the recognition process. This takes advantage of the combination
 of Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property, 
 which means a global descriptor for an object cluster is computed by summing up local descriptors of its sub-parts.
 Since computation of Color-CHLAC is on voxelized data, it is more efficient
@@ -281,7 +282,7 @@ additive. We thus obtained descriptor histograms with
 \emph{1001} bins for ConVOSCH and \emph{137} bins for VOSCH representing the transitions between its different dimensions.
 For constructing a database of object models (Figure~\ref{fig:robot} bottom)
 containing training examples, we used a rotating
-table using a DP PTU47 pan-tilt unit that is controlled by the robot over the
+table using a pan-tilt unit that is controlled by the robot over the
 network. Objects placed on this rotating table were scanned at a given
 angle-step ($15^\circ$) and then used to classify objects found in
 typical household settings.
@@ -289,23 +290,22 @@ typical household settings.
 % % % segmented in the euclidean sense. 
 
 Our approach is realized as part of the Robot Operating System
-(ROS)\footnote{\url{http://www.ros.org}} open source initiative, and makes
+(ROS)\footnote{\url{http://www.ros.org}} open source framework, and makes
 use of modular and robust components that can be reused on other robotic
-systems different than ours.
+systems different from ours.
 
 \subsection{Performance and Novelty}
 An important factor of the perception system for robotics is to perform fast. We thus optimized
-the proposed descriptor to bring the estimation time down to \emph{0.26s} for a cluster consisting of 
+the proposed descriptors to bring the estimation time down to \emph{0.26s} for a cluster consisting of 
 \emph{4632} points on average and to have the classification time of under \emph{50} milliseconds
-for the Support Vector Machine classifier. Moving-bounding-box-based
+for the Support Vector Machine classifier. The Moving-bounding-box-based
 recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
 in Section~\ref{sec:recognition}.
 
-The main novel contributions of this paper are the following:
+The main contributions of this paper are the following:
 \begin{itemize}
-\item novel, rotation-invariant descriptor with ConVOSCH and VOSCH variants that accounts for
-geometrical as well as visual appearance  properties of objects in question
-using a relatively small number of dimensions;
+\item specification of a novel descriptor with two variants (ConVOSCH and VOSCH) that account for
+geometrical as well as visual appearance  properties of objects;
 \item comparison of classification results for two established classification
 frameworks -- Linear Subspace Method~\cite{watanabe1973} and Support Vector Machine~\cite{svm99};
 \item an extensive database of 63 objects of daily use captured with the Kinect sensor
@@ -316,16 +316,16 @@ used as training examples (which we intend to publish after the review process).
 \label{sec:features}
 As already mentioned earlier, the construction of ConVOSCH and VOSCH features is based on the idea of 
 ColorCHLAC and GRSD features. For the sake of clarity we will thus briefly present
-their respective construction too.
+their respective construction.
 Next, we will present the necessary modifications to them in order to obtain the proposed features.
-Since both approaches work on voxelized data, making their computation a single process
-and combining them in a single feature is an efficient solution.
+% Since both approaches work on voxelized data, making their computation a single process
+% and combining them in a single feature is an efficient solution.
 
 \subsection{Color CHLAC}
 \label{sec:color_chlac}
-Color-CHLAC descriptor is a high-dimensional vector measuring the summation of the 
+ColorCHLAC descriptor is a high-dimensional vector measuring the summation of the 
 multiplicated RGB values of neighboring voxels around a voxel grid of arbitrary size. 
-Each bin in a Color-CHLAC descriptor is differentiated by RGB color space and the 
+Each bin in a ColorCHLAC descriptor is differentiated by the RGB color space and the 
 relative position of the two neighboring voxels. 
 Let $\bm{x}=(x,y,z)^T$ be the position of a voxel, $p(\bm{x})$ be the flag for occupancy 
 of the voxel, and $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ be its RGB values normalized 
@@ -346,7 +346,7 @@ a voxel status $\bm{f}(\bm{x})\in R^6$ is defined as follows:
 %
 %Color-CHLAC features are the integral of $\bm{f}(\bm{x})$ or correlations of $\bm{f}(\bm{x})$ between neighboring voxels.
 Letting ${\bm a_i}$ be a displacement vector from the reference voxel to its neighboring voxel, 
-the elements of a Color-CHLAC descriptor are calculated by following equations:
+the elements of a ColorCHLAC descriptor are calculated by the following equations:
 \begin{equation}\label{eq:0th}
   {\bm q_1} = \sum \bm{f}({\bm x})
 \end{equation}
@@ -359,23 +359,23 @@ the elements of a Color-CHLAC descriptor are calculated by following equations:
 %
 Since these values are summed up around a voxel grid, there is a redundancy that checks 
 the same value twice over symmetric pairs of ${\bm a_i}$. 
-As the result, the number of variations in ${\bm a_i}$ is 13, which is a half of all the 26 neighbors.
+As a result, the number of variations in ${\bm a_i}$ is 13, which is a half of all the 26 neighbors.
 The matrix computed by (\ref{eq:1st}) is expanded into a column vector of 36 elements.
 Therefore the dimension of the vector calculated by (\ref{eq:0th}) is 6, while that by 
 (\ref{eq:1st}) is 468 (=36*13).
-The second part of the Color-CHLAC descriptor is computed from the binarized values of $r(\bm{x})$, $g(\bm{x})$ 
+The second part of the ColorCHLAC descriptor is computed from the binarized values of $r(\bm{x})$, $g(\bm{x})$ 
 and $b(\bm{x})$ (See~\cite{kanezaki2010icra} for details). 
-Excluding redundant elements, the dimension of Color-CHLAC features calculated by (\ref{eq:0th_1}) 
+Excluding redundant elements, the dimension of ColorCHLAC features calculated by (\ref{eq:0th_1}) 
 is thus 12 if color values are binarized, and 21 otherwise. 
-Finally a full Color-CHLAC vector is obtained by concatenating the two vectors from binarized 
-color voxel data and from original color voxel data. Then the dimension of Color-CHLAC feature vector 
+Finally a full ColorCHLAC vector is obtained by concatenating the two vectors from binarized 
+color voxel data and from original color voxel data. Then the dimension of ColorCHLAC feature vector 
 becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data). 
 
 \subsection{GRSD}
 \label{sec:grsd}
 GRSD is a histogram, that counts the number of transitions between different types of voxels.
-While its applicability has wide-range we used it in this case to count the transitions between 
-the following geometric classes of voxel's surface: \emph{free space, plane, cylinder, sphere, rim, and noise}.
+While it is applicable to the wide range of applications we used it to count the transitions between 
+the following geometric classes of voxel surfaces: \emph{free space, plane, cylinder, sphere, rim, and noise}.
 The types of surfaces were carefully selected based on the analysis of GRSD's   
 2 principal curves defining the surface, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
 This approach is similar to ColorCHLAC, but in order to efficiently merge the two features, 
@@ -392,7 +392,7 @@ the actual dimensionality is 20.
 
 \subsection{VOSCH}
 \label{sec:VOSCH}
-In order to generate VOSCH we refined Color-CHLAC descriptor to be rotation-invariant by bringing all  
+In order to generate VOSCH we refined ColorCHLAC descriptor to be rotation-invariant by bringing all  
 13 different vectors given by (\ref{eq:1st}) together by following equation: 
 \begin{equation}\label{eq:1st_new}
   {\bm q_4} = \sum_{i=0}^{12} {\bm q_3}({\bm a}_i) = \sum_{i=0}^{12} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \\
@@ -402,7 +402,7 @@ This reduces the dimensionality of the descriptor down to 117 (6+36+12 for non-b
 for binarized data) with respect to the original implementation. 
 % This is the similar way that GRSD takes as described in the next subsection, where the transitions between the reference 
 % voxel and all the 26 nighbors are combined together. 
-By doing so the refined Color-CHLAC descriptor is well concerted with GRSD which gives a significant 
+By doing so the refined ColorCHLAC descriptor is well matched with GRSD which gives a significant 
 robustness to rotation and still shows a powerful expressivity for color textures.
 
 GRSD, as shown in~\cite{GRSD10Humanoids}, originally used
@@ -410,7 +410,7 @@ ray-tracing in order to find transitions between surface types. To make it fit i
 we i)omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)discarded
 the normalization of histogram bins.
 
-These modifications allow us to create histograms which, like in case of ColorCHLAC, are roughly additive.
+These modifications allow us to create histograms which, like in case of ColorCHLAC, are additive.
 If we break up objects into reasonable sizes, its histogram can be approximated by the sum of the
 histograms of its subcells. Unlike in ColorCHLAC, free space is considered, but we are looking
 at the neighbors of occupied voxels only. Furthermore, since we do not use ray-casting but 
@@ -456,12 +456,12 @@ Linear Subspace Method (LSM)~\cite{watanabe1973} is an established learning meth
 As a training process, several feature vectors that represent each object are extracted, 
 and then Principal Component Analisis (PCA) for them is solved. 
 Similarly to ~\cite{kanezaki2010icra}, we divide the whole voxel grid of each object into 
-cubic subdivisions of a certain size, and then extract feature vectors from all the subdivisions for the training. 
-Let the number of the subdivisions be $N$, the dimension of the feature vector be $d$, 
-and the train feature vectors be $\bm{z}_t \in R^d, t=1,2,...N$. 
-Then the eigenvectors of $R=\frac{1}{N} \sum^{N}_{t=1} \bm{z}_t \bm{z}_t^T$ are computed by solving the eigenvector problem. 
+cubic subdivisions of a certain size ($7cm\times7cm\times7cm$ in our case), and then extract feature vectors from all the subdivisions for training. 
+Let number of the subdivisions be $N$, the dimension of the feature vector be $d$, 
+and the training feature vectors be $\bm{z}_t \in R^d, t=1,2,...N$. 
+Then the eigenvectors of $R=\frac{1}{N} \sum^{N}_{t=1} \bm{z}_t \bm{z}_t^T$ are computed. 
 Note that we solve PCA for all the descriptors extracted from all the trained objects for the first step, 
-and use top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
+and the use top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
 
 To classify and identify a detected object in environments, the system extracts one feature vector from the whole voxel grid of the object. 
 Letting the feature vector be $\bm{z}$ and the matrix of top $t$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$,
@@ -476,7 +476,7 @@ Owing to the property, one feature vector computed from each object cluster in e
 each subspace of database object, regardless of the size of the object cluster, thus providing a method for classifying partially visible objects.
 
 \subsection{Support Vector Machine-based Classification}
-Apart LSM, we also used classification using Support Vector Machines (SVM) \cite{svm99} in our experiments.
+We also performed classification using Support Vector Machines (SVM)~\cite{svm99} in our experiments.
 SVM is a fast classification method that works by learning the vectors that define hyperplanes separating
 the training examples according to a cost and a kernel function.
 
@@ -726,7 +726,6 @@ For these experiments we set 15 as the dimension of subspace $t$ in LSM.
 
 \subsection{Object Detection Pipeline (in Clutter)}
 \label{sec:recognition}
-\todo{Asako: Reduce the amount of the texts here.}
 We applied our object recognition method on an object detection scheme in a cluttered environment.
 The system computes the similarities between each target object and all rectangular-solid sub-regions in the environment, and then it outputs all the regions that have higher similarities than a certain threshold as the candidates of the target object.
 Each sub-region has the same size as that of the bounding box of the target object.
