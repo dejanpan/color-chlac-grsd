@@ -74,10 +74,10 @@ or shape, so a descriptor is needed that takes both into account
 efficienlty and with high discriminating power. In this paper we
 present an approach to efficiently capture these two appearance dimensions
 into a single feature
-% The greatest bottleneck momentarily in the area of mobile manipulation is robust perception.
-% In this paper we contribute to the solving of this problem of efficiency and accuracy
-% by proposing a novel feature called Voxelized Shape and Color Histograms 
-% (VOSCH)
+% % % The greatest bottleneck momentarily in the area of mobile manipulation is robust perception.
+% % % In this paper we contribute to the solving of this problem of efficiency and accuracy
+% % % by proposing a novel feature called Voxelized Shape and Color Histograms 
+% % % (VOSCH)
 that is capable of capturing both the geometric and visual appearance
 properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
@@ -111,15 +111,20 @@ based on SIFT features, one needs to restrict search space to objects that are d
 texture, if we apply 3D feature the objects must be distinctive with respect to their shapes. 
 If we really want to install a perception system for autonomous robots we need to aim 
 at one that can perceive all objects, that is textured, texture-less, different shapes, etc.
+
+\todo{Michael's ideas}
 While it seems feasible that we can simply develop perception routines by combining
 various descriptors~\cite{stueckler10combining, GRSD10Humanoids}, the more promising idea 
 is to develop descriptors that work in multiple feature spaces. The reason for this is 
-that objects might be easily discriminated in combined feature space whereas it is impossible 
+that objects might be easily discriminated in a combined feature space whereas it is impossible 
 to discriminate them in individual spaces as depicted in Figure~\ref{fig:grsd_cchlac}.
+
 In this paper we propose a novel descriptor which builds off the idea of the previously 
 published Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and 
 Color Cubic Higher-order Local Auto-Correlation descriptor (ColorCHLAC~\cite{kanezaki2010tvc}), 
 and which we call Voxelized Shape and Color Histograms (VOSCH).
+
+\todo{do we push concatenation?}
 
 \begin{figure}[htb!]
   \begin{center}
@@ -154,7 +159,8 @@ transitions at the same time.
 Further contributions of work presented herein include the ability to deal with
 cluttered scenes while eliminating the requirement for region of interest
 selection (e.g. horizontal supporting structures) and spatially separable object
-clusters. This has been achieved using a moving-bounding-box-based approach, and
+clusters. This has been achieved by ensuring that VOSCH is additive, and using a
+moving-bounding-box-based approach together with
 a sub-space-matching-based classification scheme (Section
 \ref{sec:recognition}). The resulting approach performs at 2 frames per second
 while taking into account an object database of 63 different objects
@@ -175,10 +181,11 @@ while taking into account an object database of 63 different objects
 Lastly, our descriptor can be out-of-the box applied on the data coming out of the 
 new sensing technologies such as Kinect device and lays the foundation stone for a
 multitude of applications such as later presented recognition of a priori learned object models
-(Section~\ref{sec:recognition}). VOSCH also enables equipping of service robots 
-(such as the robot shown in top part of Figure~\ref{fig:robot}) with the 
-capabilities to acquire additional object models which furthermore opens ways 
-for manipulation tasks in realistic environments under realistic conditions.
+(Section~\ref{sec:recognition}).
+% % % VOSCH also enables equipping of service robots 
+% % % (such as the robot shown in top part of Figure~\ref{fig:robot}) with the 
+% % % capabilities to acquire additional object models which furthermore opens ways 
+% % % for manipulation tasks in realistic environments under realistic conditions.
 
 \begin{figure}[htb!]
   \begin{center}
@@ -257,7 +264,7 @@ which means a global descriptor for an object cluster is computed by summing up 
 
 \section{System Overview}
 \label{sec:overview}
-Systematically the idea of the whole work presented herein is depicted in 
+The general idea of the work presented herein is depicted in 
 Figure~\ref{fig:robot}. We first acquired the training data of 63 objects
 of daily use using RGBD Kinect sensor. Then we estimated VOSCH descriptor 
 for every object view and generated training models using Support Vector
@@ -265,21 +272,21 @@ Machine or Linear Subspace Method classifiers. The models were used
 in the evaluation part for cross-validation checks and detection of 
 objects in natural scenes.
 
-Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
-construction, ii)database assembly and training of object models and iii)testing,
-we solved each of them individually. In the first case we had to unify underlying
-structures such that the ColorCHLAC became rotation invariant and GRSD 
-additive~\cite{kanezaki2010tvc}. We thus obtained a descriptor histogram with 
+% % % Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
+% % % construction, ii)database assembly and training of object models and iii)testing,
+% % % we solved each of them individually.
+To construct the VOSCH descriptor, we had to modify the original algorithms
+such that the ColorCHLAC became rotation invariant and GRSD 
+additive. We thus obtained a descriptor histogram with 
 137 bins representing the transitions between its different dimensions.
-In the second case, we assembled a large database of
-object models (Figure~\ref{fig:robot} bottom), by creating a rotating
+For constructing a database of object models (Figure~\ref{fig:robot} bottom)
+containing training examples, we used a rotating
 table using a DP PTU47 pan-tilt unit that is controlled by the robot over the
 network. Objects placed on this rotating table were scanned at a given
-angle-step ($15^\circ$) and dumped to the disk. The resultant database of
-object models was then used to classify objects found in
-natural table setting scenes while performing manipulation
-tasks. For this third case we also performed a test on objects that were
-segmented in the euclidean sense. 
+angle-step ($15^\circ$) and then used to classify objects found in
+typical household settings.
+% % % For this third case we also performed a test on objects that were
+% % % segmented in the euclidean sense. 
 
 Our approach is realized as part of the Robot Operating System
 (ROS)\footnote{\url{http://www.ros.org}} open source initiative, and makes
@@ -287,25 +294,27 @@ use of modular and robust components that can be reused on other robotic
 systems different than ours.
 
 \subsection{Performance and Novelty}
-Our approach takes 404 seconds for the training of 63 objects and 3.15 seconds
+Our approach takes 404 seconds for the training of 63 objects \todo{which method?}
+and \todo{under 50 milliseconds}
 for the classification using Support Vector Machine classifier. Moving-bounding-box-based
 recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
 in Section~\ref{sec:recognition}.
 
 The main novel contributions of this paper are the following:
 \begin{itemize}
-\item novel, multidimensional descriptor VOSCH that accounts for
+\item novel, rotation-invariant descriptor VOSCH that accounts for
 geometrical as well as visual appearance  properties of objects in question
+using a relatively small number of dimensions;
 \item comparison of classification results for two established classification
-frameworks; Linear Subspace Method~\cite{watanabe1973} and Support Vector Machine~\cite{svm99}.
-\item an extensive database of objects of daily use captured with the Kinect sensor 
-(which we intend to publish after the review process).
+frameworks -- Linear Subspace Method~\cite{watanabe1973} and Support Vector Machine~\cite{svm99};
+\item an extensive database of objects of daily use captured with the Kinect sensor
+used as training examples (which we intend to publish after the review process).
 \end{itemize}
 
 \section{Feature Estimation}
 \label{sec:features}
-As already mentioned earlier the construction of VOSCH feature is based on the idea of 
-ColorCHLAC and GRSD features. For the sake of clarity we will thus briefly recap
+As already mentioned earlier, the construction of VOSCH feature is based on the idea of 
+ColorCHLAC and GRSD features. For the sake of clarity we will thus briefly present
 their respective construction too.
 
 \subsection{Color CHLAC}
@@ -406,6 +415,12 @@ of each occupied cell, the computation of this \emph{altered} GRSD is in
 $ms$ range which is 2 orders of magnitude faster than the original implementation
 reported in~\cite{GRSD10Humanoids}.
 
+\subsection{VOSCH}
+\label{sec:VOSCH}
+Since both approaches work on voxelized data, making their computation a single process
+and combining them in a single feature is an efficient solution. Furthermore,
+\todo{explain rotation invariant and additive}.
+
 The power of VOSCH feature is depicted in Figure~\ref{fig:comparison}
 where we see that the visual appearance-based feature such as colorCHLAC can not
 discern the orange cube from the orange dice (note that the histograms in 1st and
@@ -429,6 +444,7 @@ histogram in 3rd and 4th row are identical too).
 
 \section{Classification Methods}
 \label{sec:classification}
+
 \subsection{Linear Subspace Method}
 \label{sec:subspace}
 Linear Subspace Method (LSM)~\cite{watanabe1973} is an established learning method for classification. 
@@ -453,6 +469,76 @@ There is an advantage of using LSM with this kind of histogram-based descriptors
 The additive property means that a global descriptor for an object cluster equals the summation of local descriptors of its sub-parts. 
 Owing to the property, one feature vector computed from each object cluster in environments can be classified by projecting it to 
 each subspace of database object, regardless of the size of the object cluster, thus providing a method for classifying partially visible objects.
+
+\subsection{Support Vector Machine-based Classification}
+Apart LSM, we also used classification using Support Vector Machines (SVM) \cite{svm99} in our experiments.
+SVM is a fast classification method that works by learning the vectors that define hyperplanes separating
+the training examples according to a cost and a kernel function.
+
+Unlike LSM, it is not well suited for recognizing partially visible objects using the presented features,
+unless partial views are explicitly trained. Another problem is overfitting to the training data, which
+can be limited by choosing the parameters such that they maximize the results of cross-validation checks
+on the training data.
+
+We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM}
+\todo{I will put in the optimal parameters as soon as we decide on one}
+\todo{we should mention scaling we used for both methods, and that example histograms are not always scaled...}
+
+\section{Results}
+\label{sec:results}
+To evaluate VOSCH feature we ran \todo{cross-validation and leave-one-out (this todo I would delete, and detail the tests separately, by Z)}
+tests using SVM and LSM classifiers on the two sets of data: 
+i)set of 7 articially generated objects depicted in Figure~\ref{fig:grsd_cchlac}
+with 7 different colors and ii)set of 63 objects of daily use scanned using
+a Kinect device and a rotating table (Shown in bottom part of Figure~\ref{fig:robot}). 
+We measured its recognition rate against original implementations of ColorCHLAC and 
+GRSD, and a simple concatentation of histograms of both.
+
+\subsection{Feature Extraction}
+\label{sec:feature_extraction}
+In all tests we parametrized the computation of the feature with the following parameters:
+\begin{itemize}
+\item search radius for normals: $2cm$
+\item search radius for $r_{min}$ and $r_{max}$ estimation: $1cm$
+\item voxel size: $1cm$
+\end{itemize}
+
+Following we performed the test on the computation times for the estimation
+of VOSCH feature. The execution times are shown in the following table where $t1$
+denotes the average estimation time per point, p an average number of points per object
+and $t2$ denotes the average estimation time needed for 1 object:
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+ & $t1$ & $p$ & $t2$ \\
+\hline
+synthetic data (49 objects/49 views) & 36$\mu s$ & 19124 & 0.69s \\
+\hline
+real data (63 objects/1512 views) & 57$\mu s$ & 4632 & 0.26s \\
+\hline
+\end{tabular}
+\caption{Time profile for the estimation of VOSCH feature}
+\label{tbl:timing}
+\end{center}
+\end{table}
+
+\subsection{Synthetic Data}
+We first carried out tests on the set of 49 artificially generated objects \todo{Why not describe they are in 7 colors and 7 shapes? by Asako.}
+(Figure~\ref{fig:grsd_cchlac}) using the following setup: we used 1 example of 
+each object as a training sample and evaluated the model on 5 examples of each object with 
+10 different noise levels. The noise levels were generated for points' 3D coordinates 
+using Gaussian distribution with the following standard deviations:\\
+\begin{center}
+$\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$ 
+\end{center}
+To perform LSM, we set the dimension of the compressed feature space $d$ as 50 for ColorCHLAC, GRSD-ColorCHLAC concatenated one and VOSCH, while 
+   we used full 20 dimensions of GRSD. The dimension of subspace $t$ was set to 3. 
+The results of the leave-one-out test are presented in the table~\ref{tbl:synthetic}
+and prove that VOSCH feature (right-most two columns) outperforms all other features.
+Additionally, since objects were uniformly colored and symmetrical, the fact that ColorCHLAC 
+is not rotation invariant did not expose in the table. In the original implementation ColorCHLAC 
+had to be trained with the artificial rotations to achieve rotation invariance.
 
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
 \definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
@@ -501,97 +587,6 @@ each subspace of database object, regardless of the size of the object cluster, 
 \end{table*}
 
 
-\begin{table*}[ht]
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-\rowcolor{tcA} & \textbf{GRSD (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (1001D)} & \textbf{VOSCH (137D)} \\
-\hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.6958\% (17.2619\%) & 99.0741\% (97.8175\%) & 99.3386\% (96.8915\%) & 97.8836\% (93.1217\%) \\
-\hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.2063\% (66.9974\%) & 99.8677\% (99.6693\%)  & 99.9339\% (99.6032\%) & 100\% (99.1402\%) \\
-\hline
-\end{tabular}
-\caption{Model Accuracy on Training Data (and Leave-One-Out Test) for VOSCH \todo{less decimals and 1 column}}
-\label{tbl:training}
-\end{center}
-\end{table*}
-
-
-
-\subsection{Support Vector Machine-based Classification}
-Apart LSM, we also used classification using Support Vector Machines (SVM) \cite{SVM95} in our experiments.
-SVM is a fast classification method that works by learning the vectors that define hyperplanes separating
-the training examples according to a cost and a kernel function.
-
-Unlike LSM, it is not well suited for recognizing partially visible objects using the presented features,
-unless partial views are explicitly trained. Another problem is overfitting to the training data, which
-can be limited by choosing the parameters such that they maximize the results of cross-validation checks
-on the training data.
-
-We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM}
-\todo{I will put in the optimal parameters as soon as we decide on one}
-\todo{we should mention scaling we used for both methods, and that example histograms are not always scaled...}
-
-\section{Results}
-\label{sec:results}
-
-To evaluate VOSCH feature we ran \todo{cross-validation and leave-one-out (this todo I would delete, and detail the tests separately, by Z)}
-tests using SVM and LSM classifiers on the two sets of data: 
-i)set of 7 articially generated objects depicted in Figure~\ref{fig:grsd_cchlac}
-with 7 different colors and ii)set of 63 objects of daily use scanned using
-a Kinect device and a rotating table (Shown in bottom part of Figure~\ref{fig:robot}). 
-We measured its recognition rate against original implementations of ColorCHLAC and 
-GRSD, and a simple concatentation of histograms of both.
-\subsection{Feature Extraction}
-\label{sec:feature_extraction}
-In all tests we parametrized the computation of the feature with the following parameters:
-\begin{itemize}
-\item search radius for normals: $2cm$
-\item search radius for $r_{min}$ and $r_{max}$ estimation: $1cm$
-\item voxel size: $1cm$
-\end{itemize}
-
-Following we performed the test on the computation times for the estimation
-of VOSCH feature. The execution times are shown in the following table where $t1$
-denotes the average estimation time per point, p an average number of points per object
-and $t2$ denotes the average estimation time needed for 1 object:
-\begin{table}[ht]
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
- & $t1$ & $p$ & $t2$ \\
-\hline
-synthetic data (49 objects/49 views) & 36$\mu s$ & 19124 & 0.69s \\
-\hline
-real data (63 objects/1512 views) & 57$\mu s$ & 4632 & 0.26s \\
-\hline
-\end{tabular}
-\caption{Time profile for the estimation of VOSCH feature}
-\label{tbl:timing}
-\end{center}
-\end{table}
-
-\subsection{Synthetic Data}
-We first carried out tests on the set of 49 artificially generated objects \todo{Why not describe they are in 7 colors and 7 shapes? by Asako.}
-(Figure~\ref{fig:grsd_cchlac}) using the following setup: we used 1 example of 
-each object as a training sample and evaluated the model on 5 examples of each object with 
-10 different noise levels. The noise levels were generated for points' 3D coordinates 
-using Gaussian distribution with the following standard deviations:\\
-\begin{center}
-$\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$ 
-\end{center}
-To perform LSM, we set the dimension of the compressed feature space $d$ as 50 for ColorCHLAC, GRSD-ColorCHLAC concatenated one and VOSCH, while 
-   we used full 20 dimensions of GRSD. The dimension of subspace $t$ was set to 3. 
-The results of the leave-one-out test are presented in the table~\ref{tbl:synthetic}
-and prove that VOSCH feature (right-most two columns) outperforms all other features.
-Additionally, since objects were uniformly colored and symmetrical, the fact that ColorCHLAC 
-is not rotation invariant did not expose in the table. In the original implementation ColorCHLAC 
-had to be trained with the artificial rotations to achieve rotation invariance.
-
-Table~\ref{tbl:training} shows the percentage of correctly classified training examples using the model computed for them,
-and the percentage of correctly classified views using the model constructed using the remaining views.
-
 \subsection{Real Data}
 \subsubsection{Acquisition of Training Data}
 Our database of 3D objects was obtained using the Kinect sensor.
@@ -627,6 +622,25 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 
 
 \subsubsection{Evaluation on Training Data}
+Table~\ref{tbl:training} shows the percentage of correctly classified training examples using the model computed for them.
+The numbers in parentheses are the percentages of correctly classified views using the model constructed using the remaining views
+(leave-one-out-test).
+
+\begin{table*}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\rowcolor{tcA} & \textbf{GRSD (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (1001D)} & \textbf{VOSCH (137D)} \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.6958\% (17.2619\%) & 99.0741\% (97.8175\%) & 99.3386\% (96.8915\%) & 97.8836\% (93.1217\%) \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.2063\% (66.9974\%) & 99.8677\% (99.6693\%)  & 99.9339\% (99.6032\%) & 100\% (99.1402\%) \\
+\hline
+\end{tabular}
+\caption{Model Accuracy on Training Data (and Leave-One-Out Test) for VOSCH \todo{less decimals and 1 column}}
+\label{tbl:training}
+\end{center}
+\end{table*}
 
 %\todo{ALL: split training data into 2 groups and evaluate classification of one using the model computed for the other. Or complete cross-correlation.}
 
