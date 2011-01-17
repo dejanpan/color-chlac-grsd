@@ -527,18 +527,28 @@ real data (63 objects/1512 views) & 57$\mu s$ & 4632 & 0.26s \\
 \end{table}
 
 \subsection{Synthetic Data}
-We first carried out tests on the set of 49 artificially generated objects \todo{Why not describe they are in 7 colors and 7 shapes? by Asako.}
-(Figure~\ref{fig:grsd_cchlac}) using the following setup: we used 1 example of 
+We first carried out tests on a set of 49 artificially generated objects,
+7 shapes, each in 7 colors (Figure~\ref{fig:grsd_cchlac}). We used 1 example of 
 each object as a training sample and evaluated the model on 5 examples of each object with 
 10 different noise levels. The noise levels were generated for points' 3D coordinates 
 using Gaussian distribution with the following standard deviations:\\
 \begin{center}
 $\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$ 
 \end{center}
-To perform LSM, we set the dimension of the compressed feature space $d$ as 50 for ColorCHLAC, GRSD-ColorCHLAC concatenated one and VOSCH, while 
-we used full 20 dimensions of GRSD. The dimension of subspace $t$ was set to 3. 
-The results of the test are presented in the table~\ref{tbl:synthetic},
+For LSM classification we set the dimension of the compressed feature space $d$ as 50 for ColorCHLAC, ConVOSCH and VOSCH, while 
+we used full 20 dimensions of GRSD. The dimensionality of the subspace $t$ was set to 3.
+The results of the test are presented in Table~\ref{tbl:synthetic},
 showing VOSCH (right-most two columns) outperforming all other features.
+For a better overview of the results using VOSCH please see Figure~\ref{fig:plot}
+
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd.png}
+    \caption{The effect of simulated noise on the classification results using VOSCH with LSM and SVM
+             (both with and without random rotations of test data, as presented in Table~\ref{tbl:synthetic}).}
+    \label{fig:plot}
+  \end{center}
+\end{figure}
 
 Since GRSD is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
 Additionally, since objects were uniformly colored and symmetrical, the fact that ColorCHLAC 
