@@ -573,12 +573,11 @@ Table~\ref{tbl:training} shows the percentage of correctly classified training e
 and the percentage of correctly classified views using the model constructed using the remaining views.
 
 \subsection{Real Data}
-\subsubsection{Data Acquisition and Training}
-
+\subsubsection{Acquisition of Training Data}
 Our database of 3D objects was obtained using the Kinect sensor.
 The set of objects (see Figure~\ref{fig:robot}) encompasses the ones commonly used
-in a typical household environment (mugs, utensils, books, etc) and is envisioned for a
-larger expansion in the future.  In a pursue to account for a wide variety
+in a typical household environment (mugs, utensils, groceries, etc) and is envisioned for a
+larger expansion and release in the future.  In a pursue to account for a wide variety
 of view angles, we rotated the objects on the rotating table with a given
 angle-step ($15^\circ$ in the preliminary version) and acquired partial
 snapshots from a human-eye perspective, i.e. the ones that the best
@@ -679,11 +678,11 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 
 \begin{figure*}[htb!]
   \centering
-  \subfloat[Textured objects]{\label{fig:textured}\includegraphics[width=.45\textwidth]{figures/novel_view_scenes/text_view2.png}}
-  \subfloat[Textureless objects]{\label{fig:textureless}\includegraphics[width=.45\textwidth]{figures/novel_view_scenes/textureless_view2.png}}\\
-  \subfloat[Two categories of objects with similar shapes]{\label{fig:similar_shapes}\includegraphics[width=.45\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
-  \subfloat[Altered light conditions]{\label{fig:light}\includegraphics[width=.45\textwidth]{figures/novel_view_scenes/diff_light_view2.png}}
- \caption{Screenshots of the novel view scenes}
+  \subfloat[Textured objects (View 1)]{\label{fig:textured}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/text_view1.png}}
+  \subfloat[Textureless objects (View 2)]{\label{fig:textureless}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/textureless_view2.png}}
+  \subfloat[Two categories of objects with similar shapes (View 1)]{\label{fig:similar_shapes}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
+  \subfloat[Altered light conditions (View 3)]{\label{fig:light}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/diff_light_view3.png}}
+ \caption{Screenshots of the novel view scenes (best viewed in color)}
  \label{fig:novel_views}
 \end{figure*}
 
