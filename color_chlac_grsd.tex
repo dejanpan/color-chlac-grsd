@@ -612,9 +612,36 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 \todo{ALL: split training data into 2 groups and evaluate classification of one using the model computed for the other. Or complete cross-correlation.}
 
 \subsubsection{Evaluation on Novel Views}
+We evaluated the performance on classifying 
+(a) textured objects, (b) textureless objects, (c) two categories of objects with similar shapes, and (d) altered light conditions
+  in novel views (shown in Figure~\ref{fig:novel_views} ).
 
-\todo{Prove it works for a)textured objects, b)texture-less objects, c)objects with different shapes, 
-d)varying lighting conditions -- no clutter, 1 object at a time}
+\begin{table*}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\rowcolor{tcA} & \textbf{} & \textbf{GRSD} & \textbf{Color-CHLAC} & \textbf{Concatenated} & \textbf{VOSCH} \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(a)}} & {\textbf{LSM}} & 16.7\% & 58.3\% & 75\% & 75\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Textured}} &{\textbf{SVM}} & ***\% & ***\% & ***\% & ***\% \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(b)}} & {\textbf{LSM}} & 11.1\% & 33.3\% & 38.9\% & 44.4\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Textureless}} &{\textbf{SVM}} & ***\% & ***\% & ***\% & ***\% \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(c)}} & {\textbf{LSM}} & 5.56\% & 33.3\% & 44.4\% & 61.1\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Shape}} &{\textbf{SVM}} & ***\% & ***\% & ***\% & ***\% \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(d)}} & {\textbf{LSM}} & 5.56\% & 50\% & 72.2\% & 55.6\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Light}} &{\textbf{SVM}} & ***\% & ***\% & ***\% & ***\% \\
+\hline
+\end{tabular}
+\caption{Model Accuracy on Novel View Data \todo{less decimals and 1 column}}
+\label{tbl:novel}
+\end{center}
+\end{table*}
+
+%% \todo{Prove it works for a)textured objects, b)texture-less objects, c)objects with different shapes, 
+%% d)varying lighting conditions -- no clutter, 1 object at a time}
 %\todo{Dejan}
 
 \subsection{Object Detection Pipeline (in Clutter)}
