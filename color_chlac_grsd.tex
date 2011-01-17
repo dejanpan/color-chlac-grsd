@@ -189,7 +189,7 @@ The remainder of the paper is built as following. After the overview of the rela
 work in Section~\ref{sec:rl} we present the major system components in Section~\ref{sec:overview}
 which is followed by Section~\ref{sec:features} that elaborates on the construction of the
 VOSCH descriptor. In Section~\ref{sec:classification} we present the usage of this descriptor
-for the classification of objects using two state-of-the-art classification methods which we
+for the classification of objects using two state-of-the-art \todo{established? by Asako} classification methods which we
 then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
 we conclude and give the future outlook.
 
@@ -245,8 +245,8 @@ depending on relative position of neighboring voxels, into RGB channels and corr
 space of these channels.  In \cite{kanezaki2010icra} Color-CHLAC descriptor is used as local
 descriptors in the training process and as a global descriptor describing each
 object cluster in the recognition process, taking advantage of the combination
-of Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property.  
-
+of Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property, 
+which means a global descriptor for an object cluster is computed by summing up local descriptors of its sub-parts.
 
 \section{System Overview}
 \label{sec:overview}
@@ -334,7 +334,7 @@ the elements of a Color-CHLAC descriptor are calculated by following equations:
   {\bm q_2} = \sum \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}) \\
 \end{equation}
 \begin{equation}\label{eq:1st}
-  {\bm q_3}({\bm a}_i) = \sum \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \; (i=0, \dots 12) \\
+  {\bm q_3}({\bm a}_i) = \sum \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \;\;\; (i=0, \dots 12) \\
 \end{equation}
 %
 Since these values are summed up around a voxel grid, there is a redundancy that checks 
@@ -424,7 +424,7 @@ histogram in 3rd and 4th row are identical too).
 \label{sec:classification}
 \subsection{Linear Subspace Method}
 \label{sec:subspace}
-Linear Subspace Method (LSM)~\cite{watanabe1973} is an unsupervised learning method for classification. 
+Linear Subspace Method (LSM)~\cite{watanabe1973} is an established learning method for classification. 
 As a training process, several feature vectors that represent each object are extracted, 
 and then Principal Component Analisis (PCA) for them is solved. 
 Similarly to ~\cite{kanezaki2010icra}, we divide the whole voxel grid of each object into 
@@ -442,6 +442,12 @@ the similarity between the query part and the $i$-th object in the database is c
   %\hspace{-1mm}
   y_i = \frac{\| P_i^T \bm{z} \|}{\| \bm{z} \|}
 \end{eqnarray}
+
+There is an advantage of using LSM with this kind of histogram-based descriptors which have additive property. 
+The additive property means that a global descriptor for an object cluster equals the summation of local descriptors of its sub-parts. 
+Owing to the property, one feature vector computed from each object cluster in environments can be classified by projecting it to 
+   each subspace of database object, regardless of the size of the object cluster.
+
 %\todo{Asako: Explain the advantage of additivity here.}
 \subsection{Support Vector Machine-based Classification}
 \todo{Zoli}
@@ -582,7 +588,7 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 \hline
 \rowcolor{tcA} & \textbf{GRSD (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (1001D)} & \textbf{VOSCH (137D)} \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & \todo{X} (98.21\%) & \todo{X} (99.93\%) & \todo{X} (100\%) & \todo{X} (100\%) \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.6958\% (17.2619\%) & 99.0741\% (97.8175\%) & 99.3386\% (96.8915\%) & 97.8836\% (93.1217\%) \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.2063\% (66.9974\%) & 99.8677\% (99.6693\%)  & 99.9339\% (99.6032\%) & 100\% (99.1402\%) \\
 \hline
