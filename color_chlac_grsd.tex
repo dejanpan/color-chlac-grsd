@@ -82,8 +82,8 @@ that is capable of capturing both the geometric and visual appearance
 properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
 and evaluate two classification approaches.
-For the experiments we make use of a new RGB-D device called Kinect, and achieve recognition
-rates higher than 85\% for a set of 63 objects.
+For the experiments we make use of a new RGB-D device Kinect, and achieve recognition
+rates higher than \emph{85\%} for a set of 63 objects.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -107,9 +107,9 @@ and several versions of Point Feature  Histograms (PFH, FPFH)~\cite{Rusu09ICRA} 
 Viewpoint Feature Histograms (VFH)~\cite{vfh} for unordered fully-3D point clouds are just 
 to name a few. While these descriptors were successful too, they are still limited because they
 typically work only in restricted feature spaces. So, in order to have a perception system
-based on SIFT features, one needs to restrict search space to objects that are detected by
-texture, if we apply 3D feature the objects must be distinctive with respect to their shapes. 
-If we really want to install a perception system for autonomous robots we need to aim 
+based on SIFT features, one needs to restrict the search space to objects that are detected by
+texture ane if we apply 3D feature the objects must be distinctive with respect to their shapes. 
+If we want to install a perception system for autonomous robots we need to aim 
 at one that can perceive all objects, that is textured, texture-less, different shapes, etc.
 
 While it seems feasible that one can simply develop perception routines by combining
@@ -122,9 +122,9 @@ of approaches~\cite{Varma07learningthe}.
 
 In this paper we report on our work on the two variations of a novel descriptor
 which builds off the idea of the previously 
-published Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and 
-Color Cubic Higher-order Local Auto-Correlation descriptor (ColorCHLAC~\cite{kanezaki2010tvc}), 
-and which we termed (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
+published Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and the
+Color Cubic Higher-order Local Auto-Correlation descriptor (ColorCHLAC~\cite{kanezaki2010tvc}).
+We termed it (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
 
 \begin{figure}[htb!]
   \begin{center}
@@ -178,9 +178,9 @@ while taking into account an object database of 63 different objects
 
 % Yet it seems that there is none that can capture
 % all important and obvious properties (such as geometry and color are)
-Lastly, our descriptor can be out-of-the box applied on the data coming out of the 
+Lastly, our descriptor can be out-of-the box applied on the data coming from the 
 new sensing technologies such as Kinect device and lays the foundation stone for a
-multitude of applications such as later presented recognition of a priori learned object models
+multitude of applications such as later discussed detection of a priori learned object models
 (Section~\ref{sec:recognition}).
 % % % VOSCH also enables equipping of service robots 
 % % % (such as the robot shown in top part of Figure~\ref{fig:robot}) with the 
@@ -204,8 +204,8 @@ work in Section~\ref{sec:rl} we present a system overview in Section~\ref{sec:ov
 which is followed by Section~\ref{sec:features} that elaborates on the construction of the
 ConVOSCH and VOSCH descriptor variants. In Section~\ref{sec:classification} we present the usage of this descriptor
 for the classification of objects using two classification methods which we
-then elaborately test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
-we conclude and give the future outlook.
+then test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion}
+we conclude and give an outlook on our future work.
 
 \section{Related Work}
 \label{sec:rl}
