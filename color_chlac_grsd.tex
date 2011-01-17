@@ -454,12 +454,12 @@ Linear Subspace Method (LSM)~\cite{watanabe1973} is an established learning meth
 As a training process, several feature vectors that represent each object are extracted, 
 and then Principal Component Analisis (PCA) for them is solved. 
 Similarly to ~\cite{kanezaki2010icra}, we divide the whole voxel grid of each object into 
-cubic subdivisions of a certain size, and then extract feature vectors from all the subdivisions for the training. 
-Let the number of the subdivisions be $N$, the dimension of the feature vector be $d$, 
-and the train feature vectors be $\bm{z}_t \in R^d, t=1,2,...N$. 
-Then the eigenvectors of $R=\frac{1}{N} \sum^{N}_{t=1} \bm{z}_t \bm{z}_t^T$ are computed by solving the eigenvector problem. 
+cubic subdivisions of a certain size ($7cm\times7cm\times7cm$ in our case), and then extract feature vectors from all the subdivisions for training. 
+Let number of the subdivisions be $N$, the dimension of the feature vector be $d$, 
+and the training feature vectors be $\bm{z}_t \in R^d, t=1,2,...N$. 
+Then the eigenvectors of $R=\frac{1}{N} \sum^{N}_{t=1} \bm{z}_t \bm{z}_t^T$ are computed. 
 Note that we solve PCA for all the descriptors extracted from all the trained objects for the first step, 
-and use top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
+and the use top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
 
 To classify and identify a detected object in environments, the system extracts one feature vector from the whole voxel grid of the object. 
 Letting the feature vector be $\bm{z}$ and the matrix of top $t$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$,
