@@ -217,8 +217,8 @@ we conclude and give an outlook on our future work.
 % \url{http://www.ros.org/doc/api/pcl/html/sift__keypoint_8h_source.html}
 Expressiveness and efficiency of the descriptor are both crucially important for
 a real-time object recognition system.  Though there is a trade-off between
-these two abilities, it will dramatically improve both of them to select a
-proper matching method taking advantage of the characteristics of the
+these two abilities, it will improve both of them to select a
+proper matching method which accounts for the characteristics of the
 descriptor. In the recent decade a corpus of powerful 2D and 3D descriptors for
 recognizing real objects have been developed, however, few of them take into
 account the compatibility with the matching method used with them.
@@ -229,20 +229,21 @@ scenes and compares them with those of reference objects to identify the
 objects currently observed. A combination of the visual appearance
 descriptor and 2D shape is presented by Bosch et al. in~\cite{Bosch07shape}
 where they use random forests to achieve around 80\% of classification 
-accuracy. Half-way through to 3D domain an effective descriptor
-NARF~\cite{steder10irosws}, which detects salient points in range images of
-real environments, has recently been developed.  Despite of their dominant
+accuracy. 
+
+NARF~\cite{steder10irosws} descriptor detects salient points in range images of
+real environments. Despite of its dominant
 repeatability in point-to-point matching, there still remains difficulty in
 cluster-to-cluster matching, which is necessary for identifying each cluster
-candidates  in environments as objects. This also causes computational expensiveness
-especially when the target object database is large. In 3D domain a recently 
+candidate as object in the environment. This also causes high computational cost
+especially when the target object database is large. In a 3D domain a recently 
 developed VFH~\cite{vfh} descriptor was presented as an extension 
 of~\cite{Rusu09ICRA}. The feature's discriminative power is boosted up
-by an inclusion of viewpoint which on the other side however represents
+by inclusion of the viewpoint which on the other side also represents
 the deficiency in that it becomes orientation variant. 
 
 There are few approaches that use both geometry and color descriptors to
-represent 3D shapes~\cite{park2006}, however, to properly balance these two
+represent 3D shapes~\cite{park2006}, however properly balancing these two
 different properties is difficult.  Caputo and Dorko~\cite{caputo2002} learned
 respective kernels for shape and color representations and combined them for
 recognition object, while Huang and Hilton~\cite{huang2009} balanced them by
@@ -252,11 +253,11 @@ represented by patterns of shape-and-color co-occurrence.  For example, Textured
 spin-image~\cite{cortelazzo2006} splits well-known
 spin-image~\cite{Johnson_spin_images} descriptors into several layer
 corresponding to a given level of luminance. Color-CHLAC~\cite{kanezaki2010icra} 
-splits CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns 
+splits the CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns 
 depending on relative position of neighboring voxels, into RGB channels and correlation 
-space of these channels.  In \cite{kanezaki2010icra} Color-CHLAC descriptor is used as local
+space of these channels.  In \cite{kanezaki2010icra} the Color-CHLAC descriptor is used as local
 descriptors in the training process and as a global descriptor describing each
-object cluster in the recognition process, taking advantage of the combination
+object cluster in the recognition process. This takes advantage of the combination
 of Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property, 
 which means a global descriptor for an object cluster is computed by summing up local descriptors of its sub-parts.
 
