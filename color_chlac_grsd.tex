@@ -490,7 +490,14 @@ on the training data.
 We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM} with $\gamma = 0.0078125$
 ($0.5$ for GRSD). Cost values higher than $128$ did not improve the final results further.
 
-\todo{we should mention the scaling we used for both methods, and that histograms in the images are not always scaled...}
+\subsection{Scaling of Features}
+To improve classification rates using LSM it is important to don't have values of the feature that
+are varying in much different orders of magnitude than others, thus becoming very important components
+during PCA. Similarly, for SVM the results are also improved if the variation of each feature bin is
+proportional, thus we performed bin-wise scaling of the features for classification as follows.
+When going through the training data, the minimum and maximum value of each bin is recorded, and this interval is mapped to
+[0,1] both during training and during testing.
+
 
 \section{Results}
 \label{sec:results}
@@ -539,7 +546,7 @@ We first carried out tests on a set of 49 artificially generated objects,
 7 shapes, each in 7 colors (Figure~\ref{fig:grsd_cchlac}). We used 1 example of 
 each object as a training sample and evaluated the model on 5 examples of each object with 
 10 different noise levels. The noise levels were generated for points' 3D coordinates 
-using Gaussian distribution with the following standard deviations:\\
+using Gaussian distribution with the following standard deviations:
 \begin{center}
 $\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$ 
 \end{center}
