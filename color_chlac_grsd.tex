@@ -366,61 +366,64 @@ Finally a full Color-CHLAC vector is obtained by concatenating the two vectors f
 color voxel data and from original color voxel data. Then the dimension of Color-CHLAC feature vector 
 becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data). 
 
-In order to generate VOSCH we refined Color-CHLAC descriptor to be rotation-invariant by bringing all  
-13 different vectors given by (\ref{eq:1st}) together by following equation: 
-\begin{equation}\label{eq:1st_new}
-  {\bm q_4} = \sum_{i=0}^{12} {\bm q_3}({\bm a}_i) = \sum_{i=0}^{12} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \\
-\end{equation}
-%
-This reduces the dimensionality of the descriptor down to 117 (6+36+12 for non-binarized data plus 6+36+21 for binarized data). 
-% This is the similar way that GRSD takes as described in the next subsection, where the transitions between the reference 
-% voxel and all the 26 nighbors are combined together. 
-By doing so the refined Color-CHLAC descriptor is well concerted with GRSD which gives a significant 
-robustness to rotation and still shows a powerful expressivity for color textures.
-
 \subsection{GRSD}
 \label{sec:grsd}
 GRSD is a histogram, that counts the number of transitions between different types of voxels.
 While its applicability has wide-range we used it in this case to count the transitions between 
-the following geometric classes of voxel's surface: cylinder, sphere, plane, rim, free space, and noise. 
+the following geometric classes of voxel's surface: \emph{cylinder, sphere, plane, rim, free space, and noise}. 
 The types of surfaces were carefully selected based on the analysis of GRSD's   
 2 principal curves defining the surface, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
 This approach is similar to ColorCHLAC, but in order to efficiently merge the two features, 
-the original GRSD has to be altered. As shown  in~\cite{GRSD10Humanoids} the original version used
-ray-tracing in order to find transitions between surface types. To make it fit into VOSCH 
-we i)omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)discarded
-the normalization of histogram bins.
-
-These modifications allow us to create histograms which, like ColorCHLAC, are roughly additive.
-If we break up objects into reasonable sizes, its histogram can be approximated by the sum of the
-histograms of its subcells. Unlike in ColorCHLAC, free space is considered, but we are looking
-at the neighbors of occupied voxels only.
+the original GRSD had to be altered (see next subsection). 
 
 As the feature is rotation-invariant, the number of bins $b$ depends on the number of possible 
 surface types $s$ (including free space-free space transition):
 \begin{equation}
 b=\frac{s(s+1)}{2} %-s
 \end{equation}
-which results in 20 dimensions for the shape part VOSCH.
-% Previously only predefined surface types with an intuitive description were used 
-% (cylinder, sphere, plane, rim and corner), based on an estimation of the radii of 
-% the .
-%\todo{now we are dividing, so we get more surface types, chosen to roughly match ColorCHLAC to have the same "weighting"}
-% Once all voxels are annotated locally using a geometric class, we 
-% processing pipeline constructs a global feature by counting the transitions
-% between these local labels (and free space), as shown in Figure\todo{~\ref{fig:grsd}}.
-Since we do not use ray-casting but consider only the direct neighbors
-of each occupied cell, the computation of this \emph{altered} GRSD is in 
-$ms$ range which is 2 orders of magnitude faster than the original implementation
-reported in~\cite{GRSD10Humanoids}.
+which results in 20 dimensions for the above stated 6 types of surfaces.
 
 \subsection{VOSCH}
 \label{sec:VOSCH}
+In order to generate VOSCH we refined Color-CHLAC descriptor to be rotation-invariant by bringing all  
+13 different vectors given by (\ref{eq:1st}) together by following equation: 
+\begin{equation}\label{eq:1st_new}
+  {\bm q_4} = \sum_{i=0}^{12} {\bm q_3}({\bm a}_i) = \sum_{i=0}^{12} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \\
+\end{equation}
+%
+This reduces the dimensionality of the descriptor down to 117 (6+36+12 for non-binarized data plus 6+36+21 
+for binarized data) with respect to the original implementation. 
+% This is the similar way that GRSD takes as described in the next subsection, where the transitions between the reference 
+% voxel and all the 26 nighbors are combined together. 
+By doing so the refined Color-CHLAC descriptor is well concerted with GRSD which gives a significant 
+robustness to rotation and still shows a powerful expressivity for color textures.
+
+GRSD, as shown in~\cite{GRSD10Humanoids}, originally used
+ray-tracing in order to find transitions between surface types. To make it fit into VOSCH 
+we i)omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)discarded
+the normalization of histogram bins.
+
+These modifications allow us to create histograms which, like in case of ColorCHLAC, are roughly additive.
+If we break up objects into reasonable sizes, its histogram can be approximated by the sum of the
+histograms of its subcells. Unlike in ColorCHLAC, free space is considered, but we are looking
+at the neighbors of occupied voxels only. Furthermore, since we do not use ray-casting but 
+consider only the direct neighbors of each occupied cell, the computation of this \emph{altered} GRSD is in 
+$ms$ range which is 2 orders of magnitude faster than the original implementation
+reported in~\cite{GRSD10Humanoids}.
+
 Since both approaches work on voxelized data, making their computation a single process
 and combining them in a single feature is an efficient solution. Furthermore,
 \todo{explain rotation invariant and additive}.
 
-The power of VOSCH feature is depicted in Figure~\ref{fig:comparison}
+\subsection{ConVOSCH}
+The idea of ConVOSCH is to simply estimate ColorCHLAC and GRSD in two separate steps, 
+concatenate resulting histograms and normalize the final result. This preserves the 
+high dimensionality and thus accuracy for the color space, but on the other side 
+makes the feature to the extent rotation-invariant and sllightly slower for use 
+in the classification schemes.
+\vspace{2ex}
+
+The power of VOSCH feature (same holds for ConVOSCH) is depicted in Figure~\ref{fig:comparison}
 where we see that the visual appearance-based feature such as colorCHLAC can not
 discern the orange cube from the orange dice (note that the histograms in 1st and
 2nd row are identical). On the other side we have a shape-based feature GRSD
