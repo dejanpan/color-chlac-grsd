@@ -422,7 +422,7 @@ and combining them in a single feature is an efficient solution. Furthermore,
 \todo{explain rotation invariant and additive}.
 
 The power of VOSCH feature is depicted in Figure~\ref{fig:comparison}
-where we see that the visual appearance-based feature such as colorCHLAC can not
+where we see that the visual appearance-based feature such as ColorCHLAC can not
 discern the orange cube from the orange dice (note that the histograms in 1st and
 2nd row are identical). On the other side we have a shape-based feature GRSD
 which can not discern between the orange and the blue dice (likewise the
@@ -433,10 +433,10 @@ histogram in 3rd and 4th row are identical too).
     \includegraphics[width=.3\columnwidth]{figures/comparison/cube.png}
     \includegraphics[width=.32\columnwidth]{figures/comparison/dice1.png}
     \includegraphics[width=.32\columnwidth]{figures/comparison/dice2.png}
-    \includegraphics[width=.95\columnwidth]{figures/comparison/orange_cube_vs_orange_dice.png}
-    \includegraphics[width=.95\columnwidth]{figures/comparison/blue_vs_orange_dice_grsd.png}
-  \caption{Color-CHLAC can not differentiate the dice from the cube (identical histograms in row 1 and 2), 
-    while GRSD can not differentiate the different colors ((identical histograms in row 3 and 4)). 
+    \includegraphics[width=.47\columnwidth]{figures/comparison/orange_cube_vs_orange_dice.png}
+    \includegraphics[width=.47\columnwidth]{figures/comparison/blue_vs_orange_dice_grsd.png}
+  \caption{ColorCHLAC can not differentiate the dice from the cube (identical histograms on the left), 
+    while GRSD can not differentiate the different colors (identical histograms on the right). 
     Their combination however produces different signatures for all of them (Figure~\ref{fig:grsd_cchlac}).}
   \label{fig:comparison}
 \end{center}
@@ -533,9 +533,11 @@ using Gaussian distribution with the following standard deviations:\\
 $\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$ 
 \end{center}
 To perform LSM, we set the dimension of the compressed feature space $d$ as 50 for ColorCHLAC, GRSD-ColorCHLAC concatenated one and VOSCH, while 
-   we used full 20 dimensions of GRSD. The dimension of subspace $t$ was set to 3. 
-The results of the leave-one-out test are presented in the table~\ref{tbl:synthetic}
-and prove that VOSCH feature (right-most two columns) outperforms all other features.
+we used full 20 dimensions of GRSD. The dimension of subspace $t$ was set to 3. 
+The results of the test are presented in the table~\ref{tbl:synthetic},
+showing VOSCH (right-most two columns) outperforming all other features.
+
+Since GRSD is insensitive to color, it can identify at most $1/7 \approximate 14.2857\%$ of the data.
 Additionally, since objects were uniformly colored and symmetrical, the fact that ColorCHLAC 
 is not rotation invariant did not expose in the table. In the original implementation ColorCHLAC 
 had to be trained with the artificial rotations to achieve rotation invariance.
@@ -546,7 +548,7 @@ had to be trained with the artificial rotations to achieve rotation invariance.
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}\hline
 % use packages: color,colortbl
-\rowcolor{tcA} \textbf{} & \textbf{} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{GRSD (20D)}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{Color-CHLAC (981D)}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{Concatenated (1001D)}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{VOSCH (137D)}}\\
+\rowcolor{tcA} \textbf{} & \textbf{} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{GRSD/20D}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{ColorCHLAC/981D}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{ConVOSCH/1001D}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{VOSCH/137D}}\\
 \cline{3-10}
 \rowcolor{tcA} \textbf{Noise STD} & \textbf{Rotation} & \textbf{LSM} & \textbf{SVM} & \textbf{LSM} & \textbf{SVM} & \textbf{LSM} & \textbf{SVM} & \textbf{LSM} & \textbf{SVM}\\
 \hline
@@ -581,7 +583,7 @@ had to be trained with the artificial rotations to achieve rotation invariance.
 \rowcolor{tcA} \textbf{mm} & \textbf{Random:} & 8.5714\% & 6.12245\% & 15.5102\% & 28.5714\% & 32.6530\% & 52.6531\% & 55.1020\% & 52.2449\% \\
 \hline
 \end{tabular}
-\caption{Comparison of Features and Classifiers \todo{precision vs 1-recall for VOSCH?}}
+\caption{Comparison of Features and Classifiers}
 \label{tbl:synthetic}
 \end{center}
 \end{table*}
@@ -626,23 +628,40 @@ Table~\ref{tbl:training} shows the percentage of correctly classified training e
 The numbers in parentheses are the percentages of correctly classified views using the model constructed using the remaining views
 (leave-one-out-test).
 
-\begin{table*}[ht]
+% \begin{table*}[ht]
+% \begin{center}
+% \begin{tabular}{|c|c|c|c|c|}
+% \hline
+% \rowcolor{tcA} & \textbf{GRSD (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (ConVOSCH)} & \textbf{VOSCH (137D)} \\
+% \hline
+% \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.6958\% (17.2619\%) & 99.0741\% (97.8175\%) & 99.3386\% (96.8915\%) & 97.8836\% (93.1217\%) \\
+% \hline
+% \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.2063\% (66.9974\%) & 99.8677\% (99.6693\%)  & 99.9339\% (99.6032\%) & 100\% (99.1402\%) \\
+% \hline
+% \end{tabular}
+% \caption{Model Accuracy on Training Data (and Leave-One-Out Test) for VOSCH \todo{less decimals and 1 column}}
+% \label{tbl:training}
+% \end{center}
+% \end{table*}
+
+\begin{table}[ht]
+\begin{footnotesize}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-\rowcolor{tcA} & \textbf{GRSD (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (1001D)} & \textbf{VOSCH (137D)} \\
+\rowcolor{tcA} & \textbf{GRSD} & \textbf{ColorCHLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
+\rowcolor{tcA} & \textbf{20D [\%]} & \textbf{981D [\%]} & \textbf{1001D [\%]} & \textbf{137D [\%]} \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.6958\% (17.2619\%) & 99.0741\% (97.8175\%) & 99.3386\% (96.8915\%) & 97.8836\% (93.1217\%) \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.7 (17.26) & 99.07 (97.82) & 99.34 (96.89) & 97.88 (93.12) \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.2063\% (66.9974\%) & 99.8677\% (99.6693\%)  & 99.9339\% (99.6032\%) & 100\% (99.1402\%) \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.21 (67) & 99.87 (99.67)  & 99.93 (99.6) & 100 (99.14) \\
 \hline
 \end{tabular}
-\caption{Model Accuracy on Training Data (and Leave-One-Out Test) for VOSCH \todo{less decimals and 1 column}}
+\caption{Model Accuracy on Training Data and Leave-One-Out Test}
 \label{tbl:training}
 \end{center}
-\end{table*}
-
-%\todo{ALL: split training data into 2 groups and evaluate classification of one using the model computed for the other. Or complete cross-correlation.}
+\end{footnotesize}
+\end{table}
 
 \subsubsection{Evaluation on Novel Views}
 To prove that VOSCH feature works in the wild too we performed the test with the
@@ -654,29 +673,39 @@ by first finding a major horizontal planar surfaces within the point cloud and d
 point clusters that are supported by the planes~\cite{Rusu09IROS_ClosingLoop}.
 We set 15 as the dimension of subspace $t$ in LSM. 
 
-\begin{table*}[ht]
+\begin{table}[ht]
+\begin{scriptsize}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\rowcolor{tcA} & \textbf{} & \textbf{GRSD} & \textbf{Color-CHLAC} & \textbf{Concatenated} & \textbf{VOSCH} \\
+\rowcolor{tcA} & \textbf{} & \textbf{GRSD} & \textbf{ColorCHLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
+\rowcolor{tcA} & \textbf{} & \textbf{20D} & \textbf{981D} & \textbf{1001D} & \textbf{137D} \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(a)}} & {\textbf{LSM}} & 16.7\% & 58.3\% & 75\% & 75\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Textured}} &{\textbf{SVM}} & 33.3\% & 66.7\% & 75\% & 66.7\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(a)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 16.7\% & 58.3\% & 75\% & 75\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{texture}} & \mc{1}{>{\columncolor{tcA}}c|}{{SVM}} & 33.3\% & 66.7\% & 75\% & 66.7\% \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(b)}} & {\textbf{LSM}} & 11.1\% & 33.3\% & 38.9\% & 44.4\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Textureless}} &{\textbf{SVM}} & 27.8\% & 61.1\% & 61.1\% & 50\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(b)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 11.1\% & 33.3\% & 38.9\% & 44.4\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{no texture}} & \mc{1}{>{\columncolor{tcA}}c|}{{SVM}} & 27.8\% & 61.1\% & 61.1\% & 50\% \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(c)}} & {\textbf{LSM}} & 5.56\% & 33.3\% & 44.4\% & 61.1\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Shape}} &{\textbf{SVM}} & 27.8\% & 77.8\% & 77.8\% & 77.8\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(c)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 5.56\% & 33.3\% & 44.4\% & 61.1\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{sim. shape}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 27.8\% & 77.8\% & 77.8\% & 77.8\% \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(d)}} & {\textbf{LSM}} & 5.56\% & 50\% & 72.2\% & 55.6\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Light}} &{\textbf{SVM}} & 11.1\% & 88.9\% & 88.9\% & 83.3\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(d)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 5.56\% & 50\% & 72.2\% & 55.6\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{diff. light}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 11.1\% & 88.9\% & 88.9\% & 83.3\% \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(e)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} &  &  &  &  \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{...}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} &  &  &  &  \\
+\hline
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Average}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} &  &  &  &  \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{and STD}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} &  &  &  &  \\
 \hline
 \end{tabular}
-\caption{Model Accuracy on Novel View Data \todo{less decimals and 1 column}}
-\label{tbl:novel}
 \end{center}
-\end{table*}
+\end{scriptsize}
+\caption{Model Accuracy on Novel View Data}
+\label{tbl:novel}
+\end{table}
 
 %% \todo{Prove it works for a)textured objects, b)texture-less objects, c)objects with different shapes, 
 %% d)varying lighting conditions -- no clutter, 1 object at a time}
