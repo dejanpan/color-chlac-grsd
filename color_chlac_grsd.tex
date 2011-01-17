@@ -106,8 +106,8 @@ and under varying lighting conditions. Likewise, descriptors have been developed
 for perceiving objects based on their shapes (e.g. circles, cylinders, spheres and hybrid variants).
 Normal Aligned Radial Features (NARF)\cite{steder10irosws} for range images, 
 and several versions of Point Feature  Histograms (PFH, FPFH)~\cite{Rusu09ICRA} and 
-Viewpoint Feature Histograms (VFH)~\cite{vfh} for unordered fully-3D point clouds are \todo{something is missing here} just 
-to name a few. While these descriptors were successful, too, they are still limited because they
+Viewpoint Feature Histograms (VFH)~\cite{vfh} for unordered fully-3D point clouds 
+are the most notable ones. While these descriptors were successful, too, they are still limited because they
 typically work only in restricted feature spaces. So, in order to have a perception system
 based on SIFT features, one needs to restrict the search space to objects that are detected by
 texture and if we apply 3D features, the objects must be distinctive with respect to their shapes. 
@@ -115,7 +115,7 @@ If we want to install a perception system for autonomous robots we need to aim
 at one that can perceive all objects, be they textured, texture-less, different shapes, etc.
 
 While it seems feasible that one can simply develop perception routines by combining
-various descriptors~\cite{stueckler10combining, GRSD10Humanoids}, but \todo{but?} a promising idea 
+various descriptors~\cite{stueckler10combining, GRSD10Humanoids}, but a more promising idea 
 is to develop descriptors that work in multiple feature spaces. The reason for this is 
 that objects might be easily discriminated in a combined feature space, whereas it is impossible 
 to discriminate them in individual spaces as depicted in Figure~\ref{fig:grsd_cchlac}.
@@ -152,8 +152,8 @@ The strength of the descriptor lies in its ability to consider geometric and
 visual features in a unified manner to facilitate object classification. The two
 underlying features (GRSD, ColorCHLAC) have been carefully selected because of 
 their similar structures and the way they are computed from voxelized 3D data. 
-While ConVOSCH is a mere concatenation of GRSD and ColorCHLAC histograms, \todo{I think it would be better to continue with: Vosch is...} we 
-developed VOSCH such that it allows for its computation in a single step because 
+While ConVOSCH is a mere concatenation of GRSD and ColorCHLAC histograms, 
+VOSCH is developed such that it allows for its computation in a single step because 
 of the modified underlying algorithmic properties for GRSD and ColorCHLAC. 
 Both features count relations between neighboring voxels, capturing geometric 
 surface type and texture transitions at the same time.
@@ -191,22 +191,15 @@ further on (Section~\ref{sec:recognition}).
 
 \begin{figure}[htb!]
   \begin{center}
-<<<<<<< HEAD
     \includegraphics[width=.99\columnwidth]{figures/colorCHLAC/artificial/normalized_hist.png}
     %% \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
     %% \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
+%    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
+%    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
     \caption{Examples of scaled VOSCH histograms.
-Left: different categories of objects (top-down: cylinder, cube, cone, plane, sphere, torus, dice) 
-result in having different first 20 bins of the respective histogram.
-Right: different colors of the same category of an object torus have different 117 right-most bins of the histogram}
-=======
-    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
-    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
-    \caption{Examples of \todo{scaled} VOSCH histograms.
 Left: different categories of objects (top-down: cone, cube, cylinder, plane, sphere, torus, dice) 
-result in having different \todo{??} first 20 bins of the respective histogram.
-Right: different colors of the same category of an object torus have different \todo{??} 117 right-most bins of the histogram}
->>>>>>> proof reading
+result in having different  20 letf-most bins of the respective histogram.
+Right: different colors of the same category of an object torus have different 117 right-most bins of the histogram}
     \label{fig:grsd_cchlac}
   \end{center}
 \end{figure}
@@ -255,9 +248,8 @@ of~\cite{Rusu09ICRA}. The feature's discriminative power is boosted up
 by the inclusion of the viewpoint, which, on the other side, also represents
 a deficiency in that the feature becomes orientation variant. 
 
-There are few approaches that use both geometry and color descriptors to
-represent 3D bodies~\cite{park2006} \todo{does park say there are few or is that 
-one of the approaches. If the latter is the case, few should be changed to some}. However, properly balancing these two
+There are some approaches that use both geometry and color descriptors to
+represent 3D bodies~\cite{park2006}. However, properly balancing these two
 different properties is difficult.  Caputo and Dorko~\cite{caputo2002} learned
 respective kernels for shape and color representations and combined them for
 object recognition, while Huang and Hilton~\cite{huang2009} balanced them by
