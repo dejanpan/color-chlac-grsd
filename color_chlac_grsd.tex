@@ -68,10 +68,17 @@
 \maketitle
 
 \begin{abstract}
-The greatest bottleneck momentarily in the area of mobile manipulation is robust perception.
-In this paper we contribute to the solving of this problem of efficiency and accuracy
-by proposing a novel feature called Voxelized Shape and Color Histograms 
-(VOSCH) that is capable of capturing both the geometric and visual appearance
+Object detection plays an important rolein autonomous manipulation,
+but it faces many challanges. Several objects have similar color
+or shape, so a descriptor is needed that takes both into account
+efficienlty and with high discriminating power. In this paper we
+present an approach to efficiently capture these two appearance dimensions
+into a single feature
+% The greatest bottleneck momentarily in the area of mobile manipulation is robust perception.
+% In this paper we contribute to the solving of this problem of efficiency and accuracy
+% by proposing a novel feature called Voxelized Shape and Color Histograms 
+% (VOSCH)
+that is capable of capturing both the geometric and visual appearance
 properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
 and evaluate two classification approaches.
@@ -445,7 +452,7 @@ the similarity between the query part and the $i$-th object in the database is c
 There is an advantage of using LSM with this kind of histogram-based descriptors which have additive property. 
 The additive property means that a global descriptor for an object cluster equals the summation of local descriptors of its sub-parts. 
 Owing to the property, one feature vector computed from each object cluster in environments can be classified by projecting it to 
-   each subspace of database object, regardless of the size of the object cluster.
+each subspace of database object, regardless of the size of the object cluster, thus providing a method for classifying partially visible objects.
 
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
 \definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
@@ -505,7 +512,7 @@ Owing to the property, one feature vector computed from each object cluster in e
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.2063\% (66.9974\%) & 99.8677\% (99.6693\%)  & 99.9339\% (99.6032\%) & 100\% (99.1402\%) \\
 \hline
 \end{tabular}
-\caption{Model Accuracy on \todo{Artificial} Training Data (and Leave-One-Out Test) for VOSCH \todo{less decimals and 1 column}}
+\caption{Model Accuracy on Training Data (and Leave-One-Out Test) for VOSCH \todo{less decimals and 1 column}}
 \label{tbl:training}
 \end{center}
 \end{table*}
@@ -513,13 +520,24 @@ Owing to the property, one feature vector computed from each object cluster in e
 
 
 \subsection{Support Vector Machine-based Classification}
-\todo{Zoli}
+Apart LSM, we also used classification using Support Vector Machines (SVM) \cite{SVM95} in our experiments.
+SVM is a fast classification method that works by learning the vectors that define hyperplanes separating
+the training examples according to a cost and a kernel function.
+
+Unlike LSM, it is not well suited for recognizing partially visible objects using the presented features,
+unless partial views are explicitly trained. Another problem is overfitting to the training data, which
+can be limited by choosing the parameters such that they maximize the results of cross-validation checks
+on the training data.
+
+We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM}
+\todo{I will put in the optimal parameters as soon as we decide on one}
+\todo{we should mention scaling we used for both methods, and that example histograms are not always scaled...}
 
 \section{Results}
 \label{sec:results}
 
-To evaluate VOSCH feature we ran \todo{cross-validation and leave-one-out} tests 
-using SVM and LSM classifiers on the two sets of data: 
+To evaluate VOSCH feature we ran \todo{cross-validation and leave-one-out (this todo I would delete, and detail the tests separately, by Z)}
+tests using SVM and LSM classifiers on the two sets of data: 
 i)set of 7 articially generated objects depicted in Figure~\ref{fig:grsd_cchlac}
 with 7 different colors and ii)set of 63 objects of daily use scanned using
 a Kinect device and a rotating table (Shown in bottom part of Figure~\ref{fig:robot}). 
