@@ -611,9 +611,13 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
 \todo{ALL: split training data into 2 groups and evaluate classification of one using the model computed for the other. Or complete cross-correlation.}
 
 \subsubsection{Evaluation on Novel Views}
-We evaluated the performance on classifying 
-(a) textured objects, (b) textureless objects, (c) two categories of objects with similar shapes, and (d) altered light conditions
-  in novel views (shown in Figure~\ref{fig:novel_views} ).
+To prove that VOSCH feature works in the wild too we performed the test with the
+following setup (shown in Figure~\ref{fig:novel_views}): we selected 4 types of scenes containing a)textured 
+and b)textureless objects, c)objects with similar shapes and the d)scene with the substantial 
+altered lighting conditions respectively. We acquired the data from 3 substaintally different views 
+as manifest in Figure~\ref{fig:novel_views} as well. Object candidate cluster were detected
+by first finding a major horizontal planar surfaces within the point cloud and detecting
+point clusters that are supported by the planes~\cite{Rusu09IROS_ClosingLoop}.
 
 \begin{table*}[ht]
 \begin{center}
