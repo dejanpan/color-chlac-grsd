@@ -82,8 +82,8 @@ that is capable of capturing both the geometric and visual appearance
 properties of common objects of daily use. We showcase the
 feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
 and evaluate two classification approaches.
-For the experiments we make use of a new RGB-D device Kinect, and achieve recognition
-rates higher than \emph{85\%} for a set of 63 objects.
+For the experiments we make use of Kinect, a new RGB-D device, and achieve recognition
+rates higher than \todo{85\%} for a set of 63 objects.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -485,9 +485,10 @@ unless partial views are explicitly trained. Another problem is overfitting to t
 can be limited by choosing the parameters such that they maximize the results of cross-validation checks
 on the training data.
 
-We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM}
-\todo{I will put in the optimal parameters as soon as we decide on one}
-\todo{we should mention scaling we used for both methods, and that example histograms are not always scaled...}
+We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM} with $\gamma = 0.0078125$
+($0.5$ for GRSD). Cost values higher than $128$ did not improve the final results further.
+
+\todo{we should mention the scaling we used for both methods, and that histograms in the images are not always scaled...}
 
 \section{Results}
 \label{sec:results}
@@ -671,7 +672,7 @@ The numbers in parentheses are the percentages of correctly classified views usi
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.21 (67) & 99.87 (99.67)  & 99.93 (99.6) & 100 (99.14) \\
 \hline
 \end{tabular}
-\caption{Model Accuracy on Training Data and Leave-One-Out Test}
+\caption{Model accuracy on training data and leave-one-out test.}
 \label{tbl:training}
 \end{center}
 \end{footnotesize}
