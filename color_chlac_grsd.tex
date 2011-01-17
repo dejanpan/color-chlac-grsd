@@ -259,12 +259,14 @@ descriptors in the training process and as a global descriptor describing each
 object cluster in the recognition process, taking advantage of the combination
 of Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property, 
 which means a global descriptor for an object cluster is computed by summing up local descriptors of its sub-parts.
+Since computation of Color-CHLAC is on voxelized data, it is more efficient
+than the point-based spin-image approach.
 
 \section{System Overview}
 \label{sec:overview}
 The general idea of the work presented herein is depicted in 
-Figure~\ref{fig:robot}. We first acquire the training data of 63 objects
-of daily use using RGBD Kinect sensor. Then we estimate ConVOSCH and VOSCH descriptors 
+Figure~\ref{fig:robot}. We first acquire the training data for 63 objects
+of daily use using the RGBD Kinect sensor. We then estimate ConVOSCH and VOSCH descriptors 
 for every object view and generate training models using Support Vector
 Machine or Linear Subspace Method classifiers. The models are then used
 in the evaluation part for cross-validation checks and detection of 
@@ -489,13 +491,14 @@ We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM}
 
 \section{Results}
 \label{sec:results}
-To evaluate VOSCH feature we ran \todo{cross-validation and leave-one-out (this todo I would delete, and detail the tests separately, by Z)}
-tests using SVM and LSM classifiers on the two sets of data: 
-i)set of 7 articially generated objects depicted in Figure~\ref{fig:grsd_cchlac}
-with 7 different colors and ii)set of 63 objects of daily use scanned using
-a Kinect device and a rotating table (Shown in bottom part of Figure~\ref{fig:robot}). 
-We measured its recognition rate against original implementations of ColorCHLAC and 
-GRSD, and a simple concatentation of histograms of both.
+To evaluate the proposed features we ran
+tests using SVM and LSM classifiers on the following two sets of data: 
+i)~7 artificially generated objects with 7 different colors, and
+ii)~63 objects of daily use, scanned using a Kinect sensor and a rotating table
+(shown in bottom part of Figure~\ref{fig:robot}). 
+We measured the recognition rates against the original implementations of ColorCHLAC and 
+GRSD. Since ColorCHLAC was already shown to outperform Textured Spin Images
+we did not include it in our experiments.
 
 \subsection{Feature Extraction}
 \label{sec:feature_extraction}
@@ -506,22 +509,24 @@ In all tests we parametrized the computation of the feature with the following p
 \item voxel size: $1cm$
 \end{itemize}
 
-Following we performed the test on the computation times for the estimation
-of VOSCH feature. The execution times are shown in the following table where $t1$
-denotes the average estimation time per point, p an average number of points per object
-and $t2$ denotes the average estimation time needed for 1 object:
+The execution times for VOSCH feature estimation are shown in the following table, where 
+$\overline{nr_{points}}$ denotes the average number of points per object,
+$t_{point}$ is the average estimation time per point,
+and $t_{object}$ is the average estimation time needed for an object:
+\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
+\definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
- & $t1$ & $p$ & $t2$ \\
+\rowcolor{tcA} & $\overline{nr_{points}}$ & $t_{point}$ & $t_{object}$ \\
 \hline
-synthetic data (49 objects/49 views) & 36$\mu s$ & 19124 & 0.69s \\
+\mc{1}{|>{\columncolor{tcA}}c|}{synthetic data (49 views of 49 objects)} & 19124 & 36$\mu s$ & 0.69s \\
 \hline
-real data (63 objects/1512 views) & 57$\mu s$ & 4632 & 0.26s \\
+\mc{1}{|>{\columncolor{tcA}}c|}{real data (1512 views of 63 objects)} & 4632 & 57$\mu s$ & 0.26s \\
 \hline
 \end{tabular}
-\caption{Time profile for the estimation of VOSCH feature}
+\caption{Time needed for the estimation of VOSCH features.}
 \label{tbl:timing}
 \end{center}
 \end{table}
@@ -543,7 +548,7 @@ For a better overview of the results using VOSCH please see Figure~\ref{fig:plot
 
 \begin{figure}[htb!]
   \begin{center}
-    \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd.png}
+    \includegraphics[width=.98\columnwidth]{figures/comparison/vosch.pdf}
     \caption{The effect of simulated noise on the classification results using VOSCH with LSM and SVM
              (both with and without random rotations of test data, as presented in Table~\ref{tbl:synthetic}).}
     \label{fig:plot}
@@ -555,8 +560,6 @@ Additionally, since objects were uniformly colored and symmetrical, the fact tha
 is not rotation invariant did not expose in the table. In the original implementation ColorCHLAC 
 had to be trained with the artificial rotations to achieve rotation invariance.
 
-\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
-\definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
 \begin{table*}[ht!]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}\hline
@@ -596,7 +599,7 @@ had to be trained with the artificial rotations to achieve rotation invariance.
 \rowcolor{tcA} \textbf{mm} & \textbf{Random:} & 8.5714\% & 6.12245\% & 15.5102\% & 28.5714\% & 32.6530\% & 52.6531\% & 55.1020\% & 52.2449\% \\
 \hline
 \end{tabular}
-\caption{Comparison of Features and Classifiers}
+\caption{Comparison of the features and classifiers using both test data in the same pose as the training data, and randomly rotated test data.}
 \label{tbl:synthetic}
 \end{center}
 \end{table*}
@@ -607,14 +610,12 @@ had to be trained with the artificial rotations to achieve rotation invariance.
 Our database of 3D objects was obtained using the Kinect sensor.
 The set of objects (see Figure~\ref{fig:robot}) encompasses the ones commonly used
 in a typical household environment (mugs, utensils, groceries, etc) and is envisioned for a
-larger expansion and release in the future.  In a pursue to account for a wide variety
-of view angles, we rotated the objects on the rotating table with a given
-angle-step ($15^\circ$ in the preliminary version) and acquired partial
-snapshots from a human-eye perspective, i.e. the ones that the best
-approximate the robot's view point during its working cycle.  We consider
+larger expansion and release after the review process.  We rotated the objects on the rotating table with
+an angular step of $15^\circ$, and acquired partial
+snapshots using the same sensor and from a perspective that best
+approximates the robot's view point during its working cycle.  We consider
 this to be an important point as opposed to similar initiatives (e.g.,
-\cite{kit}) where the datasets are acquired using high-precision but
-non-affordable, fixed sensors, and thus not usable for applications such as ours.
+\cite{kit}) where the datasets are acquired using high-precision fixed sensors.
 
 % \begin{figure}[htb!]
 %   \begin{center}
@@ -630,7 +631,7 @@ non-affordable, fixed sensors, and thus not usable for applications such as ours
   \begin{center}
     \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd.png}
     \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd2.png}
-    \caption{Examples of \todo{scaled} VOSCH histograms for a Tomato Soup can.}
+    \caption{Examples of \todo{scaled} VOSCH histograms for a tomato soup can.}
     \label{fig:grsd_colorchlac_tomato}
   \end{center}
 \end{figure}
@@ -677,14 +678,13 @@ The numbers in parentheses are the percentages of correctly classified views usi
 \end{table}
 
 \subsubsection{Evaluation on Novel Views}
-To prove that VOSCH feature works in the wild too we performed the test with the
-following setup (shown in Figure~\ref{fig:novel_views}): we selected 4 types of scenes containing a)textured 
-and b)textureless objects, c)objects with similar shapes and the d)scene with the substantial 
-altered lighting conditions respectively. We acquired the data from 3 substaintally different views 
-as manifest in Figure~\ref{fig:novel_views} as well. Object candidate cluster were detected
-by first finding a major horizontal planar surfaces within the point cloud and detecting
-point clusters that are supported by the planes~\cite{Rusu09IROS_ClosingLoop}.
-We set 15 as the dimension of subspace $t$ in LSM. 
+To evaluate the proposed features on novel views as well, we performed the test with the
+following setup (shown in Figure~\ref{fig:novel_views}): we selected 4 types of scenes containing textured
+and textureless objects (a and b), objects with similar shapes (c) and a scene with the substantial 
+altered lighting conditions (d). We acquired the data from 3 substantially different views 
+as shown in Figure~\ref{fig:novel_views}, and object candidate clusters were detected
+by first finding a major horizontal planar surface within the point cloud, as done in~\cite{Rusu09IROS_ClosingLoop}.
+For these experiments we set 15 as the dimension of subspace $t$ in LSM. 
 
 \begin{table}[ht]
 \begin{scriptsize}
@@ -716,7 +716,7 @@ We set 15 as the dimension of subspace $t$ in LSM.
 \end{tabular}
 \end{center}
 \end{scriptsize}
-\caption{Model Accuracy on Novel View Data}
+\caption{Model accuracy on novel view data.}
 \label{tbl:novel}
 \end{table}
 
@@ -769,15 +769,42 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
 
 \section{Conclusions and Future Work}
 \label{sec:conclusion}
-\todo{ALL}
-\begin{itemize}
-\item automatic in-hand building of models
-\item color stabilization
-\item new geometric part - Zoli
-\end{itemize}
+
+We presented and evaluated a way to efficiently combine two
+appearance characteristics into a single feature (both rotation
+variant and rotation invariant) and shown its advantage over
+the original methods.
+
+The rotation invariant VOSCH feature with its low number of dimensions
+promises to be an efficient and descriptive feature that scales well with
+the increased number of objects a real-world application of the system would
+require. ColorCHLAC is not rotation invariant, so it has to be trained with
+all rotations around the view-ray, thus ConVOSCH as well. We found
+however, that at least for our 63 objects, the texture variations
+were not significantly different when the objects were rotated
+-- neither for the single colored synthetic data (Table~\ref{tbl:synthetic}),
+nor for the real views (Table~\ref{tbl:novel}).
+Since the features were designed to be additive, they can be used using
+LSM and detection in cluttered scenes using a sliding box approach.
+
+Unfortunately, acquiring enough labeled training data with enough variation
+to avoid overfitting is a problem in 3D perception, thus the final results are
+not completely informative and have high variations.
+We try to address these issues by expanding and publishing our database of objects
+and creating more labeled scenes for evaluation.
+Also, the automatic building of object databases by in-hand modeling by the
+robot itself is a useful tool that we plan to investigate in order to expand
+our database with novel objects.
+% requires grasping without recognition - cite IROS10... maybe for the final version
+
+Future work will include incorporation of other promising 2.5/3D approaches like VFH and NARF
+into the voxelized feature extraction process, and evaluating using more test and training data.
+
+\todo{color stabilization?}
+
 
 % \section*{Acknowledgments}
-% This work was supported by the DFG cluster of excellence \emph{CoTeSys} (Cognition for Technical Systems).\\
+% This work was supported by the DFG cluster of excellence \emph{CoTeSys} (Cognition for Technical Systems). \todo{Willow?}\\
 % \todo{Asako: Do we need to ackknowledge someone from ISI Lab?}
 % %% Use plainnat to work nicely with natbib.
 
