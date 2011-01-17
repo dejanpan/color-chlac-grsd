@@ -263,20 +263,20 @@ which means a global descriptor for an object cluster is computed by summing up 
 \section{System Overview}
 \label{sec:overview}
 The general idea of the work presented herein is depicted in 
-Figure~\ref{fig:robot}. We first acquired the training data of 63 objects
-of daily use using RGBD Kinect sensor. Then we estimated VOSCH descriptor 
-for every object view and generated training models using Support Vector
-Machine or Linear Subspace Method classifiers. The models were used
+Figure~\ref{fig:robot}. We first acquire the training data of 63 objects
+of daily use using RGBD Kinect sensor. Then we estimate ConVOSCH and VOSCH descriptors 
+for every object view and generate training models using Support Vector
+Machine or Linear Subspace Method classifiers. The models are then used
 in the evaluation part for cross-validation checks and detection of 
 objects in natural scenes.
 
 % % % Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
 % % % construction, ii)database assembly and training of object models and iii)testing,
 % % % we solved each of them individually.
-To construct the VOSCH descriptor, we had to modify the original algorithms
+To construct the ConVOSCH and VOSCH descriptors, we had to modify the original algorithms
 such that the ColorCHLAC became rotation invariant and GRSD 
-additive. We thus obtained a descriptor histogram with 
-137 bins representing the transitions between its different dimensions.
+additive. We thus obtained descriptor histograms with 
+1001 bins for ConVOSCH and 137 bins for VOSCH representing the transitions between its different dimensions.
 For constructing a database of object models (Figure~\ref{fig:robot} bottom)
 containing training examples, we used a rotating
 table using a DP PTU47 pan-tilt unit that is controlled by the robot over the
@@ -292,20 +292,21 @@ use of modular and robust components that can be reused on other robotic
 systems different than ours.
 
 \subsection{Performance and Novelty}
-Our approach takes 404 seconds for the training of 63 objects \todo{which method?}
-and \todo{under 50 milliseconds}
-for the classification using Support Vector Machine classifier. Moving-bounding-box-based
+An important factor of the perception system for robotics is to perform fast. We thus optimized
+the proposed descriptor to bring the estimation time down to 0.26s for a cluster consisting of 
+4632 points on average and to have the classification time of under 50 milliseconds
+for the Support Vector Machine classifier. Moving-bounding-box-based
 recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
 in Section~\ref{sec:recognition}.
 
 The main novel contributions of this paper are the following:
 \begin{itemize}
-\item novel, rotation-invariant descriptor VOSCH that accounts for
+\item novel, rotation-invariant descriptor with ConVOSCH and VOSCH variants that accounts for
 geometrical as well as visual appearance  properties of objects in question
 using a relatively small number of dimensions;
 \item comparison of classification results for two established classification
 frameworks -- Linear Subspace Method~\cite{watanabe1973} and Support Vector Machine~\cite{svm99};
-\item an extensive database of objects of daily use captured with the Kinect sensor
+\item an extensive database of 63 objects of daily use captured with the Kinect sensor
 used as training examples (which we intend to publish after the review process).
 \end{itemize}
 
