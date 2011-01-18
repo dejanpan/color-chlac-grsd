@@ -197,7 +197,7 @@ further on (Section~\ref{sec:recognition}).
 %    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
 %    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
     \caption{Examples of scaled VOSCH histograms.
-Left: different categories of objects (top-down: cone, cube, cylinder, plane, sphere, torus, dice) 
+Left: different categories of objects (top-down: cylinder, cube, cone, plane, sphere, torus, dice) 
 have different values in the first 20 bins of their histograms.
 Right: different colors of the same category of a torus have different values in the last 117 bins of their histograms.}
     \label{fig:grsd_cchlac}
@@ -470,7 +470,7 @@ Note that we solve PCA for all the descriptors extracted from all the trained ob
 and then use the top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
 
 To classify and identify a detected object in environments, the system extracts one feature vector from the whole voxel grid of the object. 
-Letting the feature vector be $\bm{z}$ and the matrix of top $t$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$,
+Letting the feature vector be $\bm{z}$ and the matrix of top $t$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{it})$,
 the similarity between the query part and the $i$-th object in the database is calculated by the following equation:
 \begin{eqnarray}\label{eq:y_calc}
   %\hspace{-1mm}
