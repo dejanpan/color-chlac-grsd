@@ -1,4 +1,4 @@
-SRC = color_chlac_grsd
+SRC = vosch
 
 all:
 	pdflatex $(SRC).tex
