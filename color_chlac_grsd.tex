@@ -157,15 +157,17 @@ VOSCH is developed such that it allows for its computation in a single step beca
 of the modified underlying algorithmic properties for GRSD and ColorCHLAC. 
 Both features count relations between neighboring voxels, capturing geometric 
 surface type and texture transitions at the same time.
+These features can be used to perform classification of one object against 63 different objects (see Figure~\ref{fig:robot}) in 0.10 millisecond using LSM.
 
 Further contributions of the work presented herein include the ability to deal with
 cluttered scenes while eliminating the requirement for region of interest
 selection (e.g. horizontal supporting structures) and spatially separable object
 clusters. This has been achieved by ensuring that the descriptor is additive and by using a
 moving bounding box-based approach together with a sub-space matching-based classification scheme (Section
-\ref{sec:recognition}). The resulting approach performs at 2 frames per second
-while taking into account an object database of 63 different objects
-(see Figure~\ref{fig:robot}).
+\ref{sec:recognition}). 
+%% The resulting approach performs at 2 frames per second
+%% while taking into account an object database of 63 different objects
+%% (see Figure~\ref{fig:robot}).
 
 
 % \subsection{Why}
@@ -303,9 +305,9 @@ systems different from ours.
 \subsection{Performance and Novelty}
 An important factor of the perception system for robotics is to perform fast. We thus optimized
 the proposed descriptors to bring the estimation time down to \emph{0.26s} for a cluster consisting of 
-\emph{4632} points on average and to have the classification time of under \emph{50} milliseconds
-for the SVM classifier. The Moving-bounding-box-based
-recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
+\emph{4632} points on average, and to have the classification time of under \emph{50} milliseconds
+for the SVM classifier and 0.10 millisecond for LSM. The Moving-bounding-box-based
+recognition of objects in e.g. cluttered scenes takes 2-4 seconds as detailed
 in Section~\ref{sec:recognition}.
 
 The main contributions of this paper are the following:
@@ -801,7 +803,7 @@ in 2-4 seconds per point cloud with the size of 307000 points.
 
 \begin{figure*}[htb!]
   \centering
-  \includegraphics[width=.97\textwidth]{figures/detection_demo/correct_detected.png}
+  \includegraphics[width=.99\textwidth]{figures/detection_demo/correct_detected.png}
   \caption{Screenshots of the examples of correctly detected objects as marked by the green cube (best viewed in color).}
   \label{fig:correct_detected}
 \end{figure*}
@@ -825,8 +827,10 @@ however, that at least for our 63 objects, the texture variations
 were not significantly different when the objects were rotated
 -- neither for the single colored synthetic data (Table~\ref{tbl:synthetic}),
 nor for the real views (Table~\ref{tbl:novel}).
-Since the features were designed to be additive, they can be used using
-LSM and detection in cluttered scenes using a sliding box approach.
+Since the features were designed to be additive, they can be used with LSM for
+detection in cluttered scenes by using a sliding box approach.
+%% Since the features were designed to be additive, they can be used using
+%% LSM and detection in cluttered scenes using a sliding box approach.
 
 Unfortunately, acquiring enough labeled training data with enough variation
 to avoid overfitting is a problem in 3D perception, thus the final results are
