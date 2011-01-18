@@ -197,7 +197,7 @@ further on (Section~\ref{sec:recognition}).
 %    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
 %    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
     \caption{Examples of scaled VOSCH histograms.
-Left: different categories of objects (top-down: cone, cube, cylinder, plane, sphere, torus, dice) 
+Left: different categories of objects (top-down: cylinder, cube, cone, plane, sphere, torus, dice) 
 have different values in the first 20 bins of their histograms.
 Right: different colors of the same category of a torus have different values in the last 117 bins of their histograms.}
     \label{fig:grsd_cchlac}
@@ -330,7 +330,7 @@ Next, we will present the necessary modifications to them in order to obtain the
 \subsection{Color CHLAC}
 \label{sec:color_chlac}
 ColorCHLAC descriptor is a high-dimensional vector measuring the summation of the 
-multiplicated RGB values of neighboring voxels around a voxel grid of arbitrary size. 
+multiplied RGB values of neighboring voxels around a voxel grid of arbitrary size. 
 Each bin in a ColorCHLAC descriptor is differentiated by the RGB color space and the 
 relative position of the two neighboring voxels. 
 Let $\bm{x}=(x,y,z)^T$ be the position of a voxel, $p(\bm{x})$ be the flag for occupancy 
@@ -418,7 +418,7 @@ the normalization of histogram bins.
 
 These modifications allow us to create histograms which, like in case of ColorCHLAC, are additive.
 If we break up objects into reasonable sizes, its histogram can be approximated by the sum of the
-histograms of its subcells. Unlike in ColorCHLAC, free space is considered, but we are looking
+histograms of its sub-cells. Unlike in ColorCHLAC, free space is considered, but we are looking
 at the neighbors of occupied voxels only. Furthermore, since we do not use ray-casting but 
 consider only the direct neighbors of each occupied cell, the computation of this \emph{altered} GRSD is in 
 $ms$ range which is 2 orders of magnitude faster than the original implementation
@@ -428,12 +428,12 @@ reported in~\cite{GRSD10Humanoids}.
 The idea of ConVOSCH is to simply estimate ColorCHLAC and GRSD in two separate steps, 
 concatenate resulting histograms and normalize the final result. This preserves the 
 high dimensionality and thus accuracy for the color space, but on the other side 
-makes the feature to the extent rotation-invariant and sllightly slower for use 
+makes the feature to the extent rotation-invariant and slightly slower for use 
 in the classification schemes.
 \vspace{2ex}
 
 The advantage of the VOSCH and ConVOSCH features is depicted in Figure~\ref{fig:comparison},
-where we see that the visual appearance-based feature such as colorCHLAC can not
+where we see that the visual appearance-based feature such as ColorCHLAC can not
 discern the orange cube from the orange dice (note that the histograms in bottom-left part are identical). 
 On the other side we have a shape-based feature GRSD
 which can not discern between the orange and the blue dice (likewise the
@@ -460,7 +460,7 @@ histograms in bottom-right part identical too).
 \label{sec:subspace}
 Linear Subspace Method (LSM)~\cite{watanabe1973} is an established learning method for classification. 
 As a training process, several feature vectors that represent each object are extracted, 
-and then Principal Component Analisis (PCA) for them is solved. 
+and then Principal Component Analysis (PCA) for them is solved. 
 Similarly to ~\cite{kanezaki2010icra}, we divide the whole voxel grid of each object into 
 cubic subdivisions of a certain size ($7cm\times7cm\times7cm$ in our case), and then extract feature vectors from all the subdivisions for training. 
 Let number of the subdivisions be $N$, the dimension of the feature vector be $d$, 
@@ -470,7 +470,7 @@ Note that we solve PCA for all the descriptors extracted from all the trained ob
 and then use the top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
 
 To classify and identify a detected object in environments, the system extracts one feature vector from the whole voxel grid of the object. 
-Letting the feature vector be $\bm{z}$ and the matrix of top $t$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$,
+Letting the feature vector be $\bm{z}$ and the matrix of top $t$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{it})$,
 the similarity between the query part and the $i$-th object in the database is calculated by the following equation:
 \begin{eqnarray}\label{eq:y_calc}
   %\hspace{-1mm}
@@ -487,7 +487,7 @@ SVM is a fast classification method that works by learning the vectors that defi
 the training examples according to a cost and a kernel function.
 
 Unlike LSM, it is not well suited for recognizing partially visible objects using the presented features,
-unless partial views are explicitly trained. Another problem is overfitting to the training data, which
+unless partial views are explicitly trained. Another problem is over-fitting to the training data, which
 can be limited by choosing the parameters such that they maximize the results of cross-validation checks
 on the training data.
 
