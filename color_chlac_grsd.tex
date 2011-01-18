@@ -495,12 +495,12 @@ We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM} with 
 ($0.5$ for GRSD). Cost values higher than $128$ did not improve the final results further.
 
 \subsection{Scaling of Features}
-To improve classification rates using LSM it is important to don't have values of the feature that
-are varying in much different orders of magnitude than others, thus becoming very important components
+To improve classification rates using LSM it is important not to have values of the feature 
+varying over several orders of magnitude with respect to others and thus becoming very important components
 during PCA. Similarly, for SVM the results are also improved if the variation of each feature bin is
-proportional, thus we performed bin-wise scaling of the features for classification as follows.
-When going through the training data, the minimum and maximum value of each bin is recorded, and this interval is mapped to
-[0,1] both during training and during testing.
+proportional. Therefore we performed bin-wise scaling of the features for classification as follows.
+When going through the training data, the minimum and maximum value of each bin is recorded, and this interval 
+is mapped to the interval [0,1] both during training and during testing.
 
 
 \section{Results}
