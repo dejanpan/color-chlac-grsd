@@ -746,41 +746,41 @@ the actual classification results by avoiding putting of very different views of
 
 \subsection{Object Detection Pipeline (in Clutter)}
 \label{sec:recognition}
-We applied our object recognition method on an object detection scheme in a cluttered environment.
-The system computes the similarities between each target object and all rectangular-solid sub-regions in the environment, and then it outputs all the regions that have higher similarities than a certain threshold as the candidates of the target object.
-Each sub-region has the same size as that of the bounding box of the target object.
-To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, which is a simple extension of ``Integral Image''~\cite{viola2001} from 2D to 3D.
-The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional compressed feature vector extracted from the voxel area
-    ranging from $(0,0,0)$ to $(x,y,z)$.
+We applied our object recognition method on an object detection scheme in a household
+environment. The system computes the similarities between each target object and all 
+rectangular-solid sub-regions in the environment, and it then outputs all the regions
+that have higher similarities than an empirically set threshold.
+Each sub-region has the same size as that of the bounding box of the target object 
+($20cm\times20cm\times20cm$) in our tests.
+To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, 
+which is a simple extension of ``Integral Image''~\cite{viola2001} from 2D to 3D.
+The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional 
+compressed feature vector extracted from the voxel area ranging from $(0,0,0)$ to $(x,y,z)$.
 Let the feature vector of the voxel area with $x$ ranging from $x_1$ to $x_2$,
-    $y$ ranging from $y_1$ to $y_2$, and $z$ ranging from $z_1$ to $z_2$, be $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$.
-This is computed by the following equation:
+$y$ ranging from $y_1$ to $y_2$, and $z$ ranging from $z_1$ to $z_2$, be $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$.
+The latter is then computed by the following equation:
 \begin{eqnarray*}\label{eq:sat}
 \bm{F}(x_1,y_1,z_1,x_2,y_2,z_2) = \bm{I}(x_2,y_2,z_2) - \bm{I}(x_1,y_2,z_2)
                            \\ - \bm{I}(x_2,y_1,z_2) - \bm{I}(x_2,y_2,z_1)
                            \\ + \bm{I}(x_1,y_1,z_2) + \bm{I}(x_1,y_2,z_1)
                            \\ + \bm{I}(x_2,y_1,z_1) - \bm{I}(x_1,y_1,z_1)
 \end{eqnarray*}
-Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can always be computed by adding the 8 cached feature vectors,
-    regardless of the size of the target object.
-%Note that this is not effective when the number of sub-regions included in the detection box is smaller than 8.
-Within the large color voxel data of an environment,
-   only the voxels on the surface of each object have RGB values, while other voxels have the empty property.
-This means that the object detection process can be accelerated by skipping empty regions.
+Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can always be 
+computed by adding the 8 cached feature vectors, regardless of the size of the target object.
+To furthermore accelerate the process empty regions are skipped as well.
 Similarly to the ``Integral Feature Table'', we create a table that stores
-   the number of voxels with the occupied property, in the area ranging from $(0,0,0)$ to $(x,y,z)$.
-Using this table, the number of voxels with the occupied property in the detection box can be computed quickly by adding 8 scalar values.
-%If the number is less than a certain threshold $h$,
-%   the system skips the similarity calculation and moves the detection box forwards.
-%In this work, we set $h$ to the minimum value of the occupied voxel number in the training samples of the target object.
+the number of voxels with the occupied property, in the area ranging from $(0,0,0)$ to $(x,y,z)$.
+Using this table, the number of voxels with the occupied property in the detection 
+box can be computed quickly by adding 8 scalar values.
 
-This object detection pipline was performed to several objects in the 63 object dataset used in Section~\ref{sec:real_data} with a voxel grid 
-   whose size is $2cm$. 
-Regarding the situation that a service robot manipulates objects of daily use, 
-   the test scenes were observed while the robot was rotating around the table and approaching close to a cupboard.
-Examples of correctly detected objects are shown in Figure~\ref{fig:correct_detected}. 
-When the range of the target point cloud in the environment is limited within $1m$ from the viewpoint, 
-   all the processing including voxelization, feature extraction and similarity calculation was performed in several seconds per frame.
+This object detection pipeline was applied on the several objects from the set of 
+earlier discussed 63 training objects. Objects were placed onto several locations in the household
+(e.g. kitchen counter, cupboard) and the robot was tasked to actively find them.
+
+Preliminary results of the correctly detected objects are shown in Figure~\ref{fig:correct_detected}. 
+When the range of the target point cloud in the environment is limited to $1m$ from the viewpoint, 
+all the processing including voxelization, feature extraction and similarity calculation was performed 
+in 2-4 seconds per point cloud with the size of 307000 points.
 
 %\todo{Asako: description for the results}
 
@@ -808,7 +808,7 @@ When the range of the target point cloud in the environment is limited within $1
 
 We presented and evaluated a way to efficiently combine two
 appearance characteristics into a single feature (both rotation
-variant and rotation invariant) and shown its advantage over
+variant and rotation invariant) and showed its advantage over
 the original methods.
 
 The rotation invariant VOSCH feature with its low number of dimensions
@@ -826,11 +826,11 @@ LSM and detection in cluttered scenes using a sliding box approach.
 Unfortunately, acquiring enough labeled training data with enough variation
 to avoid overfitting is a problem in 3D perception, thus the final results are
 not completely informative and have high variations.
-We try to address these issues by expanding and publishing our database of objects
+We will try to address these issues by expanding and publishing our database of objects
 and creating more labeled scenes for evaluation.
-Also, the automatic building of object databases by in-hand modeling by the
-robot itself is a useful tool that we plan to investigate in order to expand
-our database with novel objects.
+Also, the automatic building of object databases by an in-hand modeling by the
+robot itself is a useful tool that we plan to investigate in order to allow for
+easier upgrade of the database with novel objects.
 % requires grasping without recognition - cite IROS10... maybe for the final version
 
 Future work will include incorporation of other promising 2.5/3D approaches like VFH and NARF
