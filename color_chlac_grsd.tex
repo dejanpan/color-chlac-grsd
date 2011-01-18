@@ -540,7 +540,7 @@ and $\overline{t_{object}}$ is the average estimation time needed for an object:
 \mc{1}{|>{\columncolor{tcA}}c|}{real data (1512 views of 63 objects)} & 4632 & 57$\mu s$ & 0.26s \\
 \hline
 \end{tabular}
-\caption{Times needed for the estimation of VOSCH features.}
+\caption{Times needed for the estimation of VOSCH.}
 \label{tbl:timing}
 \end{center}
 \end{table}
@@ -686,7 +686,7 @@ The numbers in parentheses are the percentages of correctly classified views usi
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.21 (67) & 99.87 (99.67)  & 99.93 (99.6) & 100 (99.14) \\
 \hline
 \end{tabular}
-\caption{Model accuracy on training data and leave-one-out test.}
+\caption{Model accuracy on training data and for the leave-one-out test.}
 \label{tbl:training}
 \end{center}
 \end{footnotesize}
@@ -741,6 +741,10 @@ the actual classification results by avoiding putting of very different views of
 \label{tbl:novel}
 \end{table}
 
+While LSM proved to be robust to noise on the synthetic data, the real data is quite smooth,
+and SVM outperformed it in our tests. It has however the advantage of exploiting the additive
+property of the feature for detection in clutter.
+
 %% \todo{Prove it works for a)textured objects, b)texture-less objects, c)objects with different shapes, 
 %% d)varying lighting conditions -- no clutter, 1 object at a time}
 %\todo{Dejan}
@@ -789,7 +793,7 @@ in 2-4 seconds per point cloud with the size of 307000 points.
   \centering
   \subfloat[Textured objects (View 1)]{\label{fig:textured}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/text_view1.png}}
   \subfloat[Textureless objects (View 2)]{\label{fig:textureless}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/textureless_view2.png}}
-  \subfloat[Two categories of objects with similar shapes (View 1)]{\label{fig:similar_shapes}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
+  \subfloat[Two groups of objects with similar shapes (View 1)]{\label{fig:similar_shapes}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
   \subfloat[Altered light conditions (View 3)]{\label{fig:light}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/diff_light_view3.png}}
  \caption{Screenshots of the novel view scenes (best viewed in color)}
  \label{fig:novel_views}
@@ -797,8 +801,8 @@ in 2-4 seconds per point cloud with the size of 307000 points.
 
 \begin{figure*}[htb!]
   \centering
-  \includegraphics[width=.99\textwidth]{figures/detection_demo/correct_detected.png}
-  \caption{Screenshots of the examples of correctly detected objects. The detected are is shown in green cube. (best viewed in color)}
+  \includegraphics[width=.97\textwidth]{figures/detection_demo/correct_detected.png}
+  \caption{Screenshots of the examples of correctly detected objects as marked by the green cube (best viewed in color).}
   \label{fig:correct_detected}
 \end{figure*}
 
