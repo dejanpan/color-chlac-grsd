@@ -198,8 +198,8 @@ further on (Section~\ref{sec:recognition}).
 %    \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/torus.png}
     \caption{Examples of scaled VOSCH histograms.
 Left: different categories of objects (top-down: cone, cube, cylinder, plane, sphere, torus, dice) 
-result in having different  20 letf-most bins of the respective histogram.
-Right: different colors of the same category of an object torus have different 117 right-most bins of the histogram}
+have different values in the first 20 bins of their histograms.
+Right: different colors of the same category of a torus have different values in the last 117 bins of their histograms.}
     \label{fig:grsd_cchlac}
   \end{center}
 \end{figure}
@@ -382,8 +382,8 @@ becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data).
 GRSD is a histogram, that counts the number of transitions between different types of voxels.
 While it is applicable to the wide range of applications we used it to count the transitions between 
 the following geometric classes of voxel surfaces: \emph{free space, plane, cylinder, sphere, rim, and noise}.
-The types of surfaces were carefully selected based on the analysis of GRSD's   
-2 principal curves defining the surface, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
+The type of the surfaces are identified based on the estimation of their
+two principal curves' radii, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}.
 This approach is similar to ColorCHLAC, but in order to efficiently merge the two features, 
 the original GRSD had to be altered (see next subsection). 
 
