@@ -467,7 +467,7 @@ Let number of the subdivisions be $N$, the dimension of the feature vector be $d
 and the training feature vectors be $\bm{z}_t \in R^d, t=1,2,...N$. 
 Then the eigenvectors of $R=\frac{1}{N} \sum^{N}_{t=1} \bm{z}_t \bm{z}_t^T$ are computed. 
 Note that we solve PCA for all the descriptors extracted from all the trained objects for the first step, 
-and the use top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
+and then use the top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
 
 To classify and identify a detected object in environments, the system extracts one feature vector from the whole voxel grid of the object. 
 Letting the feature vector be $\bm{z}$ and the matrix of top $t$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{ir})$,
@@ -525,22 +525,22 @@ In all tests we parametrized the computation of the feature with the following p
 
 The execution times for VOSCH feature estimation are shown in the following table, where 
 $\overline{nr_{points}}$ denotes the average number of points per object,
-$t_{point}$ is the average estimation time per point,
-and $t_{object}$ is the average estimation time needed for an object:
+$\overline{t_{point}}$ is the average estimation time per point,
+and $\overline{t_{object}}$ is the average estimation time needed for an object:
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
 \definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
-\rowcolor{tcA} & $\overline{nr_{points}}$ & $t_{point}$ & $t_{object}$ \\
+\rowcolor{tcA} & $\overline{nr_{points}}$ & $\overline{t_{point}}$ & $\overline{t_{object}}$ \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{synthetic data (49 views of 49 objects)} & 19124 & 36$\mu s$ & 0.69s \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{real data (1512 views of 63 objects)} & 4632 & 57$\mu s$ & 0.26s \\
 \hline
 \end{tabular}
-\caption{Time needed for the estimation of VOSCH features.}
+\caption{Times needed for the estimation of VOSCH features.}
 \label{tbl:timing}
 \end{center}
 \end{table}
@@ -554,11 +554,12 @@ using Gaussian distribution with the following standard deviations:
 \begin{center}
 $\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$ 
 \end{center}
-For LSM classification we set the dimension of the compressed feature space $d$ as 50 for ColorCHLAC, ConVOSCH and VOSCH, while 
-we used full 20 dimensions of GRSD. The dimensionality of the subspace $t$ was set to 3.
-The results of the test are presented in Table~\ref{tbl:synthetic},
-showing VOSCH (right-most two columns) outperforming all other features.
-For a better overview of the results using VOSCH please see Figure~\ref{fig:plot}
+For LSM classification we set the dimension of the compressed feature space $d$ to 
+50 for the ColorCHLAC, ConVOSCH and VOSCH, while the GRSD was left uncompressed. 
+The dimensionality of the subspace $t$ was set to 3.
+The results of the test in Table~\ref{tbl:synthetic},
+show VOSCH (right-most two columns) outperforming all other features.
+For a better overview of the results using VOSCH please also see Figure~\ref{fig:plot}.
 
 \begin{figure}[htb!]
   \begin{center}
@@ -569,7 +570,7 @@ For a better overview of the results using VOSCH please see Figure~\ref{fig:plot
   \end{center}
 \end{figure}
 
-Since GRSD is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
+Since the GRSD is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
 Additionally, since objects were uniformly colored and symmetrical, the fact that ColorCHLAC 
 is not rotation invariant did not expose in the table. In the original implementation ColorCHLAC 
 had to be trained with the artificial rotations to achieve rotation invariance.
@@ -622,15 +623,14 @@ had to be trained with the artificial rotations to achieve rotation invariance.
 \subsection{Real Data}
 \label{sec:real_data}
 \subsubsection{Acquisition of Training Data}
-Our database of 3D objects was obtained using the Kinect sensor.
+Our database of 3D objects was obtained using the Kinect sensor mounted on the head of the robot.
 The set of objects (see Figure~\ref{fig:robot}) encompasses the ones commonly used
 in a typical household environment (mugs, utensils, groceries, etc) and is envisioned for a
-larger expansion and release after the review process.  We rotated the objects on the rotating table with
-an angular step of $15^\circ$, and acquired partial
-snapshots using the same sensor and from a perspective that best
-approximates the robot's view point during its working cycle.  We consider
+larger expansion and a release after the review process. We rotated the objects on the rotating table with
+an angular step of $15^\circ$ around the up-axis, and acquired partial
+snapshots from a perspective that best approximates the robot's view point during its working cycle.  We consider
 this to be an important point as opposed to similar initiatives (e.g.,
-\cite{kit}) where the datasets are acquired using high-precision fixed sensors.
+\cite{kit}) where the datasets are acquired using high-precision and off-board sensors.
 
 % \begin{figure}[htb!]
 %   \begin{center}
@@ -697,14 +697,14 @@ To evaluate the proposed features on novel views as well, we performed the test 
 following setup (shown in Figure~\ref{fig:novel_views}): we selected 4 types of scenes containing textured
 and textureless objects (a and b), objects with similar shapes (c) and a scene with the substantial 
 altered lighting conditions (d). We acquired the data from 3 substantially different views 
-as shown in Figure~\ref{fig:novel_views}, and object candidate clusters were detected
+as also shown in Figure~\ref{fig:novel_views}. Object candidate clusters were detected
 by first finding a major horizontal planar surface within the point cloud, as done in~\cite{Rusu09IROS_ClosingLoop}.
 For these experiments we set 15 as the dimension of subspace $t$ in LSM.
 
-In total we tested on 72 views, achieving a highest rates with SVM, as shown in Table~\ref{tbl:novel}.
-The results for ColorCHLAC and VOSCH were slightly behind, but more testing is needed to make a final judgment.
-One way to try to improve the results is to treat each view as a separate sub-class, which should then increase
-the actual classification results by avoiding having to put very different views of the same object into the same class.
+In total we tested on 72 views, achieving the highest rates with SVM, as shown in Table~\ref{tbl:novel}.
+The results for VOSCH were slightly less convincing, but more testing is needed to make a final judgment.
+One way to try to improve the results is to treat each view as a separate sub-class, which shall  increase
+the actual classification results by avoiding putting of very different views of the same object into the same class.
 
 \begin{table}[ht]
 \begin{scriptsize}
@@ -730,13 +730,13 @@ the actual classification results by avoiding having to put very different views
 % \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{free view}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} &  &  &  &  \\
 % \hline
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Total SVM}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 24.5\%$^*$ & 74.6\% & 76.4\% & 70.4\% \\
-\hline
+% \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Total SVM}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 24.5\%$^*$ & 74.6\% & 76.4\% & 70.4\% \\
+% \hline
 \end{tabular}
 \end{center}
 \end{scriptsize}
 \caption{Model accuracy on novel view data. $^*$Please note that while in the original implementation GRSD was used for detecting the geometric category,
-         here we used it for classification of objects that were only visually distinguishable (milk boxes for example).}
+         here we used it for classification of objects that were only visually distinguishable (different brands of milk boxes for example).}
 \label{tbl:novel}
 \end{table}
 
