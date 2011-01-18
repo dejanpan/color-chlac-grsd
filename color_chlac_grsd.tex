@@ -275,7 +275,7 @@ The general idea of the work presented herein is depicted in
 Figure~\ref{fig:robot}. We first acquire the training data for 63 objects
 of daily use using the RGBD Kinect sensor. We then estimate ConVOSCH and VOSCH descriptors 
 for every object view and generate training models using Support Vector
-Machines or Linear Subspace Method classifiers. The models are then used
+Machines~\cite{svm99} (SVM) or Linear Subspace Method~\cite{watanabe1973} (LSM) classifiers. The models are then used
 in the evaluation part for cross-validation checks and the detection of 
 objects in natural scenes.
 
@@ -304,7 +304,7 @@ systems different from ours.
 An important factor of the perception system for robotics is to perform fast. We thus optimized
 the proposed descriptors to bring the estimation time down to \emph{0.26s} for a cluster consisting of 
 \emph{4632} points on average and to have the classification time of under \emph{50} milliseconds
-for the Support Vector Machine classifier. The Moving-bounding-box-based
+for the SVM classifier. The Moving-bounding-box-based
 recognition of objects in e.g. cluttered scenes takes 0.5 second as detailed
 in Section~\ref{sec:recognition}.
 
@@ -313,7 +313,7 @@ The main contributions of this paper are the following:
 \item specification of a novel descriptor with two variants (ConVOSCH and VOSCH) that account for
 geometrical as well as visual appearance  properties of objects;
 \item comparison of classification results for two established classification
-frameworks -- Linear Subspace Method~\cite{watanabe1973} and Support Vector Machine~\cite{svm99};
+frameworks -- LSM and SVM;
 \item an extensive database of 63 objects of daily use captured with the Kinect sensor
 used as training examples (which we intend to publish after the review process).
 \end{itemize}
@@ -458,7 +458,7 @@ histograms in bottom-right part identical too).
 
 \subsection{Linear Subspace Method}
 \label{sec:subspace}
-Linear Subspace Method (LSM)~\cite{watanabe1973} is an established learning method for classification. 
+LSM is an established learning method for classification. 
 As a training process, several feature vectors that represent each object are extracted, 
 and then Principal Component Analysis (PCA) for them is solved. 
 Similarly to ~\cite{kanezaki2010icra}, we divide the whole voxel grid of each object into 
@@ -482,7 +482,7 @@ Owing to the property, one feature vector computed from each object cluster in e
 each subspace of database object, regardless of the size of the object cluster, thus providing a method for classifying partially visible objects.
 
 \subsection{Support Vector Machine-based Classification}
-We also performed classification using Support Vector Machines (SVM)~\cite{svm99} in our experiments.
+We also performed classification using SVM in our experiments.
 SVM is a fast classification method that works by learning the vectors that define hyperplanes separating
 the training examples according to a cost and a kernel function.
 
