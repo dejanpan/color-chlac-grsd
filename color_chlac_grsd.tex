@@ -620,6 +620,7 @@ had to be trained with the artificial rotations to achieve rotation invariance.
 
 
 \subsection{Real Data}
+\label{sec:real_data}
 \subsubsection{Acquisition of Training Data}
 Our database of 3D objects was obtained using the Kinect sensor.
 The set of objects (see Figure~\ref{fig:robot}) encompasses the ones commonly used
@@ -762,18 +763,26 @@ This is computed by the following equation:
 \end{eqnarray*}
 Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can always be computed by adding the 8 cached feature vectors,
     regardless of the size of the target object.
-Note that this is not effective when the number of sub-regions included in the detection box is smaller than 8.
+%Note that this is not effective when the number of sub-regions included in the detection box is smaller than 8.
 Within the large color voxel data of an environment,
    only the voxels on the surface of each object have RGB values, while other voxels have the empty property.
 This means that the object detection process can be accelerated by skipping empty regions.
 Similarly to the ``Integral Feature Table'', we create a table that stores
    the number of voxels with the occupied property, in the area ranging from $(0,0,0)$ to $(x,y,z)$.
 Using this table, the number of voxels with the occupied property in the detection box can be computed quickly by adding 8 scalar values.
-If the number is less than a certain threshold $h$,
-   the system skips the similarity calculation and moves the detection box forwards.
-In this work, we set $h$ to the minimum value of the occupied voxel number in the training samples of the target object.
+%If the number is less than a certain threshold $h$,
+%   the system skips the similarity calculation and moves the detection box forwards.
+%In this work, we set $h$ to the minimum value of the occupied voxel number in the training samples of the target object.
 
-\todo{Asako: description for the results}
+This object detection pipline was performed to several objects in the 63 object dataset used in Section~\ref{sec:real_data} with a voxel grid 
+   whose size is $2cm$. 
+Regarding the situation that a service robot manipulates objects of daily use, 
+   the test scenes were observed while the robot was rotating around the table and approaching close to a cupboard.
+Examples of correctly detected objects are shown in Figure~\ref{fig:correct_detected}. 
+When the range of the target point cloud in the environment is limited within $1m$ from the viewpoint, 
+   all the processing including voxelization, feature extraction and similarity calculation was performed in several seconds per frame.
+
+%\todo{Asako: description for the results}
 
 \begin{figure*}[htb!]
   \centering
@@ -784,6 +793,15 @@ In this work, we set $h$ to the minimum value of the occupied voxel number in th
  \caption{Screenshots of the novel view scenes (best viewed in color)}
  \label{fig:novel_views}
 \end{figure*}
+
+\begin{figure*}[htb!]
+  \centering
+  \includegraphics[width=.99\textwidth]{figures/detection_demo/correct_detected.png}
+  \caption{Screenshots of the examples of correctly detected objects. The detected are is shown in green cube. (best viewed in color)}
+  \label{fig:correct_detected}
+\end{figure*}
+
+
 
 \section{Conclusions and Future Work}
 \label{sec:conclusion}
