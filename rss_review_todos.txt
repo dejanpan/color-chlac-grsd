@@ -1,0 +1,148 @@
+Asako:
+The summations in
+eqns 2-4 are over an unspecified voxel grid, for example. The handling of
+missing data in eqn 1-- by assigning a zero vector-- seems odd. It is not
+obvious that this is the "right thing to do". (Why not, for example, sum only
+over the voxels which exist?) Several other assumptions are silently made;
+evidently, we are using a 3x3x3 grid (yielding 26 neighbors), but the reader
+is left to figure this out on their own. Seemingly important details (such as
+the handling of binarized colors) are not described at all. The omission of
+these details makes the paper harder to read, as the reader must jump
+back and forth between different papers seeking out the relevant
+information. Similarly, other "magic numbers" suddenly appear: we end up
+with 12 or 21 elements without any explanation. These shortcomings make
+replication needlessly difficult!
+
+
+Dejan, Zoli - Lets put the original algorithm from IJRR journal in, huh?
+GRSD is extremely tersely described. The original version involves ray
+tracing, but the authors claim that it is similar to ColorCHLAC (which is
+essentially computing moments over the voxel data). It would be impossible
+to reconstruct the author's algorithm--- even approximately--- from this
+poorly documented section. The authors claim that their modified approach
+is two orders of magnitude faster, but don't characterize the tradeoffs that
+result from their approximations.
+
+
+Asako:
+In section V.A., the authors claim that their method provides a method for
+classifying partially visible objects. This claim is unsupported.
+
+
+Dejan: (http://www.ros.org/wiki/openni_kinect/kinect_accuracy)
+In the synthetic data, the authors perform testing with artificial noise
+spanning from 0.5mm to 5.0mm. The reader has no way to know whether
+this is a representative range. What is the real-world noise of the Kinect,
+for example?
+
+
+ALL: - Can we actually really get this?
+Figure 4 shows an anomolous cross-over point at 3.5mm noise, where the
+relative performance of the algorithms seems to invert. The paper doesn't
+even comment on this interesting result!
+
+
+Zoli:
+Section VI.C. claims that training from views similar to that obtained by a
+real robot is an important aspect of their work. This claim is unsupported.
+(It being a "reasonable sounding" statement isn't enough!)
+
+
+Asako: Can you make graphs/plots?
+Table II requires a better visualization. The parsing and interpreting the
+significance of the 160 numbers in this table is too difficult. What am I
+looking for? What are the interesting "take home" messages?
+
+
+Dejan: Reformulate
+The authors state (VI.C.3) that the results for VOSCH were "slightly less
+convincing". What does this mean?
+
+
+Asako: Can we re-run the experiments?
+Rev1: The final experiment, at the end of section VI, involves an unspecified
+object segmentation algorithm, unspecified objects whose size is evidently
+known in advance, and uses hand-tuned (and unspecified) parameters. It is
+totally uncontrolled, unreplicatable, and thus virtually useless from an
+evaluation perspective.
+Rev2: While the method seems to works well in theory (supported by the
+simulation experiments), the real image/real objects experiments are less convincing:
+ConVOSCH(76.4%) > ColorCHLAC(74.6%) > VOSCH(70.4%) > GRSD(24.5%).
+However the realobject experiment is less convincing.
+Rev3: A major weakness is the results on real data, which show that ConVOSCH
+and ColorCHLAC both outperformed the rotationally invariant VOSCH
+descriptor, and the increased accuracy of ConVOSCH over ColorCHLAC is
+minimal. A second weakness is that, though using the linear subspace
+method to locate objects in cluttered scenes is one of the stated advantages
+of the proposed method, the demonstration of this is limited to three
+images of "correctly detected objects", clearly insufficient justification.
+Rev4: My main concern with the paper is that the experimental results are
+inconclusive. First, the differences between the various methods
+(features and classifiers) in the leave-one-out experiments (i.e.,
+Table II) appear to be statistically insignificant. Second, the
+cluttered experiments are only run on a small number of scenes and no
+quantitative analysis given. In light of the scene shown in Figure 1,
+I find this very disappointing.
+
+
+Dejan: the descriptors are not cobbled together, they had to be rather modified!!
+Overall, the authors present another descriptor that is cobbled together
+from earlier descriptors
+
+
+Dejan: - check
+Authors should check that acronyms are expanded before first use, and help
+the reader keep straight the many acronyms which appear throughout the
+paper. Most of these are not particularly suggestive of what they mean.
+
+
+Zoli:
+The authors do not comment much on the main results in TABLE IV.
+However, an indepth discussion and interpretation would be
+very relevant here.
+
+
+Asako:
+In Eq. 2-4: What is the "range" of the sums? There is no index below the
+sum symbols
+
+
+Zoli: We can give some comparison results to e.g. FPFH huh?
+I am aware that the runtimes quoted in the paper compare favorably to
+those obtained with point-based features on very dense point clouds, but a
+numerical comparison isn't given (beyond stating that voxel-based GRSD is
+2 orders of magnitude faster than original point-based GRSD).
+
+
+Zoli:
+Rev1: Confusingly, the authors state that "the objects were uniformly colored and symmetrical"
+so the rotational variance "did not expose in the table"; on the contrary, the
+objects are not _rotationally_ symmetrical and it seems that random
+rotations did significantly lower the results of the rotationally-variant
+features.
+Rev2: "the fact that ColorCHLAC is not rotation invariant did not expose in the
+table" -> Objects are not rotationally symmetrical! Random rotation does
+affect results for ColorCHLAC! This needs to be explained much better.
+
+
+Asako:
+"use the top d dimensions" -> This is probably "t" from the following
+paragraph, but "t" occurs with different meaning in this paragraph.
+Introduce a consistent, unique variable for the number of top PCA
+dimensions used.
+
+
+Zoli:
+Around here you say that "the additive property means that a global
+descriptor for an object cluster equals the summation of local descriptors of
+its sub-parts" but earlier you say "If we break up objects into reasonable
+sizes, its histogram can be approximated by the sum of the histograms of
+its sub-cells." Is this exact or an approximation? Why are objects being
+broken up into reasonable sizes? What is a reasonable size?
+"cubic subdivisions" -> Are these overlapping?
+
+Dejan:
+I found the introduction of the ConVOSCH and VOSCH descriptors in
+paragraph 4 ("In this paper...") very confusing. It would be more
+helpful to remove the parentheses and specify each descriptor
+separately (perhaps in a bulleted list with brief definition).
