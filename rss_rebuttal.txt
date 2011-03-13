@@ -35,8 +35,7 @@ we will include experiments with the arbitrarily oriented objects in the final v
 "detection of objects in clutter" was already shown and evaluated using ColorCHLAC, and we use the same approach here.
 We agree that more experiments have to be performed and will address this issue and discuss the results.
 =Rev3=
-We will include timings also for the original features. The use of LSM is in the possibility of applying 
-it without any pre-segmentation step.
+The use of LSM is in the possibility of applying it without any pre-segmentation step.
 Please also see the comments above. Regarding "If we break up objects...": the additive feature is 
 approximate, as for the voxels at the boundary of one part only the neighbors from the same part 
 are considered." However, this is not critical unless one considers extremely few
