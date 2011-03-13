@@ -1,3 +1,4 @@
+=Rev1=
 We would like to thank all reviewers for their constructive and critical 
 remarks. We will address all wording and grammar issues as well the difficulties
 with comprehending of formulae. In the continuation of this document we are going 
@@ -21,4 +22,8 @@ ColorCHLAC (columns 1-4). Take-home message is that the former outperform the la
 gives actual factual results. "On how to describe shape and color" - the lack
 of reliable Bag-Of-Experts system and the success of features for 2D data (e.g. SIFT)
 and 3D data (e.g. FPFH) suggest that developing all-in-one is a clear way to go.
- 
+=Rev2=
+
+=Rev3=
+
+=Rev4=
