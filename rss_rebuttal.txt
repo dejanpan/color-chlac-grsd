@@ -23,7 +23,17 @@ gives actual factual results. "On how to describe shape and color" - the lack
 of reliable Bag-Of-Experts system and the success of features for 2D data (e.g. SIFT)
 and 3D data (e.g. FPFH) suggest that developing all-in-one is a clear way to go.
 =Rev2=
-
+"the real image/real objects experiments are less convincing" the best three features performed similarly,
+but VOSCH has only 137 dimensions, while the other two around 1000. Since during testing we used the objects
+in the same upright orientation as during testing, the rotation invariance did not play a role. However,
+we would include experiments with arbitrarily orientated objects in the final version.
+"detection of objects in clutter" was already shown and evaluated using ColorCHLAC, and we use the same approach here.
+We agree that more experiments have to be performed and will address this issue and discuss the results.
 =Rev3=
-
+We will include timings also for the original features. The use of LSM is in the possibility of applying it without any pre-segmentation step.
+Please also see the comments above. Regarding "If we break up objects...", it is approximate, as for the voxels at the boundary
+the neighbors that are outside the considered region are not considered. However, this is not critical unless one considers extremely few
+voxels separately. This is what "reasonable size" refers to, that for example breaking up an object in cubes consisting of 2x2x2 voxels
+and summing the features up, would produce a different feature than the one computed for the whole object. This difference gets less and less
+as the size of the parts increase.
 =Rev4=
