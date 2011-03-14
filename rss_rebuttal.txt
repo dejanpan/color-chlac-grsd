@@ -1,54 +1,9 @@
-We would like to thank all reviewers for their constructive and critical 
-remarks. We will address all wording, grammar and clarity issues.
-The main contribution of the submitted paper 
-is in the theoretical consideration and the design of the new feature and not 
-so much in getting the industrial-grade recognition system working.
-That is on our future research agenda.
-Also, please note that ColorCHLAC was already compared to textured spin images, and
-other features combining 3D and 2D are hard to come by.
+We would like to thank all reviewers for their constructive and critical remarks. We will address all wording, grammar and clarity issues. The main contribution of the submitted paper is in the theoretical consideration and the design of the new feature and not so much in getting the industrial-grade recognition system working. That is on our future research agenda. Also, please note that ColorCHLAC was already compared to textured spin images, and other features combining 3D and 2D are hard to come by.
 =Rev1=
-"On handling of binarized colors" - we provide the 
-reference #12. "Dimensions 12 and 21 following Eq 3" - will be explained with a figure. "On GRSD being
-tersely described" - we will present the modified GRSD as an algorithm.
-"On classification of partially visible objects" - this claim is supported
-by reference #12. "On Kinect's noise" - an analysis is available here: 
-http://www.ros.org/wiki/openni_kinect/kinect_accuracy (note: not authors' site).
-"On anomalous cross-over in Fig 4" - SVM avoids over-fitting by maximizing the margin 
-between the different classes, while LSM penalizes deviations from the model 
-(i.e. the "regression line" of the training data). "On training from views similar to that obtained by real robot" -
-training and the testing data should be similar. "On results in Table II" -
-of especial interest are columns 5-8 which present classification results for ConVOSCH
-and VOSCH for the test data with different noise levels and compare them to GRSD and 
-ColorCHLAC (columns 1-4). Take-home message is that the former outperform the latter.
-"On slightly less convincing VOSCH results" - we will remove this claim as Table IV 
-gives actual factual results. "On how to describe shape and color" - the lack
-of reliable Bag-Of-Experts system and the success of features for 2D data (e.g. SIFT)
-and 3D data (e.g. FPFH) suggests that developing an all-in-one descriptor is a clear way to go.
-"On why CHLAC or why GRSD" - because both features have similar, voxel grid-based
-structures, which enables simultaneous computation with our adaptations, and
-eliminates the need to compute interest points due to the fast computation.
+"Handling of binarized colors" - we provide the reference #12. "Dimensions 12 and 21 following Eq 3" - will be explained with a figure. "GRSD being tersely described" - we will present the modified GRSD as an algorithm. "Classification of partially visible objects" - this claim is supported by reference #12. "Kinect's noise" - please see http://www.ros.org/wiki/openni_kinect/kinect_accuracy (not authors' site). "Anomalous cross-over in Fig 4" - SVM avoids over-fitting by maximizing the margin between the different classes, while LSM penalizes deviations from the model ("regression line" of the training data). "Training from views similar to that obtained by real robot" - training and the testing data should be similar. "Results in Table II" - of especial interest are columns 5-8 which present classification results for ConVOSCH and VOSCH for the test data with different noise levels and compare them to GRSD and ColorCHLAC (columns 1-4). Take-home message is that the former outperform the latter. "Slightly less convincing VOSCH results" - we will remove this claim as Table IV gives actual factual results. "How to describe shape and color" - the lack of reliable Bag-Of-Experts system and the success of features for 2D data (e.g. SIFT) and 3D data (e.g. FPFH) suggests that developing an all-in-one descriptor is a clear way to go. "Why CHLAC or why GRSD" - because both features have similar, voxel grid-based structures, which enables simultaneous computation with our adaptations, and eliminates the need to compute interest points due to the fast computation.
 =Rev2=
-"the real image/real objects experiments are less convincing" - the best three features performed similarly,
-but VOSCH has only 137 dimensions, while the other two around 1000. Since during testing we used the objects
-in the same upright orientation as during training, the rotation invariance did not play a role. However,
-we will include experiments with the arbitrarily oriented objects in the final version.
-"detection of objects in clutter" was already shown and evaluated using ColorCHLAC, and we use the same approach here.
-We agree that more experiments have to be performed and will address this issue and discuss the results.
+"The real image/real objects experiments are less convincing" - the best three features performed similarly, but VOSCH has only 137 dimensions, while the other two around 1000. Since during testing we used the objects in the same upright orientation as during training, the rotation invariance did not play a role. However, we will include experiments with the arbitrarily oriented objects in the final version. "Detection of objects in clutter" was already shown and evaluated using ColorCHLAC, and we use the same approach here. We agree that more experiments have to be performed and will address this issue and discuss the results.
 =Rev3=
-The use of LSM is in the possibility of applying it without any pre-segmentation step.
-Please also see the comments above. "If we break up objects..." - the additive feature is 
-approximate, as for the voxels at the boundary of one part only the neighbors from the same part 
-are considered. This is not critical unless one considers extremely few
-voxels separately. This difference gets 
-less and less as the size of the parts increase.
+The use of LSM is in the possibility of applying it without any pre-segmentation step. Please also see the comments above. "If we break up objects..." - the additive feature is approximate, as for the voxels at the boundary of one part only the neighbors from the same part are considered. This is not critical unless one considers extremely few voxels separately. This difference gets less and less as the size of the parts increase.
 =Rev4=
-"On combining descriptors vs. developing ones that work in multiple features spaces"
-- there are 2 main issues with it: if one processes e.g. images and pointclouds
-separately this leads to increased computational costs,
-and the decision on how to combine the results of multiple classifiers trained on different classes is not straight-forward
-"On the differences between the various methods
-(features and classifiers) in the leave-one-out experiments (i.e.,Table II) being
-statistically insignificant" - you probably refer to Table III where we do not show 
-classification results but rather explain how well our models fit to the training data.
-Rates above 95% are necessary in order to perform statistically sound tests.
-For the evaluation on real data please see the intro paragraph.
+"Combining descriptors vs. developing ones that work in multiple features spaces" - there are 2 main issues with it: if one processes e.g. images and point clouds separately this leads to increased computational costs, and the decision on how to combine the results of multiple classifiers trained on different classes is not straight-forward. "The differences in the leave-one-out experiments (i.e.,Table II) being statistically insignificant" - you probably refer to Table III where we do not show classification results but rather explain how well our models fit to the training data. Rates above 95% are necessary in order to perform statistically sound tests.For the evaluation on real data please see the intro paragraph.
