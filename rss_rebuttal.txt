@@ -8,7 +8,7 @@ so much in getting the industrial, bullet-proof recognition system working.
 The latter issue is, as clearly stated in the paper, on our future research agenda.
 =Rev1=
 To "3x3x3 grid" - will be fixed. "On handling of binarized colors" - we provide the 
-reference #12. "Dimensions 12 and 21 following Eq 3" - [Asako]. "On GRSD being
+reference #12. "Dimensions 12 and 21 following Eq 3" - will be explained with a figure. "On GRSD being
 tersely described" - we will provide modified GRSD implementation as an algorithm.
 "On classification of partially visible objects" - this claim is supported
 by reference #12. "On Kinect's noise" - an analysis is available here: 
