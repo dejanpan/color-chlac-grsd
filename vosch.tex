@@ -356,15 +356,17 @@ a voxel status $\bm{f}(\bm{x})\in \mathbb{N}^6$ is defined as follows:
 %
 %Color-CHLAC features are the integral of $\bm{f}(\bm{x})$ or correlations of $\bm{f}(\bm{x})$ between neighboring voxels.
 Letting ${\bm a_i}$ be a displacement vector from the reference voxel to its neighboring voxel, 
-the elements of a ColorCHLAC descriptor are calculated by the following equations:
+the elements of a ColorCHLAC descriptor extracted from a voxel grid $V$ are calculated by the following equations:
 \begin{equation}\label{eq:0th}
-  {\bm q_1} = \sum \bm{f}({\bm x})
+  {\bm q_1} = \sum_{{\bm x} \in V} \bm{f}({\bm x})
 \end{equation}
+\vspace{-2mm}
 \begin{equation}\label{eq:0th_1}
-  {\bm q_2} = \sum \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}) \\
+  {\bm q_2} = \sum_{{\bm x} \in V} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}) \\
 \end{equation}
+\vspace{-2mm}
 \begin{equation}\label{eq:1st}
-  {\bm q_3}({\bm a}_i) = \sum \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \;\;\; (i=0, \dots 12) \\
+  {\bm q_3}({\bm a}_i) = \sum_{{\bm x} \in V} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \;\;\; (i=0, \dots 12) \\
 \end{equation}
 %
 Since these values are summed up around a voxel grid, there is redundant computation of the 
@@ -374,7 +376,10 @@ The matrix computed by (\ref{eq:1st}) is expanded into a column vector of 36 ele
 Therefore the dimension of the vector calculated by (\ref{eq:0th}) is 6, while that by 
 (\ref{eq:1st}) is 468 (=$36\cdot13$).
 The second part of the ColorCHLAC descriptor is computed from the binarized values of $r(\bm{x})$, $g(\bm{x})$ 
-and $b(\bm{x})$ (See~\cite{kanezaki2010icra} for details). 
+and $b(\bm{x})$. 
+To decide the threshold of color binarization, 
+    we apply the histogram threshold selection method of~\cite{otsu1979} to the R, G and B values respectively, 
+    using the voxel colors of all objects in the database as sample data.
 ColorCHLAC features calculated by (\ref{eq:0th_1}) include redundant elements, e.g., $r(\bm{x})\times g(\bm{x})$ and $g(\bm{x})\times r(\bm{x})$.
 Excluding the redundant elements, the dimension is thus 12 if color values are binarized, and 21 otherwise (see Figure~\ref{fig:eq3_colorCHLAC}). 
 Finally a full ColorCHLAC vector is obtained by concatenating the two vectors from binarized 
@@ -383,7 +388,7 @@ becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data).
 
 \begin{figure}[htb!]
   \begin{center}
-    \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/Eq3_in_colorCHLAC.png}
+    \includegraphics[width=.8\columnwidth]{figures/colorCHLAC/Eq3_in_colorCHLAC.png}
   \caption{Elements in ColorCHLAC features calculated by (\ref{eq:0th_1}). $r$ represents $r(\bm{x})$ in (\ref{eq:voxel}). White grids are excluded since they are redundant.}
   \label{fig:eq3_colorCHLAC}
 \end{center}
@@ -413,7 +418,7 @@ the actual dimensionality is 20.
 In order to generate VOSCH we refined ColorCHLAC descriptor to be rotation-invariant by bringing all  
 13 different vectors given by (\ref{eq:1st}) together by the following equation: 
 \begin{equation}\label{eq:1st_new}
-  {\bm q_4} = \sum_{i=0}^{12} {\bm q_3}({\bm a}_i) = \sum_{i=0}^{12} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \\
+  {\bm q_4} = \sum_{i=0}^{12} {\bm q_3}({\bm a}_i) = \sum_{i=0}^{12}\sum_{{\bm x} \in V} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \\
 \end{equation}
 %
 This reduces the dimensionality of the descriptor down to 117 (6+36+12 for non-binarized data plus 6+36+21 
@@ -438,7 +443,7 @@ reported in~\cite{GRSD10Humanoids}.
 
 \subsection{ConVOSCH}
 The idea of ConVOSCH is to simply estimate ColorCHLAC and GRSD in two separate steps, 
-concatenate resulting histograms and normalize the final result \todo{Asako: [-1, 1]}x. This preserves the 
+concatenate resulting histograms and normalize the final result \todo{Asako: [0, 1]}x. This preserves the 
 high dimensionality and thus accuracy for the color space, but on the other hand 
 makes the feature to the extent rotation-variant and slightly slower for use 
 in the classification schemes.
@@ -471,18 +476,18 @@ histograms in bottom-right part identical too).
 \subsection{Linear Subspace Method}
 \label{sec:subspace}
 LSM is an established learning method for classification. 
+For the first step, we solve PCA for all the descriptors extracted from all the trained objects, 
+and then use the top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
 As a training process, several feature vectors that represent each object are extracted, 
 and then Principal Component Analysis (PCA) for them is solved. 
 Similarly to ~\cite{kanezaki2010icra}, we divide the whole voxel grid of each object into 
-cubic subdivisions of a certain size ($7cm\times7cm\times7cm$ in our case), and then extract feature vectors from all the subdivisions for training. 
-Let number of the subdivisions be $N$, the dimension of the feature vector be $d$, 
+cubic subdivisions of a certain size ($7cm\times7cm\times7cm$ with $5cm\times5cm\times5cm$ overlapping in our case), and then extract feature vectors from all the subdivisions for training. 
+Let number of the subdivisions be $N$ 
 and the training feature vectors be $\bm{z}_t \in R^d, t=1,2,...N$. 
 Then the eigenvectors of $R=\frac{1}{N} \sum^{N}_{t=1} \bm{z}_t \bm{z}_t^T$ are computed. 
-Note that we solve PCA for all the descriptors extracted from all the trained objects for the first step, 
-and then use the top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
 
 To classify and identify a detected object in environments, the system extracts one feature vector from the whole voxel grid of the object. 
-Letting the feature vector be $\bm{z}$ and the matrix of top $t$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{it})$,
+Letting the feature vector be $\bm{z}$ and the matrix of top $c$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{it})$,
 the similarity between the query part and the $i$-th object in the database is calculated by the following equation:
 \begin{eqnarray}\label{eq:y_calc}
   %\hspace{-1mm}
@@ -491,7 +496,7 @@ the similarity between the query part and the $i$-th object in the database is c
 There is an advantage of using LSM with this kind of histogram-based descriptors which have the additive property. 
 The additive property means that a global descriptor for an object cluster equals the summation of local descriptors of its sub-parts. 
 Owing to this property, one feature vector computed from each object cluster in environments can be classified by projecting it to 
-each subspace of database objects, regardless of the size of the object cluster, thus providing a method for classifying partially visible objects.
+each subspace of database objects, regardless of the size of the object cluster, thus providing a fairly fast method for classifying partially visible objects.
 
 \subsection{Support Vector Machine-based Classification}
 We also performed classification using SVM in our experiments.
@@ -568,19 +573,19 @@ $\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$
 \end{center}
 For LSM classification we set the dimension of the compressed feature space $d$ to 
 50 for the ColorCHLAC, ConVOSCH and VOSCH, while the GRSD was left uncompressed. 
-The dimensionality of the subspace $t$ was set to 3.
+The dimensionality of the subspace $c$ was set to 3.
 The results of the test in Figure~\ref{fig:synthetic},
 show VOSCH (right-most two columns) outperforming all other features.
-For a better overview of the results using VOSCH please also see Figure~\ref{fig:plot}.
+%% For a better overview of the results using VOSCH please also see Figure~\ref{fig:plot}.
 
-\begin{figure}[htb!]
-  \begin{center}
-    \includegraphics[width=.98\columnwidth]{figures/comparison/vosch.pdf}
-    \caption{The effect of simulated noise on the classification results using VOSCH with LSM and SVM
-             (both with and without random rotations of test data, as presented in Figure~\ref{fig:synthetic}).}
-    \label{fig:plot}
-  \end{center}
-\end{figure}
+%% \begin{figure}[htb!]
+%%   \begin{center}
+%%     \includegraphics[width=.98\columnwidth]{figures/comparison/vosch.pdf}
+%%     \caption{The effect of simulated noise on the classification results using VOSCH with LSM and SVM
+%%              (both with and without random rotations of test data, as presented in Figure~\ref{fig:synthetic}).}
+%%     \label{fig:plot}
+%%   \end{center}
+%% \end{figure}
 
 Since the GRSD is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
 Additionally, since objects were uniformly colored and symmetrical, the fact that ColorCHLAC 
@@ -635,7 +640,8 @@ had to be trained with the artificial rotations to achieve rotation invariance.
   \centering
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_1.png}
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_2.png}
-  \caption{Comparison of the features and classifiers on the artificial data. }
+  \caption{The effect of simulated noise on the classification results using GRSD, ColorCHLAC, ConVOSCH and VOSCH with LSM and SVM
+    (both with and without random rotations of test data).}
   \label{fig:synthetic}
 \end{figure*}
 
@@ -719,7 +725,7 @@ and textureless objects (a and b), objects with similar shapes (c) and a scene w
 altered lighting conditions (d). We acquired the data from 3 substantially different views 
 as also shown in Figure~\ref{fig:novel_views}. Object candidate clusters were detected
 by first finding a major horizontal planar surface within the point cloud, as done in~\cite{Rusu09IROS_ClosingLoop}.
-For these experiments we set 15 as the dimension of subspace $t$ in LSM.
+For these experiments we set 15 as the dimension of subspace $c$ in LSM.
 
 In total we tested on 72 views, achieving the highest rates with SVM, as shown in Table~\ref{tbl:novel}.
 The results for VOSCH were slightly less convincing, but more testing is needed to make a final judgment.
