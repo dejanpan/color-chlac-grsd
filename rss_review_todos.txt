@@ -1,17 +1,17 @@
 Asako:
 The summations in
-eqns 2-4 are over an unspecified voxel grid, for example. The handling of
-missing data in eqn 1-- by assigning a zero vector-- seems odd. It is not
+eqns 2-4 are over an unspecified voxel grid, for example. --- DONE
+The handling of missing data in eqn 1-- by assigning a zero vector-- seems odd. It is not
 obvious that this is the "right thing to do". (Why not, for example, sum only
-over the voxels which exist?) Several other assumptions are silently made;
-evidently, we are using a 3x3x3 grid (yielding 26 neighbors), but the reader
+over the voxels which exist?) --- NOT DONE
+Several other assumptions are silently made; evidently, we are using a 3x3x3 grid (yielding 26 neighbors), but the reader
 is left to figure this out on their own. Seemingly important details (such as
 the handling of binarized colors) are not described at all. The omission of
 these details makes the paper harder to read, as the reader must jump
 back and forth between different papers seeking out the relevant
 information. Similarly, other "magic numbers" suddenly appear: we end up
 with 12 or 21 elements without any explanation. These shortcomings make
-replication needlessly difficult!
+replication needlessly difficult! --- DONE
 
 
 Dejan, Zoli - Lets put the original algorithm from IJRR journal in, huh?
@@ -48,7 +48,7 @@ real robot is an important aspect of their work. This claim is unsupported.
 (It being a "reasonable sounding" statement isn't enough!)
 
 
-Asako: Can you make graphs/plots?
+Asako: Can you make graphs/plots? --- DONE
 Table II requires a better visualization. The parsing and interpreting the
 significance of the 160 numbers in this table is too difficult. What am I
 looking for? What are the interesting "take home" messages?
@@ -102,7 +102,7 @@ However, an indepth discussion and interpretation would be
 very relevant here.
 
 
-Asako:
+Asako: --- DONE
 In Eq. 2-4: What is the "range" of the sums? There is no index below the
 sum symbols
 
@@ -125,7 +125,7 @@ table" -> Objects are not rotationally symmetrical! Random rotation does
 affect results for ColorCHLAC! This needs to be explained much better.
 
 
-Asako:
+Asako: --- DONE
 "use the top d dimensions" -> This is probably "t" from the following
 paragraph, but "t" occurs with different meaning in this paragraph.
 Introduce a consistent, unique variable for the number of top PCA
