@@ -14,14 +14,15 @@ with 12 or 21 elements without any explanation. These shortcomings make
 replication needlessly difficult! --- DONE
 
 
-Dejan, Zoli - Lets put the original algorithm from IJRR journal in, huh?
+Dejan, Zoli: --- DONE 
+Lets put the original algorithm from IJRR journal in, huh?
 GRSD is extremely tersely described. The original version involves ray
 tracing, but the authors claim that it is similar to ColorCHLAC (which is
 essentially computing moments over the voxel data). It would be impossible
 to reconstruct the author's algorithm--- even approximately--- from this
 poorly documented section. The authors claim that their modified approach
 is two orders of magnitude faster, but don't characterize the tradeoffs that
-result from their approximations.
+result from their approximations. 
 
 
 Asako:
@@ -29,23 +30,23 @@ In section V.A., the authors claim that their method provides a method for
 classifying partially visible objects. This claim is unsupported.
 
 
-Dejan: (http://www.ros.org/wiki/openni_kinect/kinect_accuracy)
+Dejan: (http://www.ros.org/wiki/openni_kinect/kinect_accuracy) --- DONE
 In the synthetic data, the authors perform testing with artificial noise
 spanning from 0.5mm to 5.0mm. The reader has no way to know whether
 this is a representative range. What is the real-world noise of the Kinect,
-for example?
+for example? 
 
 
-ALL: - Can we actually really get this?
+ALL: - Can we actually really get this? --- DONE (Figure removed)
 Figure 4 shows an anomolous cross-over point at 3.5mm noise, where the
 relative performance of the algorithms seems to invert. The paper doesn't
-even comment on this interesting result!
+even comment on this interesting result! 
 
 
-Zoli:
+Zoli: --- DONE
 Section VI.C. claims that training from views similar to that obtained by a
 real robot is an important aspect of their work. This claim is unsupported.
-(It being a "reasonable sounding" statement isn't enough!)
+(It being a "reasonable sounding" statement isn't enough!) 
 
 
 Asako: Can you make graphs/plots? --- DONE
@@ -54,7 +55,7 @@ significance of the 160 numbers in this table is too difficult. What am I
 looking for? What are the interesting "take home" messages?
 
 
-Dejan: Reformulate
+Dejan: Reformulate -- DONE
 The authors state (VI.C.3) that the results for VOSCH were "slightly less
 convincing". What does this mean?
 
@@ -114,7 +115,7 @@ numerical comparison isn't given (beyond stating that voxel-based GRSD is
 2 orders of magnitude faster than original point-based GRSD).
 
 
-Zoli:
+Zoli: -- DONE (all objects but CONE are symmetrical)
 Rev1: Confusingly, the authors state that "the objects were uniformly colored and symmetrical"
 so the rotational variance "did not expose in the table"; on the contrary, the
 objects are not _rotationally_ symmetrical and it seems that random
@@ -132,7 +133,7 @@ Introduce a consistent, unique variable for the number of top PCA
 dimensions used.
 
 
-Zoli:
+Zoli: -- DONE (I put in text from rebuttal but it has to be revised)
 Around here you say that "the additive property means that a global
 descriptor for an object cluster equals the summation of local descriptors of
 its sub-parts" but earlier you say "If we break up objects into reasonable
