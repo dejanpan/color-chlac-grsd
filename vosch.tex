@@ -126,7 +126,7 @@ of approaches~\cite{Varma07learningthe}.
 In this paper, we report on our work on the two variations of a novel descriptor
 which builds upon the idea of the
 Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and the
-Color Cubic Higher-order Local Auto-Correlation descriptor (ColorCHLAC~\cite{kanezaki2010tvc}).
+Circular Color Cubic Higher-order Local Auto-Correlation descriptor (C$^3$-HLAC~\cite{kanezaki2011icra}).
 We termed it (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
 
 \begin{figure}[htb!]
@@ -151,11 +151,11 @@ in natural scenes.}
 
 The strength of the descriptor lies in its ability to consider geometric and
 visual features in a unified manner to facilitate object classification. The two
-underlying features (GRSD, ColorCHLAC) have been carefully selected because of 
+underlying features (GRSD, C$^3$-HLAC) have been carefully selected because of 
 their similar structures and the way they are computed from voxelized 3D data. 
-While ConVOSCH is a mere concatenation of GRSD and ColorCHLAC histograms, 
+While ConVOSCH is a mere concatenation of GRSD and C$^3$-HLAC histograms, 
 VOSCH is developed such that it allows for its computation in a single step because 
-of the modified underlying algorithmic properties for GRSD and ColorCHLAC. 
+of the modified underlying algorithmic properties for GRSD and C$^3$-HLAC. 
 Both features count relations between neighboring voxels, capturing geometric 
 surface type and texture transitions at the same time.
 These features can be used to perform classification of one object against 63 
@@ -219,7 +219,7 @@ we conclude and give an outlook on our future work.
 
 \section{Related Work}
 \label{sec:rl}
-%\item Color CHLAC (Asako)~\cite{kanezaki2010icra}\cite{kanezaki2010tvc}
+%\item Color CHLAC (Asako)~\cite{kanezaki2011icra}\cite{kanezaki2010tvc}
 % \item textured-spin images~\cite{Johnson_spin_images}
 % \item A sparse texture representation using local affine
 % regions~\cite{Lazebnik05asparse}
@@ -263,15 +263,15 @@ geometry and color information in proper balance is to extract descriptors
 represented by patterns of shape-and-color co-occurrence.  For example, textured
 spin-image~\cite{cortelazzo2006} splits well-known
 spin-image~\cite{Johnson_spin_images} descriptors into several layers
-according to given levels of luminance. ColorCHLAC~\cite{kanezaki2010icra} 
+according to given levels of luminance. C$^3$-HLAC~\cite{kanezaki2011icra} 
 splits the CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns 
 depending on the relative position of neighboring voxels, into RGB channels and the correlation 
-space of these channels.  In \cite{kanezaki2010icra}, the ColorCHLAC descriptor is used as a local
+space of these channels.  In \cite{kanezaki2011icra}, the C$^3$-HLAC descriptor is used as a local
 descriptor in the training process and as a global descriptor describing each
 object cluster in the recognition process. This takes advantage of the combination
 of the Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property, 
 which means a global descriptor for an object cluster is computed by summing up the local descriptors of its sub-parts.
-Since computation of Color-CHLAC is on voxelized data, it is more efficient
+Since computation of C$^3$-HLAC is on voxelized data, it is more efficient
 than the point-based spin-image approach.
 
 \section{System Overview}
@@ -288,7 +288,7 @@ objects in natural scenes.
 % % % construction, ii)database assembly and training of object models and iii)testing,
 % % % we solved each of them individually.
 To construct the ConVOSCH and VOSCH descriptors, we had to modify the original algorithms
-such that the ColorCHLAC became rotation invariant and GRSD 
+such that the C$^3$-HLAC became rotation invariant and GRSD 
 additive. We thus obtained descriptor histograms with 
 \emph{1001} bins for ConVOSCH and \emph{137} bins for VOSCH representing the transitions between its different dimensions.
 For constructing a database of object models (Figure~\ref{fig:robot} bottom)
@@ -326,17 +326,17 @@ used as training examples (which we intend to publish after the review process).
 \section{Feature Estimation}
 \label{sec:features}
 As already mentioned earlier, the construction of ConVOSCH and VOSCH features is based on the idea of 
-ColorCHLAC and GRSD features. For the sake of clarity we will thus briefly present
+C$^3$-HLAC and GRSD features. For the sake of clarity we will thus briefly present
 their respective construction.
 Next, we will present the necessary modifications to them in order to obtain the proposed features.
 % Since both approaches work on voxelized data, making their computation a single process
 % and combining them in a single feature is an efficient solution.
 
-\subsection{Color CHLAC}
+\subsection{C$^3$-HLAC}
 \label{sec:color_chlac}
-ColorCHLAC descriptor is a high-dimensional vector measuring the summation of the 
+C$^3$-HLAC descriptor is a high-dimensional vector measuring the summation of the 
 multiplied RGB values of neighboring voxels in a 3$\times$3$\times$3 grid around a voxel grid of arbitrary size. 
-Each bin in a ColorCHLAC descriptor is differentiated by the RGB color space and the 
+Each bin in a C$^3$-HLAC descriptor is differentiated by the RGB color space and the 
 relative position of the two neighboring voxels. 
 Let $\bm{x}=(x,y,z)^T$ be the position of a voxel, $p(\bm{x})$ be the flag for occupancy 
 of the voxel, and $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ be its RGB values normalized 
@@ -357,7 +357,7 @@ a voxel status $\bm{f}(\bm{x})\in \mathbb{N}^6$ is defined as follows:
 %
 %Color-CHLAC features are the integral of $\bm{f}(\bm{x})$ or correlations of $\bm{f}(\bm{x})$ between neighboring voxels.
 Letting ${\bm a_i}$ be a displacement vector from the reference voxel to its neighboring voxel, 
-the elements of a ColorCHLAC descriptor extracted from a voxel grid $V$ are calculated by the following equations:
+the elements of a C$^3$-HLAC descriptor extracted from a voxel grid $V$ are calculated by the following equations:
 \begin{equation}\label{eq:0th}
   {\bm q_1} = \sum_{{\bm x} \in V} \bm{f}({\bm x})
 \end{equation}
@@ -376,21 +376,21 @@ As a result, the number of variations in ${\bm a_i}$ is 13, which is a half of a
 The matrix computed by (\ref{eq:1st}) is expanded into a column vector of 36 elements.
 Therefore the dimension of the vector calculated by (\ref{eq:0th}) is 6, while that by 
 (\ref{eq:1st}) is 468 (=$36\cdot13$).
-The second part of the ColorCHLAC descriptor is computed from the binarized values of $r(\bm{x})$, $g(\bm{x})$ 
+The second part of the C$^3$-HLAC descriptor is computed from the binarized values of $r(\bm{x})$, $g(\bm{x})$ 
 and $b(\bm{x})$. 
 To decide the threshold of color binarization, 
     we apply the histogram threshold selection method of~\cite{otsu1979} to the R, G and B values respectively, 
     using the voxel colors of all objects in the database as sample data.
-ColorCHLAC features calculated by (\ref{eq:0th_1}) include redundant elements, e.g., $r(\bm{x})\times g(\bm{x})$ and $g(\bm{x})\times r(\bm{x})$.
+C$^3$-HLAC features calculated by (\ref{eq:0th_1}) include redundant elements, e.g., $r(\bm{x})\times g(\bm{x})$ and $g(\bm{x})\times r(\bm{x})$.
 Excluding the redundant elements, the dimension is thus 12 if color values are binarized, and 21 otherwise (see Figure~\ref{fig:eq3_colorCHLAC}). 
-Finally a full ColorCHLAC vector is obtained by concatenating the two vectors from binarized 
-color voxel data and from original color voxel data. Then the dimension of ColorCHLAC feature vector 
+Finally a full C$^3$-HLAC vector is obtained by concatenating the two vectors from binarized 
+color voxel data and from original color voxel data. Then the dimension of C$^3$-HLAC feature vector 
 becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data). 
 
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.8\columnwidth]{figures/colorCHLAC/Eq3_in_colorCHLAC.png}
-  \caption{Elements in ColorCHLAC features calculated by (\ref{eq:0th_1}). $r$ represents $r(\bm{x})$ in (\ref{eq:voxel}). White grids are excluded since they are redundant.}
+  \caption{Elements in C$^3$-HLAC features calculated by (\ref{eq:0th_1}). $r$ represents $r(\bm{x})$ in (\ref{eq:voxel}). White grids are excluded since they are redundant.}
   \label{fig:eq3_colorCHLAC}
 \end{center}
 \end{figure}
@@ -437,7 +437,7 @@ the actual dimensionality is 20.
 
 \subsection{VOSCH}
 \label{sec:VOSCH}
-In order to generate VOSCH we refined ColorCHLAC descriptor to be rotation-invariant by bringing all  
+In order to generate VOSCH we refined C$^3$-HLAC descriptor to be rotation-invariant by bringing all  
 13 different vectors given by (\ref{eq:1st}) together by the following equation: 
 \begin{equation}\label{eq:1st_new}
   {\bm q_4} = \sum_{i=0}^{12} {\bm q_3}({\bm a}_i) = \sum_{i=0}^{12}\sum_{{\bm x} \in V} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \\
@@ -447,7 +447,7 @@ This reduces the dimensionality of the descriptor down to 117 (6+36+12 for non-b
 for binarized data) with respect to the original implementation. 
 % This is the similar way that GRSD takes as described in the next subsection, where the transitions between the reference 
 % voxel and all the 26 nighbors are combined together. 
-By doing so the refined ColorCHLAC descriptor is well matched with GRSD which gives a significant 
+By doing so the refined C$^3$-HLAC descriptor is well matched with GRSD which gives a significant 
 robustness to rotation and still shows a powerful expressivity for color textures.
 
 GRSD, as shown in~\cite{GRSD10Humanoids}, originally used
@@ -455,10 +455,10 @@ ray-tracing in order to find transitions between surface types. To make it fit i
 we i)omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)discarded
 the normalization of histogram bins.
 
-These modifications allow us to create histograms which, like in the case of ColorCHLAC, are additive.
+These modifications allow us to create histograms which, like in the case of C$^3$-HLAC, are additive.
 The latter property can best be described as follows. If we break up objects into reasonable sizes, 
 its histogram can be approximated by the sum of the histograms of its sub-cells. 
-%Unlike in ColorCHLAC, free space is considered, but we are looking
+%Unlike in C$^3$-HLAC, free space is considered, but we are looking
 %at the neighbors of occupied voxels only. 
 \todo{The additive feature is approximate, as for the voxels at the boundary of one part 
 only the neighbors from the same part are considered. This is not critical unless 
@@ -469,7 +469,7 @@ $ms$ range which is 2 orders of magnitude faster than the original implementatio
 reported in~\cite{GRSD10Humanoids}.
 
 \subsection{ConVOSCH}
-The idea of ConVOSCH is to simply estimate ColorCHLAC and GRSD in two separate steps, 
+The idea of ConVOSCH is to simply estimate C$^3$-HLAC and GRSD in two separate steps, 
 concatenate resulting histograms and normalize the final result \todo{Asako: [0, 1]}x. This preserves the 
 high dimensionality and thus accuracy for the color space, but on the other hand 
 makes the feature to the extent rotation-variant and slightly slower for use 
@@ -477,7 +477,7 @@ in the classification schemes.
 \vspace{2ex}
 
 The advantage of the VOSCH and ConVOSCH features is depicted in Figure~\ref{fig:comparison},
-where we see that the visual appearance-based feature such as ColorCHLAC can not
+where we see that the visual appearance-based feature such as C$^3$-HLAC can not
 discern the orange cube from the orange die (note that the histograms in bottom-left part are identical). 
 On the other hand we have a shape-based feature GRSD
 which can not discern between the orange and the blue die (likewise the
@@ -490,7 +490,7 @@ histograms in bottom-right part identical too).
     \includegraphics[width=.32\columnwidth]{figures/comparison/dice2.png}
     \includegraphics[width=.47\columnwidth]{figures/comparison/orange_cube_vs_orange_dice.png}
     \includegraphics[width=.47\columnwidth]{figures/comparison/blue_vs_orange_dice_grsd.png}
-  \caption{ColorCHLAC can not differentiate the die from the cube (identical histograms on the left), 
+  \caption{C$^3$-HLAC can not differentiate the die from the cube (identical histograms on the left), 
     while GRSD can not differentiate the different colors (identical histograms on the right). 
     Their combination however produces different signatures for all of them (Figure~\ref{fig:grsd_cchlac}).}
   \label{fig:comparison}
@@ -504,10 +504,10 @@ histograms in bottom-right part identical too).
 \label{sec:subspace}
 LSM is an established learning method for classification. 
 For the first step, we solve PCA for all the descriptors extracted from all the trained objects, 
-and then use the top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2010icra}.
+and then use the top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2011icra}.
 As a training process, several feature vectors that represent each object are extracted, 
 and then Principal Component Analysis (PCA) for them is solved. 
-Similarly to ~\cite{kanezaki2010icra}, we divide the whole voxel grid of each object into 
+Similarly to ~\cite{kanezaki2011icra}, we divide the whole voxel grid of each object into 
 cubic subdivisions of a certain size ($7cm\times7cm\times7cm$ with $5cm\times5cm\times5cm$ overlapping in our case), and then extract feature vectors from all the subdivisions for training. 
 Let number of the subdivisions be $N$ 
 and the training feature vectors be $\bm{z}_t \in R^d, t=1,2,...N$. 
@@ -554,8 +554,8 @@ tests using SVM and LSM classifiers on the following two sets of data:
 i)~7 artificially generated objects with 7 different colors, and
 ii)~63 objects of daily use, scanned using a Kinect sensor and a rotating table
 (shown in the bottom part of Figure~\ref{fig:robot}). 
-We measured the recognition rates against the original implementations of ColorCHLAC and 
-GRSD. Since ColorCHLAC was already shown to outperform Textured Spin Images
+We measured the recognition rates against the original implementations of C$^3$-HLAC and 
+GRSD. Since C$^3$-HLAC was already shown to outperform Textured Spin Images
 we did not include it in our experiments.
 
 \subsection{Feature Extraction}
@@ -601,7 +601,7 @@ $\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$
 The deviations were set to correspond to the actual noise of Kinect 
 sensor~\footnote{\url{http://www.ros.org/wiki/openni_kinect/kinect_accuracy}}.
 For LSM classification we set the dimension of the compressed feature space $d$ to 
-50 for the ColorCHLAC, ConVOSCH and VOSCH, while the GRSD was left uncompressed. 
+50 for the C$^3$-HLAC, ConVOSCH and VOSCH, while the GRSD was left uncompressed. 
 The dimensionality of the subspace $c$ was set to 3.
 The results of the test in Figure~\ref{fig:synthetic},
 show VOSCH (right-most two columns) outperforming all other features.
@@ -617,15 +617,15 @@ show VOSCH (right-most two columns) outperforming all other features.
 %% \end{figure}
 
 Since the GRSD is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
-Additionally, since objects were uniformly colored and mostly symmetrical, the fact that ColorCHLAC 
-is not rotation invariant did not influence the results in the table. In the original implementation ColorCHLAC 
+Additionally, since objects were uniformly colored and mostly symmetrical, the fact that C$^3$-HLAC 
+is not rotation invariant did not influence the results in the table. In the original implementation C$^3$-HLAC 
 had to be trained with the artificial rotations to achieve rotation invariance.
 
 %% \begin{table*}[ht!]
 %% \begin{center}
 %% \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}\hline
 %% % use packages: color,colortbl
-%% \rowcolor{tcA} \textbf{} & \textbf{} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{GRSD / 20D}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{ColorCHLAC / 981D}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{ConVOSCH / 1001D}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{VOSCH / 137D}}\\
+%% \rowcolor{tcA} \textbf{} & \textbf{} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{GRSD / 20D}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{C$^3$-HLAC / 981D}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{ConVOSCH / 1001D}} & \mc{2}{>{\columncolor{tcA}}c|}{\textbf{VOSCH / 137D}}\\
 %% \cline{3-10}
 %% \rowcolor{tcA} \textbf{Noise STD} & \textbf{Rotation} & \textbf{LSM} & \textbf{SVM} & \textbf{LSM} & \textbf{SVM} & \textbf{LSM} & \textbf{SVM} & \textbf{LSM} & \textbf{SVM}\\
 %% \hline
@@ -669,7 +669,7 @@ had to be trained with the artificial rotations to achieve rotation invariance.
   \centering
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_1.png}
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_2.png}
-  \caption{The effect of simulated noise on the classification results using GRSD, ColorCHLAC, ConVOSCH and VOSCH with LSM and SVM
+  \caption{The effect of simulated noise on the classification results using GRSD, C$^3$-HLAC, ConVOSCH and VOSCH with LSM and SVM
     (both with and without random rotations of test data).}
   \label{fig:synthetic}
 \end{figure*}
@@ -733,7 +733,7 @@ The numbers in parentheses are the percentages of correctly classified views usi
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-\rowcolor{tcA} & \textbf{GRSD} & \textbf{ColorCHLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
+\rowcolor{tcA} & \textbf{GRSD} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
 \rowcolor{tcA} & \textbf{20D [\%]} & \textbf{981D [\%]} & \textbf{1001D [\%]} & \textbf{137D [\%]} \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.7 (17.26) & 99.07 (97.82) & 99.34 (96.89) & 97.88 (93.12) \\
@@ -766,7 +766,7 @@ the actual classification results by avoiding the training of very different vie
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\rowcolor{tcA} & \textbf{} & \textbf{GRSD} & \textbf{ColorCHLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
+\rowcolor{tcA} & \textbf{} & \textbf{GRSD} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
 \rowcolor{tcA} & \textbf{} & \textbf{20D} & \textbf{981D} & \textbf{1001D} & \textbf{137D} \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(a)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 16.7\% & 58.3\% & 75\% & 75\% \\
@@ -874,7 +874,7 @@ the original methods.
 The rotation invariant VOSCH feature with its low number of dimensions
 promises to be an efficient and descriptive feature that scales well with
 the increased number of objects a real-world application of the system would
-require. ColorCHLAC is not rotation invariant, so it has to be trained with
+require. C$^3$-HLAC is not rotation invariant, so it has to be trained with
 all rotations around the view-ray, thus ConVOSCH as well. We found
 however, that at least for our 63 objects, the texture variations
 were not significantly different when the objects were rotated
