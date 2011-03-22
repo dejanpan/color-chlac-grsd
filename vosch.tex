@@ -85,7 +85,7 @@ feature's applicability for the purpose of classification of objects in cluttere
 and we evaluate two classification approaches.
 For the experiments we make use of Kinect, a new RGB-D device,
 and build a database of 63 objects. Preliminary results
-on novel views show recognition rates of 76.4\%.
+on novel views show recognition rates of 72.2\%.
 % recognition rate on novel views is 58% for LSM if computed correctly
 \end{abstract}
 
@@ -341,19 +341,18 @@ relative position of the two neighboring voxels.
 Let $\bm{x}=(x,y,z)^T$ be the position of a voxel, $p(\bm{x})$ be the flag for occupancy 
 of the voxel, and $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ be its RGB values normalized 
 between 0 and 1, respectively.  By defining 
-$r'(\bm{x}) \equiv 1 - r(\bm{x})$, $g'(\bm{x}) \equiv 1 - g(\bm{x})$ and $b'(\bm{x}) \equiv 1 - b(\bm{x})$, 
+$r_1(\bm{x}) \equiv sin\left( \frac{\pi}{2}r(\bm{x})\right)$, $g_1(\bm{x}) \equiv sin\left( \frac{\pi}{2}g(\bm{x})\right)$, $b_1(\bm{x}) \equiv sin\left( \frac{\pi}{2}b(\bm{x})\right)$, 
+$r_2(\bm{x}) \equiv cos\left( \frac{\pi}{2}r(\bm{x})\right)$, $g_2(\bm{x}) \equiv cos\left( \frac{\pi}{2}g(\bm{x})\right)$, and $b_2(\bm{x}) \equiv cos\left( \frac{\pi}{2}b(\bm{x})\right)$, 
 a voxel status $\bm{f}(\bm{x})\in \mathbb{N}^6$ is defined as follows: 
-%\vspace{-2mm}
-\begin{eqnarray}
-  \label{eq:voxel}
+\begin{eqnarray*}
 %  \hspace{-1mm}
   \bm{f}({\bm x})\hspace{-1mm}=\hspace{-1mm}\left\{
   \begin{array}{cc}
     \hspace{-1mm}
-    (r({\bm x})\hspace{1mm} r'({\bm x}) \hspace{1mm}g({\bm x}) \hspace{1mm}g'({\bm x}) \hspace{1mm}b({\bm x}) \hspace{1mm}b'({\bm x}))^T & \hspace{-2mm}p({\bm x})\hspace{-1mm}=\hspace{-1mm}1 \\
-    (0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0)^T & \hspace{-2mm}p({\bm x})\hspace{-1mm}=\hspace{-1mm}0
+    \left[r_1({\bm x})\hspace{1.5mm} r_2(\bm{x}) \hspace{1.5mm}g_1({\bm x}) \hspace{1.5mm}g_2({\bm x}) \hspace{1.5mm}b_1({\bm x}) \hspace{1.5mm}b_2({\bm x})\right]^T & \hspace{-2mm}p({\bm x})\hspace{-1mm}=\hspace{-1mm}1 \\
+    \left[\hspace{2mm} 0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0\hspace{1mm}0 \hspace{2mm} \right]^T & \hspace{-2mm}p({\bm x})\hspace{-1mm}=\hspace{-1mm}0
   \end{array}\right.
-\end{eqnarray}
+\end{eqnarray*}
 %
 %Color-CHLAC features are the integral of $\bm{f}(\bm{x})$ or correlations of $\bm{f}(\bm{x})$ between neighboring voxels.
 Letting ${\bm a_i}$ be a displacement vector from the reference voxel to its neighboring voxel, 
@@ -390,7 +389,7 @@ becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data).
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.8\columnwidth]{figures/colorCHLAC/Eq3_in_colorCHLAC.png}
-  \caption{Elements in C$^3$-HLAC features calculated by (\ref{eq:0th_1}). $r$ represents $r(\bm{x})$ in (\ref{eq:voxel}). White grids are excluded since they are redundant.}
+  \caption{Elements in C$^3$-HLAC features calculated by (\ref{eq:0th_1}). $r_1$ represents $r_1(\bm{x})$. White grids are excluded since they are redundant.}
   \label{fig:eq3_colorCHLAC}
 \end{center}
 \end{figure}
@@ -736,9 +735,9 @@ The numbers in parentheses are the percentages of correctly classified views usi
 \rowcolor{tcA} & \textbf{GRSD} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
 \rowcolor{tcA} & \textbf{20D [\%]} & \textbf{981D [\%]} & \textbf{1001D [\%]} & \textbf{137D [\%]} \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.7 (17.26) & 99.07 (97.82) & 99.34 (96.89) & 97.88 (93.12) \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & \todo{} (\todo{}) & \todo{} (\todo{}) & \todo{} (\todo{}) & \todo{} (\todo{}) \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.21 (67) & 99.87 (99.67)  & 99.93 (99.6) & 100 (99.14) \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.07 (\todo{}) & 99.87 (\todo{})  & 99.87 (\todo{}) & 99.8 (\todo{}) \\
 \hline
 \end{tabular}
 \caption{Model accuracy on training data and for the leave-one-out test.}
@@ -749,9 +748,9 @@ The numbers in parentheses are the percentages of correctly classified views usi
 
 \subsubsection{Evaluation on Novel Views}
 To evaluate the proposed features on novel views as well, we performed the test with the
-following setup (shown in Figure~\ref{fig:novel_views}): we selected 4 types of scenes containing textured
-and textureless objects (a and b), objects with similar shapes (c) and a scene with the substantial 
-altered lighting conditions (d). We acquired the data from 3 substantially different views 
+following setup (shown in Figure~\ref{fig:novel_views}): we selected 5 types of scenes containing textured
+and textureless objects (a and b), objects with similar shapes (c), a scene with the substantial 
+altered lighting conditions (d), and objects with arbitrary rotation (e). We acquired the data from 3 substantially different views 
 as also shown in Figure~\ref{fig:novel_views}. Object candidate clusters were detected
 by first finding a major horizontal planar surface within the point cloud, as done in~\cite{Rusu09IROS_ClosingLoop}.
 For these experiments we set 15 as the dimension of subspace $c$ in LSM.
@@ -769,24 +768,29 @@ the actual classification results by avoiding the training of very different vie
 \rowcolor{tcA} & \textbf{} & \textbf{GRSD} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
 \rowcolor{tcA} & \textbf{} & \textbf{20D} & \textbf{981D} & \textbf{1001D} & \textbf{137D} \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(a)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 16.7\% & 58.3\% & 75\% & 75\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{texture}} & \mc{1}{>{\columncolor{tcA}}c|}{{SVM}} & 33.3\% & 66.7\% & 75\% & 66.7\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(a)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 16.7\% & 75\% & \textbf{91.7\%} & 83.3\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{texture}} & \mc{1}{>{\columncolor{tcA}}c|}{{SVM}} & 50\% & 75\% & \textbf{83.3\%} & 66.7\% \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(b)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 11.1\% & 33.3\% & 38.9\% & 44.4\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{no texture}} & \mc{1}{>{\columncolor{tcA}}c|}{{SVM}} & 27.8\% & 61.1\% & 61.1\% & 50\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(b)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 16.7\% & 44.4\% & \textbf{61.1\%} & 44.4\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{no texture}} & \mc{1}{>{\columncolor{tcA}}c|}{{SVM}} & 44.4\% & \textbf{66.7\%} & 61.1\% & 61.1\% \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(c)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 4.1\% & 37.5\% & 45.8\% & 62.5\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{sim. shape}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 27.8\% & 77.8\% & 79.2\% & 77.8\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(c)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 5.6\% & 33.3\% & 44.4\% & \textbf{55.6\%} \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{sim. shape}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 22.2\% & 61.1\% & 72.2\% & \textbf{77.8\%} \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(d)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 5.56\% & 50\% & 72.2\% & 55.6\% \\
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{diff. light}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 11.1\% & 88.9\% & 88.9\% & 83.3\% \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(d)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 5.6\% & 50\% & 50\% & \textbf{61.1\%} \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{diff. light}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 22.2\% & \textbf{88.9\%} & \textbf{88.9\%} & 72.2\% \\
+\hline
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(e)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 16.7\% & 16.7\% & 16.7\% & \textbf{100\%} \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{arb. rotation}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 0\% & 16.7\% & 33.3\% & \textbf{50\%} \\
 % \hline
 % \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(e)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 0\% & 50\% & 50\% & 66.6\% \\
 % \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{free view}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} &  &  &  &  \\
 % \hline
 \hline
 \hline
-\mc{2}{|>{\columncolor{tcA}}c|}{\textbf{Total for SVM}} & \textbf{24.5\%$^*$} & \textbf{74.6\%} & \textbf{76.4\%} & \textbf{70.4\%} \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{Total}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 11.1\%$^*$ & 45.8\% & 55.6\% & \textbf{63.9\%} \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{ }} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{SVM}} & 30.6\%$^*$ & 68.1\% & \textbf{72.2\%} & 68.1\% \\
+%\mc{2}{|>{\columncolor{tcA}}c|}{\textbf{Total for SVM}} & \textbf{33.3\%$^*$} & \textbf{72.7\%} & \textbf{75.8\%} & \textbf{69.7\%} \\
 \hline
 \end{tabular}
 \end{center}
@@ -795,6 +799,7 @@ the actual classification results by avoiding the training of very different vie
          here we used it for classification of objects that were only visually distinguishable (different brands of milk boxes for example).}
 \label{tbl:novel}
 \end{table}
+% GRSD(5) C3HLAC(20) ConVOSCH(5 or 40) VOSCH(70)
 
 While LSM proved to be robust to noise on the synthetic data, the real data is quite smooth,
 and SVM outperformed it in our tests. LSM has however the advantage of exploiting the additive
@@ -846,10 +851,11 @@ in 2-4 seconds per point cloud with the size of 307000 points.
 
 \begin{figure*}[htb!]
   \centering
-  \subfloat[Textured objects (View 1)]{\label{fig:textured}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/text_view1.png}}
-  \subfloat[Textureless objects (View 2)]{\label{fig:textureless}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/textureless_view2.png}}
-  \subfloat[Two groups of objects with similar shapes (View 1)]{\label{fig:similar_shapes}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
-  \subfloat[Altered light conditions (View 3)]{\label{fig:light}\includegraphics[width=.25\textwidth]{figures/novel_view_scenes/diff_light_view3.png}}
+  \subfloat[Textured objects]{\label{fig:textured}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/text_view1.png}}
+  \subfloat[Textureless objects]{\label{fig:textureless}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/textureless_view2.png}}
+  \subfloat[Two groups of objects with similar shapes]{\label{fig:similar_shapes}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
+  \subfloat[Altered light conditions]{\label{fig:light}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/diff_light_view3.png}}
+  \subfloat[Arbitrary rotation]{\label{fig:light}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/rotation.png}}
  \caption{Screenshots of the novel view scenes (best viewed in color)}
  \label{fig:novel_views}
 \end{figure*}
