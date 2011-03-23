@@ -380,7 +380,7 @@ and $b(\bm{x})$.
 To decide the threshold of color binarization, 
     we apply the histogram threshold selection method of~\cite{otsu1979} to the R, G and B values respectively, 
     using the voxel colors of all objects in the database as sample data.
-C$^3$-HLAC features calculated by (\ref{eq:0th_1}) include redundant elements, e.g., $r(\bm{x})\times g(\bm{x})$ and $g(\bm{x})\times r(\bm{x})$.
+C$^3$-HLAC features calculated by (\ref{eq:0th_1}) include redundant elements, e.g., $r(\bm{x})\cdot g(\bm{x})$ and $g(\bm{x})\cdot r(\bm{x})$.
 Excluding the redundant elements, the dimension is thus 12 if color values are binarized, and 21 otherwise (see Figure~\ref{fig:eq3_colorCHLAC}). 
 Finally a full C$^3$-HLAC vector is obtained by concatenating the two vectors from binarized 
 color voxel data and from original color voxel data. Then the dimension of C$^3$-HLAC feature vector 
@@ -389,7 +389,7 @@ becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data).
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=.8\columnwidth]{figures/colorCHLAC/Eq3_in_colorCHLAC.png}
-  \caption{Elements in C$^3$-HLAC features calculated by (\ref{eq:0th_1}). $r_1$ represents $r_1(\bm{x})$. White grids are excluded since they are redundant.}
+  \caption{Elements in C$^3$-HLAC features calculated by (\ref{eq:0th_1}). $r_1$ and $r_2$ represents $r_1(\bm{x})$ and $r_2(\bm{x})$, respectively. White grids are excluded since they are redundant.}
   \label{fig:eq3_colorCHLAC}
 \end{center}
 \end{figure}
@@ -455,21 +455,29 @@ we i)omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and
 the normalization of histogram bins.
 
 These modifications allow us to create histograms which, like in the case of C$^3$-HLAC, are additive.
-The latter property can best be described as follows. If we break up objects into reasonable sizes, 
-its histogram can be approximated by the sum of the histograms of its sub-cells. 
-%Unlike in C$^3$-HLAC, free space is considered, but we are looking
-%at the neighbors of occupied voxels only. 
-\todo{The additive feature is approximate, as for the voxels at the boundary of one part 
-only the neighbors from the same part are considered. This is not critical unless 
-one considers extremely few voxels separately. The difference gets less and less 
-as the size of the parts increase.} Furthermore, since we do not use ray-casting but 
+The latter property can best be described as follows. 
+%
+\todo{The following sentence was written by Asako. With my implementation, an object's histogram becomes exactly equal to the sum of those of its sub-parts.}
+If we break up an object into several parts, 
+the object's histogram becomes equal to the sum of the histograms of its sub-parts. 
+%
+%% If we break up objects into reasonable sizes, 
+%% its histogram can be approximated by the sum of the histograms of its sub-cells. 
+%% %Unlike in C$^3$-HLAC, free space is considered, but we are looking
+%% %at the neighbors of occupied voxels only. 
+%% \todo{The additive feature is approximate, as for the voxels at the boundary of one part 
+%% only the neighbors from the same part are considered. This is not critical unless 
+%% one considers extremely few voxels separately. The difference gets less and less 
+%% as the size of the parts increase.}
+%
+ Furthermore, since we do not use ray-casting but 
 consider only the direct neighbors of each occupied cell, the computation of this \emph{altered} GRSD is in 
 $ms$ range which is 2 orders of magnitude faster than the original implementation
 reported in~\cite{GRSD10Humanoids}.
 
 \subsection{ConVOSCH}
 The idea of ConVOSCH is to simply estimate C$^3$-HLAC and GRSD in two separate steps, 
-concatenate resulting histograms and normalize the final result \todo{Asako: [0, 1]}x. This preserves the 
+concatenate resulting histograms and normalize the final result into a range of [0,1]. This preserves the 
 high dimensionality and thus accuracy for the color space, but on the other hand 
 makes the feature to the extent rotation-variant and slightly slower for use 
 in the classification schemes.
@@ -489,7 +497,7 @@ histograms in bottom-right part identical too).
     \includegraphics[width=.32\columnwidth]{figures/comparison/dice2.png}
     \includegraphics[width=.47\columnwidth]{figures/comparison/orange_cube_vs_orange_dice.png}
     \includegraphics[width=.47\columnwidth]{figures/comparison/blue_vs_orange_dice_grsd.png}
-  \caption{C$^3$-HLAC can not differentiate the die from the cube (identical histograms on the left), 
+  \caption{Rotation-invariant C$^3$-HLAC can not differentiate the die from the cube (identical histograms on the left), 
     while GRSD can not differentiate the different colors (identical histograms on the right). 
     Their combination however produces different signatures for all of them (Figure~\ref{fig:grsd_cchlac}).}
   \label{fig:comparison}
@@ -554,8 +562,10 @@ i)~7 artificially generated objects with 7 different colors, and
 ii)~63 objects of daily use, scanned using a Kinect sensor and a rotating table
 (shown in the bottom part of Figure~\ref{fig:robot}). 
 We measured the recognition rates against the original implementations of C$^3$-HLAC and 
-GRSD. Since C$^3$-HLAC was already shown to outperform Textured Spin Images
+GRSD. 
+Since C$^3$-HLAC was already shown to outperform Textured Spin Images
 we did not include it in our experiments.
+\todo{I think the last sentence is not necessary, since we didn't mention Textured Spin Images anywhere else.}
 
 \subsection{Feature Extraction}
 \label{sec:feature_extraction}
@@ -600,7 +610,7 @@ $\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$
 The deviations were set to correspond to the actual noise of Kinect 
 sensor~\footnote{\url{http://www.ros.org/wiki/openni_kinect/kinect_accuracy}}.
 For LSM classification we set the dimension of the compressed feature space $d$ to 
-50 for the C$^3$-HLAC, ConVOSCH and VOSCH, while the GRSD was left uncompressed. 
+50 for C$^3$-HLAC, ConVOSCH and VOSCH, while GRSD was left uncompressed. 
 The dimensionality of the subspace $c$ was set to 3.
 The results of the test in Figure~\ref{fig:synthetic},
 show VOSCH (right-most two columns) outperforming all other features.
@@ -669,7 +679,7 @@ had to be trained with the artificial rotations to achieve rotation invariance.
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_1.png}
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_2.png}
   \caption{The effect of simulated noise on the classification results using GRSD, C$^3$-HLAC, ConVOSCH and VOSCH with LSM and SVM
-    (both with and without random rotations of test data).}
+    (both with and without random rotations of test data). \todo{Asako replace}}
   \label{fig:synthetic}
 \end{figure*}
 
@@ -710,6 +720,9 @@ snapshots from a perspective that best approximates the robot's view point durin
 Table~\ref{tbl:training} shows the percentage of correctly classified training examples using the model computed for them.
 The numbers in parentheses are the percentages of correctly classified views using the model constructed using the remaining views
 (leave-one-out-test).
+For LSM classification we set $d$ to 
+100 for C$^3$-HLAC, ConVOSCH and VOSCH, while GRSD was left uncompressed. 
+The dimensionality of the subspace $c$ was set to 10 for GRSD and 50 for the others.
 
 % \begin{table*}[ht]
 % \begin{center}
@@ -735,9 +748,9 @@ The numbers in parentheses are the percentages of correctly classified views usi
 \rowcolor{tcA} & \textbf{GRSD} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
 \rowcolor{tcA} & \textbf{20D [\%]} & \textbf{981D [\%]} & \textbf{1001D [\%]} & \textbf{137D [\%]} \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & \todo{} (\todo{}) & \todo{} (\todo{}) & \todo{} (\todo{}) & \todo{} (\todo{}) \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 43.65 (39.48) & 99.67 (99.6) & \textbf{99.8} (\textbf{99.74}) & \textbf{99.8} (99.67) \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.07 (\todo{}) & 99.87 (\todo{})  & 99.87 (\todo{}) & 99.8 (\todo{}) \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.07 (73.81) & \textbf{99.87} (99.6)  & \textbf{99.87} (\textbf{99.67}) & 99.8 (98.94) \\
 \hline
 \end{tabular}
 \caption{Model accuracy on training data and for the leave-one-out test.}
@@ -745,6 +758,10 @@ The numbers in parentheses are the percentages of correctly classified views usi
 \end{center}
 \end{footnotesize}
 \end{table}
+% GRSD:     32.0 0.5 73.8095
+% C3HLAC:   
+% ConVOSCH: 
+% VOSCH:    
 
 \subsubsection{Evaluation on Novel Views}
 To evaluate the proposed features on novel views as well, we performed the test with the
@@ -753,7 +770,7 @@ and textureless objects (a and b), objects with similar shapes (c), a scene with
 altered lighting conditions (d), and objects with arbitrary rotation (e). We acquired the data from 3 substantially different views 
 as also shown in Figure~\ref{fig:novel_views}. Object candidate clusters were detected
 by first finding a major horizontal planar surface within the point cloud, as done in~\cite{Rusu09IROS_ClosingLoop}.
-For these experiments we set 15 as the dimension of subspace $c$ in LSM.
+For these experiments, we tested all the choices with a break for ten (10, 20, \dots) as the dimension of subspace $c$ in LSM, and set the best one.
 
 In total we tested on 72 views, achieving the highest rates with SVM, as shown in Table~\ref{tbl:novel}.
 %The results for VOSCH were slightly less convincing, but more testing is needed to make a final judgment.
@@ -799,11 +816,11 @@ the actual classification results by avoiding the training of very different vie
          here we used it for classification of objects that were only visually distinguishable (different brands of milk boxes for example).}
 \label{tbl:novel}
 \end{table}
-% GRSD(5) C3HLAC(20) ConVOSCH(5 or 40) VOSCH(70)
+% GRSD(10) C3HLAC(20) ConVOSCH(40) VOSCH(70)
 
 While LSM proved to be robust to noise on the synthetic data, the real data is quite smooth,
 and SVM outperformed it in our tests. LSM has however the advantage of exploiting the additive
-property of the feature for detection in clutter.
+property of the feature for detection in clutter. Moreover, the time required for classification is significantly shorter with LSM than with SVM.
 
 %% \todo{Prove it works for a)textured objects, b)texture-less objects, c)objects with different shapes, 
 %% d)varying lighting conditions -- no clutter, 1 object at a time}
@@ -856,7 +873,7 @@ in 2-4 seconds per point cloud with the size of 307000 points.
   \subfloat[Two groups of objects with similar shapes]{\label{fig:similar_shapes}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
   \subfloat[Altered light conditions]{\label{fig:light}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/diff_light_view3.png}}
   \subfloat[Arbitrary rotation]{\label{fig:light}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/rotation.png}}
- \caption{Screenshots of the novel view scenes (best viewed in color)}
+ \caption{Screenshots of the novel view scenes (best viewed in color) \todo{Asako replace}}
  \label{fig:novel_views}
 \end{figure*}
 
