@@ -1,4 +1,9 @@
-\documentclass[conference]{sty/IEEEtran}
+% \documentclass[conference]{sty/IEEEtran}
+\documentclass[letterpaper, 10 pt, conference]{sty/ieeeconf}
+\IEEEoverridecommandlockouts
+\overrideIEEEmargins
+
+\usepackage{cite}
 \usepackage{times}
 \usepackage{wrapfig}
 \usepackage{tweaklist}
@@ -32,7 +37,7 @@
 
 
 % numbers option provides compact numerical references in the text.
-\usepackage[numbers]{natbib}
+%\usepackage[numbers]{natbib}
 \usepackage{multicol}
 \usepackage[bookmarks=true]{hyperref}
 
@@ -44,29 +49,43 @@
 %    /Keywords (Robots;Overlords)
 % }
 
-\begin{document}
-
 % paper title
 %\title{Classification of Objects of Daily Use Using Combined Color CHLAC and Global Radius-based Surface Descriptors}
 %\title{Multidimensional Descriptor for Classification of Objects of Daily Use}
-\title{Voxelized Shape and Color Histograms for RGB-D}
+\title{\LARGE \bf Voxelized Shape and Color Histograms for RGB-D}
 
 % You will get a Paper-ID when submitting a pdf file to the conference system
 %\author{Paper-ID [110]}
 
-\author{\authorblockN{Asako Kanezaki, Tatsuya Harada}
-\authorblockA{
-Graduate School of Information \\ Science and Technology,\\
-University of Tokyo \\ %7-3-1 Hongo Bunkyo-ku, Tokyo Japan \\
-Email: \{kanezaki, harada\}@isi.imi.i.u-tokyo.ac.jp}
-\and
-\authorblockN{Dejan Pangercic, Zoltan-Csaba Marton, Michael Beetz}
-\authorblockA{
-Intelligent Autonomous Systems Group,\\ TU Munich \\
-Email: \{pangercic, marton, beetz\}@cs.tum.edu}}
+%% \author{\authorblockN{Asako Kanezaki, Tatsuya Harada, Yasuo Kuniyoshi}
+%% \authorblockA{
+%% Graduate School of Information Science and Technology,\\
+%% The University of Tokyo \\ %7-3-1 Hongo Bunkyo-ku, Tokyo Japan \\
+%% Email: \{kanezaki, harada, kuniyosh\}@isi.imi.i.u-tokyo.ac.jp}
+%% \and
+%% \authorblockN{Dejan Pangercic, Zoltan-Csaba Marton, Michael Beetz}
+%% \authorblockA{
+%% Intelligent Autonomous Systems Group,\\ TU Munich \\
+%% Email: \{pangercic, marton, beetz\}@cs.tum.edu}}
+
+\author{Asako Kanezaki, Dejan Pangercic, Zoltan-Csaba Marton, \\ Tatsuya Harada, Yasuo Kuniyoshi, and Michael Beetz% <-this % stops a space
+%\thanks{This work was not supported by any organization}% <-this % stops a space
+\thanks{A. Kanezaki, T. Harada, and Y. Kuniyoshi are with Graduate School of Information Science and Technology, The University of Tokyo, 7-3-1 Hongo Bunkyo-ku, Tokyo Japan}
+\thanks{D. Pangercic, Z.-C. Marton, and M. Michael Beetz are with Intelligent Autonomous Systems Group, TU Munich, KarlStr. 45, 80333 Munich Germany}
+\thanks{\tt\small kanezaki@isi.imi.i.u-tokyo.ac.jp}
+\thanks{\tt\small harada@isi.imi.i.u-tokyo.ac.jp}
+\thanks{\tt\small kuniyosh@isi.imi.i.u-tokyo.ac.jp}
+\thanks{\tt\small pangercic@cs.tum.edu}
+\thanks{\tt\small marton@cs.tum.edu}
+\thanks{\tt\small beetz@cs.tum.edu}
+}
+
+\begin{document}
 
 \newcommand{\todo}[1]{\textbf{\textcolor{red}{TODO: #1}}}
 \maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
 
 \begin{abstract}
 Real world environments typically include objects with different perceptual appearances.
@@ -89,7 +108,7 @@ on novel views show recognition rates of 72.2\%.
 % recognition rate on novel views is 58% for LSM if computed correctly
 \end{abstract}
 
-\IEEEpeerreviewmaketitle
+%\IEEEpeerreviewmaketitle
 
 \section{Introduction}
 One of the great challenges in autonomous mobile robot manipulation is scaling
@@ -115,6 +134,20 @@ texture and if we apply 3D features, the objects must be distinctive with respec
 If we want to install a perception system for autonomous robots we need to aim 
 at one that can perceive all objects, be they textured, texture-less, different shapes, etc.
 
+\begin{figure}[tb!]
+  \begin{center}
+    \includegraphics[width=.99\columnwidth]{figures/firstpage/firstpage.pdf}
+    \includegraphics[width=.99\columnwidth]{figures/objects/objects.jpg}
+    \caption{Top: Autonomous service robot equipped with a Kinect sensor
+    acquiring training data of the objects shown in the bottom image. For 
+  every view of the object, a VOSCH or ConVOSCH descriptor was estimated and a database
+of 63 objects was generated. An object detection pipeline with Support Vector
+Machines or Linear Subspace Method classifiers was then used to detect objects
+in natural scenes.}
+    \label{fig:robot}
+  \end{center}
+\end{figure}
+
 While it seems feasible that one can simply develop perception routines by combining
 various descriptors~\cite{stueckler10combining, GRSD10Humanoids}, a more promising idea 
 is to develop descriptors that work in multiple feature spaces. The reason for this is 
@@ -128,20 +161,6 @@ which builds upon the idea of the
 Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and the
 Circular Color Cubic Higher-order Local Auto-Correlation descriptor (C$^3$-HLAC~\cite{kanezaki2011icra}).
 We termed it (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
-
-\begin{figure}[htb!]
-  \begin{center}
-    \includegraphics[width=.99\columnwidth]{figures/firstpage/firstpage.pdf}
-    \includegraphics[width=.99\columnwidth]{figures/objects/objects.jpg}
-    \caption{Top: Autonomous service robot equipped with a Kinect sensor
-    acquiring training data of the objects shown in the bottom image. For 
-  every view of the object, a VOSCH or ConVOSCH descriptor was estimated and a database
-of 63 objects was generated. An object detection pipeline with Support Vector
-Machines or Linear Subspace Method classifiers was then used to detect objects
-in natural scenes.}
-    \label{fig:robot}
-  \end{center}
-\end{figure}
 
 % \subsection{What}
 % In this paper, we address the problem of localization and recognition of
@@ -194,7 +213,7 @@ further on (Section~\ref{sec:recognition}).
 % % % capabilities to acquire additional object models which furthermore opens ways 
 % % % for manipulation tasks in realistic environments under realistic conditions.
 
-\begin{figure}[htb!]
+\begin{figure}[tb!]
   \begin{center}
     \includegraphics[width=.99\columnwidth]{figures/colorCHLAC/artificial/normalized_hist.jpg}
     %% \includegraphics[width=.48\columnwidth]{figures/colorCHLAC/artificial/purple.png}
@@ -360,11 +379,11 @@ the elements of a C$^3$-HLAC descriptor extracted from a voxel grid $V$ are calc
 \begin{equation}\label{eq:0th}
   {\bm q_1} = \sum_{{\bm x} \in V} \bm{f}({\bm x})
 \end{equation}
-\vspace{-2mm}
+%\vspace{-2mm}
 \begin{equation}\label{eq:0th_1}
   {\bm q_2} = \sum_{{\bm x} \in V} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}) \\
 \end{equation}
-\vspace{-2mm}
+%\vspace{-2mm}
 \begin{equation}\label{eq:1st}
   {\bm q_3}({\bm a}_i) = \sum_{{\bm x} \in V} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \;\;\; (i=0, \dots 12) \\
 \end{equation}
@@ -386,9 +405,9 @@ Finally a full C$^3$-HLAC vector is obtained by concatenating the two vectors fr
 color voxel data and from original color voxel data. Then the dimension of C$^3$-HLAC feature vector 
 becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data). 
 
-\begin{figure}[htb!]
+\begin{figure}[tb!]
   \begin{center}
-    \includegraphics[width=.8\columnwidth]{figures/colorCHLAC/Eq3_in_colorCHLAC.png}
+    \includegraphics[width=.99\columnwidth]{figures/colorCHLAC/Eq3_in_colorCHLAC.png}
   \caption{Elements in C$^3$-HLAC features calculated by (\ref{eq:0th_1}). $r_1$ and $r_2$ represents $r_1(\bm{x})$ and $r_2(\bm{x})$, respectively. White grids are excluded since they are redundant.}
   \label{fig:eq3_colorCHLAC}
 \end{center}
@@ -403,7 +422,7 @@ The type of the surfaces are identified based on the estimation of their
 two principal curves' radii, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}. 
 This approach is using the leaves of an octree as voxels, to facilitate fast ray intersection
 tests and is recapped in Algorithm~\ref{alg:compute_grsd} as follows:
-\begin{algorithm}[H]
+\begin{algorithm}[tb!]
 L = \{$l_{1}...l_{m}$\} \tcc{\footnotesize{octree leaves encapsulating the object}}
 C = \{$c_{l_1}...c_{l_m}$\} \tcc{\footnotesize{the leaf classes generated by $RSD$ 
     (e.g. class empty, class plane, etc.)}}
@@ -488,7 +507,7 @@ On the other hand we have a shape-based feature GRSD
 which can not discern between the orange and the blue die (likewise the
 histograms in bottom-right part identical too).
 
-\begin{figure}[htb!]
+\begin{figure}[tb!]
   \begin{center}
     \includegraphics[width=.3\columnwidth]{figures/comparison/cube.png}
     \includegraphics[width=.32\columnwidth]{figures/comparison/dice1.png}
@@ -561,7 +580,7 @@ ii)~63 objects of daily use, scanned using a Kinect sensor and a rotating table
 (shown in the bottom part of Figure~\ref{fig:robot}). 
 We measured the recognition rates against the original implementations of C$^3$-HLAC and 
 GRSD. 
-Since C$^3$-HLAC was already shown to outperform Textured Spin Images
+Since C$^3$-HLAC was already shown to outperform Textured Spin Images~\cite{cortelazzo2006}
 we did not include it in our experiments.
 
 \subsection{Feature Extraction}
@@ -579,7 +598,7 @@ $\overline{t_{point}}$ is the average estimation time per point,
 and $\overline{t_{object}}$ is the average estimation time needed for an object:
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
 \definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
-\begin{table}[ht]
+\begin{table}[tb]
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -613,7 +632,7 @@ The results of the test in Figure~\ref{fig:synthetic},
 show VOSCH (right-most two columns) outperforming all other features.
 %% For a better overview of the results using VOSCH please also see Figure~\ref{fig:plot}.
 
-%% \begin{figure}[htb!]
+%% \begin{figure}[tb!]
 %%   \begin{center}
 %%     \includegraphics[width=.98\columnwidth]{figures/comparison/vosch.pdf}
 %%     \caption{The effect of simulated noise on the classification results using VOSCH with LSM and SVM
@@ -627,7 +646,7 @@ Additionally, since objects were uniformly colored and mostly symmetrical, the f
 is not rotation invariant did not influence the results in the table. In the original implementation C$^3$-HLAC 
 had to be trained with the artificial rotations to achieve rotation invariance.
 
-%% \begin{table*}[ht!]
+%% \begin{table*}[tb]
 %% \begin{center}
 %% \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}\hline
 %% % use packages: color,colortbl
@@ -671,12 +690,12 @@ had to be trained with the artificial rotations to achieve rotation invariance.
 %% \end{center}
 %% \end{table*}
 
-\begin{figure*}[htb!]
+\begin{figure*}[tb!]
   \centering
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_1.png}
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_2.png}
   \caption{The effect of simulated noise on the classification results using GRSD, C$^3$-HLAC, ConVOSCH and VOSCH with LSM and SVM
-    (both with and without random rotations of test data). \todo{Asako replace}}
+    (both with and without random rotations of test data).}
   \label{fig:synthetic}
 \end{figure*}
 
@@ -693,7 +712,7 @@ snapshots from a perspective that best approximates the robot's view point durin
 % We consider this to be an important point as opposed to similar initiatives (e.g.,
 % \cite{kit}) where the datasets are acquired using high-precision and off-board sensors.
 
-% \begin{figure}[htb!]
+% \begin{figure}[tb!]
 %   \begin{center}
 %     \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla.png}
 %     \includegraphics[width=.32\columnwidth]{figures/rot_table/barilla1.png}
@@ -703,7 +722,7 @@ snapshots from a perspective that best approximates the robot's view point durin
 %   \end{center}
 % \end{figure}
 
-% \begin{figure}[htb!]
+% \begin{figure}[tb!]
 %   \begin{center}
 %     \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd.png}
 %     \includegraphics[width=.9\columnwidth]{figures/colorCHLAC/real/tomato/tomato_hist_pcd2.png}
@@ -721,7 +740,7 @@ For LSM classification we set $d$ to
 100 for C$^3$-HLAC, ConVOSCH and VOSCH, while GRSD was left uncompressed. 
 The dimensionality of the subspace $c$ was set to 10 for GRSD and 50 for the others.
 
-% \begin{table*}[ht]
+% \begin{table*}[tb]
 % \begin{center}
 % \begin{tabular}{|c|c|c|c|c|}
 % \hline
@@ -737,7 +756,7 @@ The dimensionality of the subspace $c$ was set to 10 for GRSD and 50 for the oth
 % \end{center}
 % \end{table*}
 
-\begin{table}[ht]
+\begin{table}[tb]
 \begin{footnotesize}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
@@ -774,7 +793,7 @@ In total we tested on 72 views, achieving the highest rates with SVM, as shown i
 One way to try to improve the results is to treat each view as a separate sub-class, which shall  increase
 the actual classification results by avoiding the training of very different views of the same object into one class.
 
-\begin{table}[ht]
+\begin{table}[tb]
 \begin{scriptsize}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
@@ -863,7 +882,7 @@ in 2-4 seconds per point cloud with the size of 307000 points.
 
 %\todo{Asako: description for the results}
 
-\begin{figure*}[htb!]
+\begin{figure*}[tb!]
   \centering
   \subfloat[Textured objects]{\label{fig:textured}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/text_view1.png}}
   \subfloat[Textureless objects]{\label{fig:textureless}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/textureless_view2.png}}
@@ -874,10 +893,10 @@ in 2-4 seconds per point cloud with the size of 307000 points.
  \label{fig:novel_views}
 \end{figure*}
 
-\begin{figure*}[htb!]
+\begin{figure*}[tb!]
   \centering
   \includegraphics[width=.99\textwidth]{figures/detection_demo/correct_detected.png}
-  \caption{Screenshots of the examples of correctly detected objects as marked by the green cube (best viewed in color).\todo{Asako replace}}
+  \caption{Screenshots of the examples of correctly detected objects as marked by the green cube (best viewed in color).}
   \label{fig:correct_detected}
 \end{figure*}
 
@@ -926,7 +945,8 @@ into the voxelized feature extraction process, and evaluating using more test an
 % \todo{Asako: Do we need to ackknowledge someone from ISI Lab?}
 % %% Use plainnat to work nicely with natbib.
 
-\bibliographystyle{plainnat}
+%\bibliographystyle{plainnat}
+\bibliographystyle{./IEEEtran} % use IEEEtran.bst style
 \bibliography{references}
 \end{document}
 
