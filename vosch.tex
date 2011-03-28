@@ -70,8 +70,12 @@
 
 \author{Asako Kanezaki, Dejan Pangercic, Zoltan-Csaba Marton, \\ Tatsuya Harada, Yasuo Kuniyoshi, and Michael Beetz% <-this % stops a space
 %\thanks{This work was not supported by any organization}% <-this % stops a space
-\thanks{A. Kanezaki, T. Harada, and Y. Kuniyoshi are with Graduate School of Information Science and Technology, The University of Tokyo, 7-3-1 Hongo Bunkyo-ku, Tokyo Japan}
-\thanks{D. Pangercic, Z.-C. Marton, and M. Michael Beetz are with Intelligent Autonomous Systems Group, TU Munich, KarlStr. 45, 80333 Munich Germany}
+\thanks{A. Kanezaki, T. Harada, and Y. Kuniyoshi are with Graduate School of Information Science and Technology, The University of Tokyo
+%, 7-3-1 Hongo Bunkyo-ku, Tokyo Japan
+}
+\thanks{D. Pangercic, Z.-C. Marton, and M. Michael Beetz are with Intelligent Autonomous Systems Group, TU Munich
+%, KarlStr. 45, 80333 Munich Germany
+}
 \thanks{\tt\small kanezaki@isi.imi.i.u-tokyo.ac.jp}
 \thanks{\tt\small harada@isi.imi.i.u-tokyo.ac.jp}
 \thanks{\tt\small kuniyosh@isi.imi.i.u-tokyo.ac.jp}
@@ -878,9 +882,8 @@ the number of voxels with the occupied property, in the area ranging from $(0,0,
 Using this table, the number of voxels with the occupied property in the detection 
 box can be computed quickly by adding 8 scalar values.
 
-This object detection pipeline was applied on the several objects from the set of 
-earlier discussed 63 training objects. Objects were placed onto several locations in the household
-(e.g. kitchen counter, cupboard) and the robot was tasked to actively find them.
+This object detection pipeline was applied on six objects from the set of 
+earlier discussed 63 training objects. Objects were placed onto several locations on a kitchen counter and the robot was tasked to actively find them.
 
 Preliminary results of the correctly detected objects are shown in Figure~\ref{fig:correct_detected}. 
 When the range of the target point cloud in the environment is limited to $1$~m from the viewpoint, 
@@ -902,8 +905,8 @@ in 2-4 seconds per point cloud with the size of 307000 points.
 
 \begin{figure*}[tb!]
   \centering
-  \includegraphics[width=.99\textwidth]{figures/detection_demo/correct_detected.png}
-  \caption{Screenshots of the examples of correctly detected objects as marked by the green cube (best viewed in color).}
+  \includegraphics[width=.99\textwidth]{figures/detection_demo/four_objects_detection.png}
+  \caption{Screenshots of the examples of correctly detected objects as marked by cubes in different colors corresponding to the background colors of the target objects shown in the left two columns (best viewed in color). }
   \label{fig:correct_detected}
 \end{figure*}
 
