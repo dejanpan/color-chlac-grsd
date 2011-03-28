@@ -143,7 +143,7 @@ at one that can perceive all objects, be they textured, texture-less, different 
   every view of the object, a VOSCH or ConVOSCH descriptor was estimated and a database
 of 63 objects was generated. An object detection pipeline with Support Vector
 Machines or Linear Subspace Method classifiers was then used to detect objects
-in natural scenes.}
+in natural scenes. Bottom: the objects used in our experiments.}
     \label{fig:robot}
   \end{center}
 \end{figure}
@@ -206,7 +206,7 @@ moving bounding box-based approach together with a sub-space matching-based clas
 % all important and obvious properties (such as geometry and color are)
 Lastly, our descriptor can be applied out-of-the-box to the data coming from 
 new sensing technologies such as the Kinect device and lays the foundation stone for a
-multitude of applications such as the detection of a priori learned object models discussed
+multitude of applications \todo{remove ``such as'' and fix reference?} such as the detection of a priori learned object models discussed
 further on (Section~\ref{sec:recognition}).
 % % % VOSCH also enables equipping of service robots 
 % % % (such as the robot shown in top part of Figure~\ref{fig:robot}) with the 
@@ -291,7 +291,7 @@ object cluster in the recognition process. This takes advantage of the combinati
 of the Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property, 
 which means a global descriptor for an object cluster is computed by summing up the local descriptors of its sub-parts.
 Since computation of C$^3$-HLAC is on voxelized data, it is more efficient
-than the point-based spin-image approach.
+than the point-based approaches. It was shown by the authors in \cite{kanezaki2011icra} to outperform textured spin-images.
 
 \section{System Overview}
 \label{sec:overview}
@@ -320,13 +320,13 @@ typical household settings.
 % % % segmented in the euclidean sense. 
 
 Our approach is realized as part of the Robot Operating System
-(ROS)\footnote{\url{http://www.ros.org}} open source framework, and makes
+(ROS, \url{http://www.ros.org}) open source framework, and makes
 use of modular and robust components that can be reused on other robotic
 systems different from ours.
 
-\subsection{Performance and Novelty}
+% \subsection{Performance and Novelty}
 An important factor of the perception system for robotics is to perform fast. We thus optimized
-the proposed descriptors to bring the estimation time down to \emph{0.26s} for a cluster consisting of 
+the proposed descriptors to bring the estimation time down to $0.26$ s for a cluster consisting of 
 \emph{4632} points on average, and to have the classification time of under \emph{50} milliseconds
 for the SVM classifier and 0.1 millisecond for LSM. The Moving-bounding-box-based
 recognition of objects in e.g. cluttered scenes takes 2-4 seconds as detailed
@@ -354,7 +354,7 @@ Next, we will present the necessary modifications to them in order to obtain the
 \subsection{C$^3$-HLAC}
 \label{sec:color_chlac}
 C$^3$-HLAC descriptor is a high-dimensional vector measuring the summation of the 
-multiplied RGB values of neighboring voxels in a 3$\times$3$\times$3 grid around a voxel grid of arbitrary size. 
+multiplied RGB values of neighboring voxels in a $3 \times 3 \times 3$ grid around a voxel grid of arbitrary size. 
 Each bin in a C$^3$-HLAC descriptor is differentiated by the RGB color space and the 
 relative position of the two neighboring voxels. 
 Let $\bm{x}=(x,y,z)^T$ be the position of a voxel, $p(\bm{x})$ be the flag for occupancy 
@@ -390,7 +390,7 @@ the elements of a C$^3$-HLAC descriptor extracted from a voxel grid $V$ are calc
 %
 Since these values are summed up around a voxel grid, there is redundant computation of the 
 same value over symmetric pairs of ${\bm a_i}$. 
-As a result, the number of variations in ${\bm a_i}$ is 13, which is a half of all the 26 neighbors in a 3$\times$3$\times$3 grid.
+As a result, the number of variations in ${\bm a_i}$ is 13, which is a half of all the 26 neighbors in a $3\times3\times3$ grid.
 The matrix computed by (\ref{eq:1st}) is expanded into a column vector of 36 elements.
 Therefore the dimension of the vector calculated by (\ref{eq:0th}) is 6, while that by 
 (\ref{eq:1st}) is 468 (=$36\cdot13$).
@@ -421,8 +421,8 @@ the following geometric classes of voxel surfaces: \emph{free space, plane, cyli
 The type of the surfaces are identified based on the estimation of their
 two principal curves' radii, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}. 
 This approach is using the leaves of an octree as voxels, to facilitate fast ray intersection
-tests and is recapped in Algorithm~\ref{alg:compute_grsd} as follows:
-\begin{algorithm}[tb!]
+tests and is summarized in Algorithm~\ref{alg:compute_grsd}.
+\begin{algorithm}[htb!]
 L = \{$l_{1}...l_{m}$\} \tcc{\footnotesize{octree leaves encapsulating the object}}
 C = \{$c_{l_1}...c_{l_m}$\} \tcc{\footnotesize{the leaf classes generated by $RSD$ 
     (e.g. class empty, class plane, etc.)}}
@@ -443,15 +443,16 @@ $\cH$ = ZeroMatrix \tcc{\footnotesize{transition matrix holding the number of ne
   \caption{GRSD Computation}
   \label{alg:compute_grsd}
 \end{algorithm}
-In order to efficiently merge the two features, the original GRSD had to be altered (see next subsection). 
-As the feature is rotation-invariant, the number of bins $b$ depends on the number of possible 
-surface types $s$:
+The number of bins $b$ is:
 \begin{equation}
 b=\frac{s(s+1)}{2}
 \end{equation}
-which results in 21 dimensions for the above stated 6 types of surfaces. However,
-transitions from \emph{free space} to \emph{free space} are not considered, hence
-the actual dimensionality is 20.
+where $s$ is the number of possible surface types,
+resulting in 21 dimensions for the above stated 6 types of surfaces.
+
+In order to efficiently merge the two features, the original GRSD had to be altered (see next subsection). 
+In the new, additive GRSD$_2$ feature, transitions from \emph{free space} to \emph{free space} are impossible,
+hence its dimensionality becomes 20.
 
 \subsection{VOSCH}
 \label{sec:VOSCH}
@@ -466,11 +467,11 @@ for binarized data) with respect to the original implementation.
 % This is the similar way that GRSD takes as described in the next subsection, where the transitions between the reference 
 % voxel and all the 26 nighbors are combined together. 
 By doing so the refined C$^3$-HLAC descriptor is well matched with GRSD which gives a significant 
-robustness to rotation and still shows a powerful expressivity for color textures.
+robustness to rotation and still shows a powerful expressiveness for color textures.
 
 GRSD, as shown in~\cite{GRSD10Humanoids}, originally used
 ray-tracing in order to find transitions between surface types. To make it fit into VOSCH 
-we i)omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)discarded
+we i)~omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)~discarded
 the normalization of histogram bins.
 
 These modifications allow us to create histograms which, like in the case of C$^3$-HLAC, are additive.
@@ -488,12 +489,13 @@ the object's histogram becomes equal to the sum of the histograms of its sub-par
 %% as the size of the parts increase.}
 %
  Furthermore, since we do not use ray-casting but 
-consider only the direct neighbors of each occupied cell, the computation of this \emph{altered} GRSD is in 
-$ms$ range which is 2 orders of magnitude faster than the original implementation
-reported in~\cite{GRSD10Humanoids}.
+consider only the direct neighbors of each occupied cell, the computation of the new GRSD$_2$ is in 
+the millisecond range. This is 2 orders of magnitude faster than the original implementation,
+% reported in~\cite{GRSD10Humanoids}.
+at the cost of some descriptiveness.
 
 \subsection{ConVOSCH}
-The idea of ConVOSCH is to simply estimate C$^3$-HLAC and GRSD in two separate steps, 
+The idea of ConVOSCH is to simply estimate C$^3$-HLAC and GRSD$_2$ in two separate steps, 
 concatenate resulting histograms and normalize the final result into a range of [0,1]. This preserves the 
 high dimensionality and thus accuracy for the color space, but on the other hand 
 makes the feature to the extent rotation-variant and slightly slower for use 
@@ -503,7 +505,7 @@ in the classification schemes.
 The advantage of the VOSCH and ConVOSCH features is depicted in Figure~\ref{fig:comparison},
 where we see that the visual appearance-based feature such as C$^3$-HLAC can not
 discern the orange cube from the orange die (note that the histograms in bottom-left part are identical). 
-On the other hand we have a shape-based feature GRSD
+On the other hand we have a shape-based feature GRSD/GRSD$_2$
 which can not discern between the orange and the blue die (likewise the
 histograms in bottom-right part identical too).
 
@@ -515,8 +517,8 @@ histograms in bottom-right part identical too).
     \includegraphics[width=.47\columnwidth]{figures/comparison/orange_cube_vs_orange_dice.png}
     \includegraphics[width=.47\columnwidth]{figures/comparison/blue_vs_orange_dice_grsd.png}
   \caption{Rotation-invariant C$^3$-HLAC can not differentiate the die from the cube (identical histograms on the left), 
-    while GRSD can not differentiate the different colors (identical histograms on the right). 
-    Their combination however produces different signatures for all of them (Figure~\ref{fig:grsd_cchlac}).}
+    while GRSD/GRSD$_2$ can not differentiate the different colors (identical histograms on the right). 
+    Their combination however produces distinct signatures for all of them (Figure~\ref{fig:grsd_cchlac}).}
   \label{fig:comparison}
 \end{center}
 \end{figure}
@@ -532,7 +534,7 @@ and then use the top $d$ dimensions of the descriptor as a feature vector, in th
 As a training process, several feature vectors that represent each object are extracted, 
 and then Principal Component Analysis (PCA) for them is solved. 
 Similarly to ~\cite{kanezaki2011icra}, we divide the whole voxel grid of each object into 
-cubic subdivisions of a certain size ($7cm\times7cm\times7cm$ with $5cm\times5cm\times5cm$ overlapping in our case), and then extract feature vectors from all the subdivisions for training. 
+cubic subdivisions of a certain size ($7$~cm~$\times~7$~cm~$\times~7$~cm with $5$~cm~$\times~5$~cm~$\times~5$~cm overlapping in our case), and then extract feature vectors from all the subdivisions for training. 
 Let number of the subdivisions be $N$ 
 and the training feature vectors be $\bm{z}_t \in R^d, t=1,2,...N$. 
 Then the eigenvectors of $R=\frac{1}{N} \sum^{N}_{t=1} \bm{z}_t \bm{z}_t^T$ are computed. 
@@ -560,7 +562,7 @@ can be limited by choosing the parameters such that they maximize the results of
 on the training data.
 
 We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM} with $\gamma = 0.0078125$
-($0.5$ for GRSD). Cost values higher than $128$ did not improve the final results further.
+($0.5$ for GRSD$_2$). Cost values higher than $128$ did not improve the final results further.
 
 \subsection{Scaling of Features}
 To improve classification rates using LSM it is important not to have values of the feature 
@@ -579,7 +581,7 @@ i)~7 artificially generated objects with 7 different colors, and
 ii)~63 objects of daily use, scanned using a Kinect sensor and a rotating table
 (shown in the bottom part of Figure~\ref{fig:robot}). 
 We measured the recognition rates against the original implementations of C$^3$-HLAC and 
-GRSD. 
+GRSD. \todo{was this GRSD or GRSD$_2$? update text and tables/graphs if necessary}
 Since C$^3$-HLAC was already shown to outperform Textured Spin Images~\cite{cortelazzo2006}
 we did not include it in our experiments.
 
@@ -587,9 +589,9 @@ we did not include it in our experiments.
 \label{sec:feature_extraction}
 In all tests we parametrized the computation of the feature with the following parameters:
 \begin{itemize}
-\item search radius for normals: $2cm$
-\item search radius for $r_{min}$ and $r_{max}$ estimation: $1cm$
-\item voxel size: $1cm$
+\item search radius for normals: $2$~cm
+\item search radius for $r_{min}$ and $r_{max}$ estimation: $1$~cm
+\item voxel size: $1$~cm
 \end{itemize}
 
 The execution times for VOSCH feature estimation are shown in the following table, where 
@@ -604,9 +606,9 @@ and $\overline{t_{object}}$ is the average estimation time needed for an object:
 \hline
 \rowcolor{tcA} & \hspace{-0.5mm}$\overline{nr_{points}}$\hspace{-0.5mm} & \hspace{-0.5mm}$\overline{t_{point}}$\hspace{-0.5mm} & \hspace{-0.5mm}$\overline{t_{object}}$\hspace{-0.5mm} \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{\hspace{-1mm}synthetic data (49 views of 49 objects)\hspace{-1mm}} & 19124 & 36$\mu s$ & 0.69s \\
+\mc{1}{|>{\columncolor{tcA}}c|}{\hspace{-1mm}synthetic data (49 views of 49 objects)\hspace{-1mm}} & 19124 & 36 $\mu$s & 0.69 s \\
 \hline
-\mc{1}{|>{\columncolor{tcA}}c|}{real data (1512 views of 63 objects)} & 4632 & 57$\mu s$ & 0.26s \\
+\mc{1}{|>{\columncolor{tcA}}c|}{real data (1512 views of 63 objects)} & 4632 & 57 $\mu$s & 0.26 s \\
 \hline
 \end{tabular}
 \caption{Times needed for the estimation of VOSCH.}
@@ -621,16 +623,21 @@ each object as a training sample and evaluated the model on 5 examples of each o
 10 different noise levels. The noise levels were generated for points' 3D coordinates 
 using Gaussian distribution with the following standard deviations:
 \begin{center}
-$\sigma = \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}mm$ 
+$\sigma \in \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}$ [mm]
 \end{center}
-The deviations were set to correspond to the actual noise of Kinect 
-sensor~\footnote{\url{http://www.ros.org/wiki/openni_kinect/kinect_accuracy}}.
+The deviations were set to correspond to the actual noise levels of a Kinect 
+sensor\footnote{\url{http://www.ros.org/wiki/openni_kinect/kinect_accuracy}}.
 For LSM classification we set the dimension of the compressed feature space $d$ to 
 50 for C$^3$-HLAC, ConVOSCH and VOSCH, while GRSD was left uncompressed. 
 The dimensionality of the subspace $c$ was set to 3.
 The results of the test in Figure~\ref{fig:synthetic},
 show VOSCH (right-most two columns) outperforming all other features.
 %% For a better overview of the results using VOSCH please also see Figure~\ref{fig:plot}.
+
+Interrestingly, LSM is slightly better than SVM at low noise levels, but is superseded
+by SVM as noise increases. This is because SVM avoids over-fitting by maximizing the margin
+between the different classes, while LSM penalizes deviations from the model
+(i.e. ``regression line'' of the training features).
 
 %% \begin{figure}[tb!]
 %%   \begin{center}
@@ -641,7 +648,7 @@ show VOSCH (right-most two columns) outperforming all other features.
 %%   \end{center}
 %% \end{figure}
 
-Since the GRSD is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
+Since GRSD is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
 Additionally, since objects were uniformly colored and mostly symmetrical, the fact that C$^3$-HLAC 
 is not rotation invariant did not influence the results in the table. In the original implementation C$^3$-HLAC 
 had to be trained with the artificial rotations to achieve rotation invariance.
@@ -769,7 +776,7 @@ The dimensionality of the subspace $c$ was set to 10 for GRSD and 50 for the oth
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.07 (73.81) & \textbf{99.87} (99.6)  & \textbf{99.87} (\textbf{99.67}) & 99.8 (98.94) \\
 \hline
 \end{tabular}
-\caption{Model accuracy on training data and for the leave-one-out test.}
+\caption{Model accuracy on training data and for the leave-one-out test -- the latter in parentheses.}
 \label{tbl:training}
 \end{center}
 \end{footnotesize}
@@ -849,7 +856,7 @@ environment. The system computes the similarities between each target object and
 rectangular-solid sub-regions in the environment, and it then outputs all the regions
 that have higher similarities than an empirically set threshold.
 Each sub-region has the same size as that of the bounding box of the target object 
-($20cm\times20cm\times20cm$) in our tests.
+($20$~cm~$\times~20$~cm~$\times~20$~cm) in our tests.
 To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, 
 which is a simple extension of ``Integral Image''~\cite{integral_image} from 2D to 3D.
 The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional 
@@ -876,7 +883,7 @@ earlier discussed 63 training objects. Objects were placed onto several location
 (e.g. kitchen counter, cupboard) and the robot was tasked to actively find them.
 
 Preliminary results of the correctly detected objects are shown in Figure~\ref{fig:correct_detected}. 
-When the range of the target point cloud in the environment is limited to $1m$ from the viewpoint, 
+When the range of the target point cloud in the environment is limited to $1$~m from the viewpoint, 
 all the processing including voxelization, feature extraction and similarity calculation was performed 
 in 2-4 seconds per point cloud with the size of 307000 points.
 
@@ -919,6 +926,7 @@ however, that at least for our 63 objects, the texture variations
 were not significantly different when the objects were rotated
 -- neither for the single colored synthetic data (Figure~\ref{fig:synthetic}),
 nor for the real views (Table~\ref{tbl:novel}).
+
 Since the features were designed to be additive, they can be used with LSM for
 detection in cluttered scenes by using a sliding box approach.
 %% Since the features were designed to be additive, they can be used using
@@ -927,9 +935,11 @@ detection in cluttered scenes by using a sliding box approach.
 Unfortunately, acquiring enough labeled training data with enough variation
 to avoid overfitting is a problem in 3D perception, thus the final results are
 not completely informative and have high variations.
+Furthermore, the dataset is quite challenging, containing many similar objects of same type or brand.
 We will try to address these issues by expanding and publishing our database of objects
 and creating more labeled scenes for evaluation.
-Also, the automatic building of object databases by an in-hand modeling by the
+
+Additionally, the automatic building of object databases by an in-hand modeling by the
 robot itself is a useful tool that we plan to investigate in order to allow for
 easier upgrade of the database with novel objects.
 % requires grasping without recognition - cite IROS10... maybe for the final version
