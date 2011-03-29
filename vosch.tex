@@ -258,32 +258,33 @@ we conclude and present our agenda for future research.
 % regions~\cite{Lazebnik05asparse}
 % \item sift-keypoint
 % \url{http://www.ros.org/doc/api/pcl/html/sift__keypoint_8h_source.html}
-Expressiveness and efficiency of the descriptor are both crucially important for
-a real-time object recognition system.  Though there is a trade-off between
+Expressiveness and efficiency 
+%of the descriptor%
+ are both crucially important for
+a real-time object recognition system.  While there is a trade-off between
 these two abilities, selecting a
 proper matching method which accounts for the characteristics of the
-descriptor will improve both expressiveness and efficiency. 
-In the recent decade, a corpus of powerful 2D and 3D descriptors for
+descriptor will improve both. 
+Over the last ten years, a corpus of powerful 2D and 3D descriptors for
 recognizing real objects have been developed. However, few of them take into
 account the compatibility with the matching method used with them.
 
 The SIFT~\cite{lowe04distinctive} descriptor, one of the most well-known 2D
 descriptors for object recognition, makes use of detected keypoints in
-scenes and compares them with those of reference objects to identify the
-objects currently observed. A combination of the visual appearance
-descriptor and 2D shape is presented by Bosch et al. in~\cite{Bosch07shape}
+scenes comparing them with referenced objects in order to identify the
+objects currently being observed. A combination of the visual appearance
+descriptor and the 2D shape is presented by Bosch et al. in~\cite{Bosch07shape}
 where they use random forests to achieve around 80\% classification 
 accuracy. 
 
 The NARF~\cite{steder10irosws} descriptor detects salient points in range images of
-real environments. Despite its dominant
-repeatability in point-to-point matching, there still remain difficulties in
+real environments. Despite its 
+repeatability in point-to-point matching, difficulties remain in
 cluster-to-cluster matching, which is necessary for identifying each cluster
-candidate as an object in the environment. This also causes high computational cost
-especially when the target object database is large. In a 3D domain, a recently 
-developed VFH~\cite{vfh} descriptor was presented as an extension 
+candidate as an object in the environment. This also causes high computational costs
+especially when the target object database is large. In the 3D domain, VFH~\cite{vfh} descriptor was recently developed and presented as an extension 
 of~\cite{Rusu09ICRA}. The feature's discriminative power is increased
-by the inclusion of the viewpoint, which, on the other hand, also represents
+by the inclusion of the viewpoint, which, however, also represents
 a deficiency in that the feature becomes orientation variant. 
 
 There are some approaches that use both geometry and color descriptors to
@@ -291,13 +292,13 @@ represent 3D bodies~\cite{park2006}. However, properly balancing these two
 different properties is difficult.  Caputo and Dorko~\cite{caputo2002} learned
 respective kernels for shape and color representations and combined them for
 object recognition, while Huang and Hilton~\cite{huang2009} balanced them by
-normalizing bins of shape-color histograms.  An alternative solution for combining
-geometry and color information in proper balance is to extract descriptors
-represented by patterns of shape-and-color co-occurrence.  For example, textured
-spin-image~\cite{cortelazzo2006} splits well-known
+normalizing bins of shape-color histograms.  An alternative solution for properly combining
+and balancing geometry and color information is to extract descriptors
+represented by patterns of shape-and-color co-occurrence.  For example, the textured
+spin-image~\cite{cortelazzo2006} splits the well-known
 spin-image~\cite{Johnson_spin_images} descriptors into several layers
 according to given levels of luminance. C$^3$-HLAC~\cite{kanezaki2011icra} 
-splits the CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns 
+splits the CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns, 
 depending on the relative position of neighboring voxels, into RGB channels and the correlation 
 space of these channels.  In \cite{kanezaki2011icra}, the C$^3$-HLAC descriptor is used as a local
 descriptor in the training process and as a global descriptor describing each
@@ -310,7 +311,7 @@ than the point-based approaches. It was shown by the authors in \cite{kanezaki20
 \section{System Overview}
 \label{sec:overview}
 The general idea of the work presented herein is depicted in 
-Figure~\ref{fig:robot}. We first acquire the training data for 63 objects
+Figure~\ref{fig:robot}. We first acquired the training data for 63 objects
 of daily use using the RGBD Kinect sensor. We then estimate ConVOSCH and VOSCH descriptors 
 for every object view and generate training models using Support Vector
 Machines~\cite{svm99} (SVM) or Linear Subspace Method~\cite{watanabe1973} (LSM) classifiers. The models are then used
