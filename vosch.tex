@@ -563,8 +563,8 @@ the similarity between the query part and the $i$-th object in the database is c
   %\hspace{-1mm}
   y_i = \frac{\| P_i^T \bm{z} \|}{\| \bm{z} \|}
 \end{eqnarray}
-There is an advantage of using LSM with this kind of histogram-based descriptors which have the additive property. 
-The additive property means that a global descriptor for an object cluster equals the summation of local descriptors of its sub-parts. 
+There is an advantage of using LSM with this kind of histogram-based descriptors which are additive. 
+% WAS ALREADY EXPLAINED: The additive property means that a global descriptor for an object cluster equals the summation of local descriptors of its sub-parts. 
 Owing to this property, one feature vector computed from each object cluster in environments can be classified by projecting it to 
 each subspace of database objects, regardless of the size of the object cluster, thus providing a fairly fast method for classifying partially visible objects.
 
@@ -873,7 +873,7 @@ environment. The system computes the similarities between each target object and
 rectangular-solid sub-regions in the environment, and it then outputs all the regions
 that have higher similarities than an empirically set threshold.
 Each sub-region has the same size as that of the bounding box of the target object 
-($20$~cm~$\times~20$~cm~$\times~20$~cm) in our tests.
+($15$~cm~$\times~15$~cm~$\times~15$~cm) in our tests.
 To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, 
 which is a simple extension of ``Integral Image''~\cite{integral_image} from 2D to 3D.
 The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional 
