@@ -360,21 +360,23 @@ and used as training examples (which we intend to publish after the review proce
 
 \section{Feature Estimation}
 \label{sec:features}
-As already mentioned earlier, the construction of ConVOSCH and VOSCH features is based on the idea of 
-C$^3$-HLAC and GRSD features. For the sake of clarity we will thus briefly present
-their respective construction.
-Next, we will present the necessary modifications to them in order to obtain the proposed features.
+As mentioned earlier, the construction of ConVOSCH and VOSCH is based on the features of 
+C$^3$-HLAC and GRSD. For the sake of clarity,
+we briefly present an overview of how the features of HLAC and GRSD are constructed. Following this, we outline the modifications that were made to these features in order to obtain the novelty of the proposed features.
+%%  we will thus briefly present
+%% their respective construction.
+%% Next, we will present the necessary modifications to them in order to obtain the proposed features.
 % Since both approaches work on voxelized data, making their computation a single process
 % and combining them in a single feature is an efficient solution.
 
 \subsection{C$^3$-HLAC}
 \label{sec:color_chlac}
-C$^3$-HLAC descriptor is a high-dimensional vector measuring the summation of the 
+C$^3$-HLAC descriptor is a high-dimensional vector that measures the summation of the 
 multiplied RGB values of neighboring voxels in a $3 \times 3 \times 3$ grid around a voxel grid of arbitrary size. 
 Each bin in a C$^3$-HLAC descriptor is differentiated by the RGB color space and the 
 relative position of the two neighboring voxels. 
 Let $\bm{x}=(x,y,z)^T$ be the position of a voxel, $p(\bm{x})$ be the flag for occupancy 
-of the voxel, and $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ be its RGB values normalized 
+of the voxel and $r(\bm{x})$, $g(\bm{x})$ and $b(\bm{x})$ be its RGB values normalized 
 between 0 and 1, respectively.  By defining 
 $r_1(\bm{x}) \equiv sin\left( \frac{\pi}{2}r(\bm{x})\right)$, $g_1(\bm{x}) \equiv sin\left( \frac{\pi}{2}g(\bm{x})\right)$, $b_1(\bm{x}) \equiv sin\left( \frac{\pi}{2}b(\bm{x})\right)$, 
 $r_2(\bm{x}) \equiv cos\left( \frac{\pi}{2}r(\bm{x})\right)$, $g_2(\bm{x}) \equiv cos\left( \frac{\pi}{2}g(\bm{x})\right)$, and $b_2(\bm{x}) \equiv cos\left( \frac{\pi}{2}b(\bm{x})\right)$, 
@@ -406,19 +408,19 @@ the elements of a C$^3$-HLAC descriptor extracted from a voxel grid $V$ are calc
 %
 Since these values are summed up around a voxel grid, there is redundant computation of the 
 same value over symmetric pairs of ${\bm a_i}$. 
-As a result, the number of variations in ${\bm a_i}$ is 13, which is a half of all the 26 neighbors in a $3\times3\times3$ grid.
+As a result, the number of variations in ${\bm a_i}$ is 13, which is a half of the 26 neighbors in a $3\times3\times3$ grid.
 The matrix computed by (\ref{eq:1st}) is expanded into a column vector of 36 elements.
-Therefore the dimension of the vector calculated by (\ref{eq:0th}) is 6, while that by 
+Therefore, the dimension of the vector calculated by (\ref{eq:0th}) is 6, while that by 
 (\ref{eq:1st}) is 468 (=$36\cdot13$).
 The second part of the C$^3$-HLAC descriptor is computed from the binarized values of $r(\bm{x})$, $g(\bm{x})$ 
 and $b(\bm{x})$. 
-To decide the threshold of color binarization, 
-    we apply the histogram threshold selection method of~\cite{otsu1979} to the R, G and B values respectively, 
+To determine the threshold of color binarization, 
+    we applied the histogram threshold selection method of~\cite{otsu1979} to the R, G and B values respectively, 
     using the voxel colors of all objects in the database as sample data.
 C$^3$-HLAC features calculated by (\ref{eq:0th_1}) include redundant elements, e.g., $r(\bm{x})\cdot g(\bm{x})$ and $g(\bm{x})\cdot r(\bm{x})$.
-Excluding the redundant elements, the dimension is thus 12 if color values are binarized, and 21 otherwise (see Figure~\ref{fig:eq3_colorCHLAC}). 
+Excluding the redundant elements, the dimension is 12 if color values are binarized, and 21 otherwise (see Figure~\ref{fig:eq3_colorCHLAC}). 
 Finally a full C$^3$-HLAC vector is obtained by concatenating the two vectors from binarized 
-color voxel data and from original color voxel data. Then the dimension of C$^3$-HLAC feature vector 
+color voxel data and from original color voxel data. As a result, the dimension of the C$^3$-HLAC feature vector 
 becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data). 
 
 \begin{figure}[tb!]
