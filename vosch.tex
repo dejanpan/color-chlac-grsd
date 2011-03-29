@@ -436,11 +436,11 @@ becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data).
 \subsection{GRSD}
 \label{sec:grsd}
 GRSD is a histogram, that counts the number of transitions between different types of voxels.
-While it is applicable to the wide range of applications we used it to count the transitions between 
+While it is applicable to a wide range of applications, we used it to count the transitions between 
 the following geometric classes of voxel surfaces: \emph{free space, plane, cylinder, sphere, rim, and noise}.
-The type of the surfaces are identified based on the estimation of their
+Surface types were identified based on the estimation of their
 two principal curves' radii, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}. 
-This approach is using the leaves of an octree as voxels, to facilitate fast ray intersection
+This approach uses the leaves of an octree as voxels, to facilitate fast ray intersection
 tests and is summarized in Algorithm~\ref{alg:compute_grsd}.
 The number of bins $b$ is:
 \begin{equation}
@@ -477,8 +477,8 @@ hence its dimensionality becomes 20.
 
 \subsection{VOSCH}
 \label{sec:VOSCH}
-In order to generate VOSCH we refined C$^3$-HLAC descriptor to be rotation-invariant by bringing all  
-13 different vectors given by (\ref{eq:1st}) together by the following equation: 
+In order to generate VOSCH we refined the C$^3$-HLAC descriptor to be rotation-invariant by bringing all  
+13 different vectors given by (\ref{eq:1st}) together in the following equation: 
 \begin{equation}\label{eq:1st_new}
   {\bm q_4} = \sum_{i=0}^{12} {\bm q_3}({\bm a}_i) = \sum_{i=0}^{12}\sum_{{\bm x} \in V} \bm{f}({\bm x}) \hspace{1mm}\bm{f}^T({\bm x}+{\bm a_i}) \\
 \end{equation}
@@ -487,17 +487,19 @@ This reduces the dimensionality of the descriptor down to 117 (6+36+12 for non-b
 for binarized data) with respect to the original implementation. 
 % This is the similar way that GRSD takes as described in the next subsection, where the transitions between the reference 
 % voxel and all the 26 nighbors are combined together. 
-By doing so, the refined C$^3$-HLAC descriptor is well matched with GRSD which gives a significant 
-robustness to rotation and still shows a powerful expressiveness for color textures.
+By doing so, the refined C$^3$-HLAC descriptor is well-matched with the GRSD histogram, which 
+allows for significant rotation robustness and powerful expressivity for color textures.
+% gives a significant 
+% robustness to rotation and still shows a powerful expressiveness for color textures.
 
-GRSD, as presented in~\cite{GRSD10Humanoids}, originally used
+The GRSD, as presented in~\cite{GRSD10Humanoids}, originally used
 ray-tracing in order to find transitions between surface types. To make it fit into VOSCH 
 we i)~omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)~discarded
 the normalization of histogram bins -- thus obtaining GRSD$_2$.
 
-These modifications allow us to create histograms which, like in the case of C$^3$-HLAC, are additive.
-The latter property can best be described as follows. 
-If we break up an object into several parts, 
+These modifications allow us to create histograms which, as in the case of C$^3$-HLAC, are additive.
+The latter property can best be described as follows: 
+if we break an object into several parts, 
 the object's histogram becomes equal to the sum of the histograms of its sub-parts. 
 %
 %% If we break up objects into reasonable sizes, 
@@ -518,17 +520,17 @@ at the cost of some descriptiveness.
 \subsection{ConVOSCH}
 The idea of ConVOSCH is to simply estimate C$^3$-HLAC and GRSD$_2$ in two separate steps, 
 concatenate resulting histograms and normalize the final result into a range of [0,1]. This preserves the 
-high dimensionality and thus accuracy for the color space, but on the other hand 
-makes the feature to the extent rotation-variant and slightly slower for use 
-in the classification schemes.
+high dimensionality and, thus, the accuracy for the color space, but it also 
+makes the feature rotation-variant and slightly slower for use 
+in classification schemes.
 \vspace{2ex}
 
 The advantage of the VOSCH and ConVOSCH features is depicted in Figure~\ref{fig:comparison},
-where we see that the visual appearance-based feature such as C$^3$-HLAC can not
-discern the orange cube from the orange die (note that the histograms in bottom-left part are identical). 
-On the other hand we have a shape-based feature GRSD/GRSD$_2$
-which can not discern between the orange and the blue die (likewise the
-histograms in bottom-right part identical too).
+where we can see that the visual appearance-based feature, such as C$^3$-HLAC, can not
+discern the orange cube from the orange die (note that the histograms in the bottom-left part are identical). 
+On the other hand, we have a shape-based feature GRSD/GRSD$_2$
+which can not discern between the orange and the blue die (likewise, the
+histograms in the bottom-right part are also identical).
 
 \begin{figure}[tb!]
   \begin{center}
