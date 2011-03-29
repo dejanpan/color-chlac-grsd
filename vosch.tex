@@ -1,7 +1,9 @@
 % \documentclass[conference]{sty/IEEEtran}
-\documentclass[letterpaper, 10 pt, conference]{sty/ieeeconf}
+\documentclass[a4paper, 10 pt, conference]{sty/ieeeconf}
 \IEEEoverridecommandlockouts
 \overrideIEEEmargins
+
+% \renewcommand{\baselinestretch}{0.99}
 
 \usepackage{cite}
 \usepackage{times}
@@ -52,7 +54,8 @@
 % paper title
 %\title{Classification of Objects of Daily Use Using Combined Color CHLAC and Global Radius-based Surface Descriptors}
 %\title{Multidimensional Descriptor for Classification of Objects of Daily Use}
-\title{\LARGE \bf Voxelized Shape and Color Histograms for RGB-D}
+\title{%\LARGE \bf 
+Voxelized Shape and Color Histograms for RGB-D}
 
 % You will get a Paper-ID when submitting a pdf file to the conference system
 %\author{Paper-ID [110]}
@@ -68,19 +71,19 @@
 %% Intelligent Autonomous Systems Group,\\ TU Munich \\
 %% Email: \{pangercic, marton, beetz\}@cs.tum.edu}}
 
-\author{Asako Kanezaki, Dejan Pangercic, Zoltan-Csaba Marton, \\ Tatsuya Harada, Yasuo Kuniyoshi, and Michael Beetz% <-this % stops a space
+\author{Asako Kanezaki, Zoltan-Csaba Marton, Dejan Pangercic,\\ Tatsuya Harada, Yasuo Kuniyoshi, and Michael Beetz% <-this % stops a space
 %\thanks{This work was not supported by any organization}% <-this % stops a space
 \thanks{A. Kanezaki, T. Harada, and Y. Kuniyoshi are with Graduate School of Information Science and Technology, The University of Tokyo
 %, 7-3-1 Hongo Bunkyo-ku, Tokyo Japan
 }
-\thanks{D. Pangercic, Z.-C. Marton, and M. Michael Beetz are with Intelligent Autonomous Systems Group, TU Munich
+\thanks{Z.-C. Marton, D. Pangercic, and M. Michael Beetz are with Intelligent Autonomous Systems Group, TU Munich
 %, KarlStr. 45, 80333 Munich Germany
 }
 \thanks{\tt\small kanezaki@isi.imi.i.u-tokyo.ac.jp}
 \thanks{\tt\small harada@isi.imi.i.u-tokyo.ac.jp}
 \thanks{\tt\small kuniyosh@isi.imi.i.u-tokyo.ac.jp}
-\thanks{\tt\small pangercic@cs.tum.edu}
 \thanks{\tt\small marton@cs.tum.edu}
+\thanks{\tt\small pangercic@cs.tum.edu}
 \thanks{\tt\small beetz@cs.tum.edu}
 }
 
@@ -94,19 +97,24 @@
 \begin{abstract}
 Real world environments typically include objects with different perceptual appearances.
 A household, for example, includes textured, textureless and even partially transparent objects.
-While perception methods exist that work well on one such class of objects, the perception of
-scenes including different classes of objects is still a challenge.
-It is our view that a step towards solving these problems is the
-construction of a descriptor that takes both color and shape
-into account -- with high discriminating power.
-In this paper, we
-present an approach to efficiently capture these two dimensions
-into a single feature
-that is capable of capturing both the geometric and visual appearance
-properties of common objects of daily use. We showcase the
-feature's applicability for the purpose of classification of objects in cluttered scenes with occlusions,
+While perception methods exist that work well on one such class of objects at a time, the perception of
+various classes of objects in a scene is still a challenge.
+It is our view that the construction of a descriptor that takes both color and shape into account,
+thereby fostering high discriminating power, will help to solve this problem.
+% It is our view that a step towards solving these problems is the
+% construction of a descriptor that takes both color and shape
+% into account -- with high discriminating power.
+In this paper we present an approach that is capable of efficiently capturing both the geometric
+and visual appearance of common objects of daily use into one feature.
+% In this paper, we
+% present an approach to efficiently capture these two dimensions
+% into a single feature
+% that is capable of capturing both the geometric and visual appearance
+% properties of common objects of daily use.
+We showcase this
+feature's applicability for the purpose of classifying objects in cluttered scenes with obstructions,
 and we evaluate two classification approaches.
-For the experiments we make use of Kinect, a new RGB-D device,
+In our experiments we make use of Kinect, a new RGB-D device,
 and build a database of 63 objects. Preliminary results
 on novel views show recognition rates of 72.2\%.
 % recognition rate on novel views is 58% for LSM if computed correctly
@@ -116,27 +124,28 @@ on novel views show recognition rates of 72.2\%.
 
 \section{Introduction}
 One of the great challenges in autonomous mobile robot manipulation is scaling
-technology to realistic tasks in real-world environments under realistic
-conditions. This means that an autonomous household robot must act on many
-different objects of daily use, handle them in typical situations, e.g. when
-opening a fridge to get milk or when performing challenging everyday tasks
-such as setting the table or preparing a meal.
+technology to realistic tasks in real-world environments and
+conditions. This means that an autonomous household robot must be able to interact with many
+different objects of daily use, and handle them (e.g. when
+opening a fridge to get milk, or when performing challenging everyday tasks,
+such as setting the table or preparing a meal).
 
 %\todo{Provide the definition of descriptor vs detector vs feature}\\
-Descriptor-based object recognition has proved, in recent years, to be very successful.
-SIFT~\cite{lowe04distinctive}, SURF~\cite{surf} and others can
+In recent years, descriptor-based object recognition has proved to be very successful.
+SIFT~\cite{lowe04distinctive}, SURF~\cite{surf} and other descriptors can
 detect, localize and recognize many types of textured objects efficiently, reliably
 and under varying lighting conditions. Likewise, descriptors have been developed 
 for perceiving objects based on their shapes (e.g. circles, cylinders, spheres and hybrid variants).
-Normal Aligned Radial Features (NARF)\cite{steder10irosws} for range images, 
+The most notable are Normal Aligned Radial Features (NARF)\cite{steder10irosws} for range images 
 and several versions of Point Feature  Histograms (PFH, FPFH)~\cite{Rusu09ICRA} and 
-Viewpoint Feature Histograms (VFH)~\cite{vfh} for unordered fully-3D point clouds 
-are the most notable ones. While these descriptors were successful, too, they are still limited because they
-typically work only in restricted feature spaces. So, in order to have a perception system
-based on SIFT features, one needs to restrict the search space to objects that are detected by
-texture and if we apply 3D features, the objects must be distinctive with respect to their shapes. 
-If we want to install a perception system for autonomous robots we need to aim 
-at one that can perceive all objects, be they textured, texture-less, different shapes, etc.
+Viewpoint Feature Histograms (VFH)~\cite{vfh} for unordered fully-3D point clouds.
+While these descriptors were successful, their applicability is limited because they
+typically work only in restricted feature spaces. In order to have a perception system
+based on SIFT features, the search space needs to be restricted to objects that are detectable by
+texture, and if 3D features are used, the objects must be distinctive with respect to their shapes. 
+Ultimately, a perception system for autonomous robots
+% we need to aim at one that can perceive all objects, be they textured, texture-less, different shapes, etc.
+needs to be able to perceive and decipher all objects, whether they are textured, textureless, or different shapes, or the like.
 
 \begin{figure}[tb!]
   \begin{center}
@@ -148,23 +157,24 @@ at one that can perceive all objects, be they textured, texture-less, different 
 of 63 objects was generated. An object detection pipeline with Support Vector
 Machines or Linear Subspace Method classifiers was then used to detect objects
 in natural scenes. Bottom: the objects used in our experiments.}
+\vspace{-3ex}
     \label{fig:robot}
   \end{center}
 \end{figure}
 
-While it seems feasible that one can simply develop perception routines by combining
+While it seems feasible that perception routines can simply be developed by combining
 various descriptors~\cite{stueckler10combining, GRSD10Humanoids}, a more promising idea 
 is to develop descriptors that work in multiple feature spaces. The reason for this is 
-that objects might be easily discriminated in a combined feature space, whereas it is impossible 
+that it might be easy to discriminate objects in a combined feature space, whereas it is impossible 
 to discriminate them in individual spaces as depicted in Figure~\ref{fig:grsd_cchlac}.
-Our approach is thus to be seen as an alternative to the bag-of-experts type
+Thus, our approach is to be seen as an alternative to the bag-of-experts type
 of approaches~\cite{Varma07learningthe}.
-
-In this paper, we report on our work on the two variations of a novel descriptor
-which builds upon the idea of the
+In this paper we present our work, which includes two variations of a novel descriptor that is based on the
+% In this paper, we report on our work on the two variations of a novel descriptor
+% which builds upon the idea of the
 Global Radius-based Surface Descriptor (GRSD~\cite{GRSD10Humanoids}) and the
 Circular Color Cubic Higher-order Local Auto-Correlation descriptor (C$^3$-HLAC~\cite{kanezaki2011icra}).
-We termed it (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
+We termed our descriptor (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
 
 % \subsection{What}
 % In this paper, we address the problem of localization and recognition of
@@ -172,9 +182,9 @@ We termed it (Concatenated) Voxelized Shape and Color Histograms -- (Con)VOSCH.
 % feature descriptor that captures both the geometrical and visual appearance
 % properties of the objects.
 
-The strength of the descriptor lies in its ability to consider geometric and
-visual features in a unified manner to facilitate object classification. The two
-underlying features (GRSD, C$^3$-HLAC) have been carefully selected because of 
+The strength of our descriptor lies in its ability to consider geometric and
+visual features in a unified manner, thereby facilitating object classification. The two
+underlying features (GRSD, C$^3$-HLAC) were carefully selected for
 their similar structures and the way they are computed from voxelized 3D data. 
 While ConVOSCH is a mere concatenation of GRSD and C$^3$-HLAC histograms, 
 VOSCH is developed such that it allows for its computation in a single step because 
@@ -194,7 +204,14 @@ moving bounding box-based approach together with a sub-space matching-based clas
 %% The resulting approach performs at 2 frames per second
 %% while taking into account an object database of 63 different objects
 %% (see Figure~\ref{fig:robot}).
-
+Lastly, our descriptor can be applied out-of-the-box to data coming from 
+new sensing technologies such as the Kinect device, and lays the foundation for a
+multitude of applications.
+% \todo{remove ``such as'' and fix reference?} such as the detection of a priori learned object models discussed further on (Section~\ref{sec:recognition}).
+% % % VOSCH also enables equipping of service robots 
+% % % (such as the robot shown in top part of Figure~\ref{fig:robot}) with the 
+% % % capabilities to acquire additional object models which furthermore opens ways 
+% % % for manipulation tasks in realistic environments under realistic conditions.
 
 % \subsection{Why}
 % In the past, strong features have been proposed in perception for personal robots,
@@ -208,14 +225,6 @@ moving bounding box-based approach together with a sub-space matching-based clas
 
 % Yet it seems that there is none that can capture
 % all important and obvious properties (such as geometry and color are)
-Lastly, our descriptor can be applied out-of-the-box to the data coming from 
-new sensing technologies such as the Kinect device and lays the foundation stone for a
-multitude of applications \todo{remove ``such as'' and fix reference?} such as the detection of a priori learned object models discussed
-further on (Section~\ref{sec:recognition}).
-% % % VOSCH also enables equipping of service robots 
-% % % (such as the robot shown in top part of Figure~\ref{fig:robot}) with the 
-% % % capabilities to acquire additional object models which furthermore opens ways 
-% % % for manipulation tasks in realistic environments under realistic conditions.
 
 \begin{figure}[tb!]
   \begin{center}
@@ -228,17 +237,18 @@ further on (Section~\ref{sec:recognition}).
 Left: different categories of objects (top-down: cylinder, cube, cone, plane, sphere, torus, die) 
 have different values in the first 20 bins of their histograms.
 Right: different colors of the same category of a torus have different values in the last 117 bins of their histograms.}
+\vspace{-3ex}
     \label{fig:grsd_cchlac}
   \end{center}
 \end{figure}
 
-The remainder of the paper is structured as follows. After the overview of the related
-work in Section~\ref{sec:rl}, we present a system overview in Section~\ref{sec:overview}
-which is followed by Section~\ref{sec:features}, which elaborates on the construction of the
-ConVOSCH and VOSCH descriptor variants. In Section~\ref{sec:classification}, we present the usage of this descriptor
-for the classification of objects using two classification methods which we
+The remainder of this paper is structured as follows: after presenting an overview of the related
+work in Section~\ref{sec:rl}, we present a system overview in Section~\ref{sec:overview}.
+This is followed by Section~\ref{sec:features}, which elaborates on the construction of the
+ConVOSCH and VOSCH descriptor variants. In Section~\ref{sec:classification} we present the usage of this descriptor
+for the classification of objects using two classification methods, which we
 then test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion},
-we conclude and give an outlook on our future work.
+we conclude and present our agenda for future research.
 
 \section{Related Work}
 \label{sec:rl}
@@ -426,6 +436,13 @@ The type of the surfaces are identified based on the estimation of their
 two principal curves' radii, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}. 
 This approach is using the leaves of an octree as voxels, to facilitate fast ray intersection
 tests and is summarized in Algorithm~\ref{alg:compute_grsd}.
+The number of bins $b$ is:
+\begin{equation}
+b=\frac{s(s+1)}{2}
+\end{equation}
+where $s$ is the number of possible surface types,
+resulting in 21 dimensions for the above stated 6 types of surfaces.
+
 \begin{algorithm}[htb!]
 L = \{$l_{1}...l_{m}$\} \tcc{\footnotesize{octree leaves encapsulating the object}}
 C = \{$c_{l_1}...c_{l_m}$\} \tcc{\footnotesize{the leaf classes generated by $RSD$ 
@@ -447,12 +464,6 @@ $\cH$ = ZeroMatrix \tcc{\footnotesize{transition matrix holding the number of ne
   \caption{GRSD Computation}
   \label{alg:compute_grsd}
 \end{algorithm}
-The number of bins $b$ is:
-\begin{equation}
-b=\frac{s(s+1)}{2}
-\end{equation}
-where $s$ is the number of possible surface types,
-resulting in 21 dimensions for the above stated 6 types of surfaces.
 
 In order to efficiently merge the two features, the original GRSD had to be altered (see next subsection). 
 In the new, additive GRSD$_2$ feature, transitions from \emph{free space} to \emph{free space} are impossible,
