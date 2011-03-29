@@ -554,22 +554,22 @@ histograms in the bottom-right part are also identical).
 LSM is an established learning method for classification. 
 For the first step, we solve PCA for all the descriptors extracted from all the trained objects, 
 and then use the top $d$ dimensions of the descriptor as a feature vector, in the same way as \cite{kanezaki2011icra}.
-As a training process, several feature vectors that represent each object are extracted, 
-and then Principal Component Analysis (PCA) for them is solved. 
-Similarly to ~\cite{kanezaki2011icra}, we divide the whole voxel grid of each object into 
-cubic subdivisions of a certain size ($7$~cm~$\times~7$~cm~$\times~7$~cm with $5$~cm~$\times~5$~cm~$\times~5$~cm overlapping in our case), and then extract feature vectors from all the subdivisions for training. 
-Let number of the subdivisions be $N$ 
+For training, several feature vectors that represent each object were extracted, 
+and then Principal Component Analysis (PCA) for them was solved. 
+Similarly to ~\cite{kanezaki2011icra}, we divided the whole voxel grid of each object into 
+cubic subdivisions of a certain size ($7$~cm~$\times~7$~cm~$\times~7$~cm with $5$~cm~$\times~5$~cm~$\times~5$~cm overlapping in our case) and then extracted feature vectors from all of the subdivisions. 
+Let the number of subdivisions be $N$ 
 and the training feature vectors be $\bm{z}_t \in R^d, t=1,2,...N$. 
 Then the eigenvectors of $R=\frac{1}{N} \sum^{N}_{t=1} \bm{z}_t \bm{z}_t^T$ are computed. 
 
 To classify and identify a detected object in environments, the system extracts one feature vector from the whole voxel grid of the object. 
-Letting the feature vector be $\bm{z}$ and the matrix of top $c$ eigen vectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{it})$,
+Letting the feature vector be $\bm{z}$ and the matrix of top $c$ eigenvectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{it})$,
 the similarity between the query part and the $i$-th object in the database is calculated by the following equation:
 \begin{eqnarray}\label{eq:y_calc}
   %\hspace{-1mm}
   y_i = \frac{\| P_i^T \bm{z} \|}{\| \bm{z} \|}
 \end{eqnarray}
-There is an advantage of using LSM with this kind of histogram-based descriptors which are additive. 
+There is an advantage to using LSM with this kind of histogram-based descriptors which are additive. 
 % WAS ALREADY EXPLAINED: The additive property means that a global descriptor for an object cluster equals the summation of local descriptors of its sub-parts. 
 Owing to this property, one feature vector computed from each object cluster in environments can be classified by projecting it to 
 each subspace of database objects, regardless of the size of the object cluster, thus providing a fairly fast method for classifying partially visible objects.
@@ -579,21 +579,24 @@ We also performed classification using SVM in our experiments.
 SVM is a fast classification method that works by learning the vectors that define hyperplanes separating
 the training examples according to a cost and a kernel function.
 
-Unlike LSM, it is not well suited for recognizing partially visible objects using the presented features,
+Unlike LSM, it is not well-suited for recognizing partially visible objects using the presented features,
 unless partial views are explicitly trained. Another problem is over-fitting to the training data, which
-can be limited by choosing the parameters such that they maximize the results of cross-validation checks
+can be limited by choosing parameters so that they maximize the results of cross-validation checks
 on the training data.
 
 We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM} with $\gamma = 0.0078125$
-($0.5$ for GRSD$_2$). Cost values higher than $128$ did not improve the final results further.
+($0.5$ for GRSD$_2$). Cost values higher than $128$ did not further improve the final results.
 
 \subsection{Scaling of Features}
-To improve classification rates using LSM it is important not to have values of the feature 
-varying over several orders of magnitude with respect to others and thus becoming very important components
-during PCA. Similarly, for SVM the results are also improved if the variation of each feature bin is
-proportional. Therefore we performed bin-wise scaling of the features for classification as follows.
-When going through the training data, the minimum and maximum value of each bin is recorded, and this interval 
-is mapped to the interval [0,1] both during training and during testing.
+To improve classification rates using LSM it is important 
+that the values of the feature do not vary over several orders of magnitude and, thus, become very important components during PCA.
+%% not to have values of the feature 
+%% varying over several orders of magnitude with respect to others and thus becoming very important components
+%% during PCA. 
+Similarly, for SVM the results are also improved if the variation of each feature bin is
+proportional. Therefore we performed bin-wise scaling of the features for classification as follows: 
+when going through the training data, the minimum and maximum value of each bin was recorded, and this interval 
+was mapped to the interval [0,1] both during training and during testing.
 
 
 \section{Results}
