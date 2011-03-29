@@ -306,7 +306,7 @@ object cluster in the recognition process. This takes advantage of the combinati
 of the Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property, 
 which means a global descriptor for an object cluster is computed by summing up the local descriptors of its sub-parts.
 Since computation of C$^3$-HLAC is on voxelized data, it is more efficient
-than the point-based approaches. It was shown by the authors in \cite{kanezaki2011icra} to outperform textured spin-images.
+than the point-based approaches. %It was shown by the authors in \cite{kanezaki2011icra} to outperform textured spin-images.
 
 \section{System Overview}
 \label{sec:overview}
@@ -482,13 +482,13 @@ This reduces the dimensionality of the descriptor down to 117 (6+36+12 for non-b
 for binarized data) with respect to the original implementation. 
 % This is the similar way that GRSD takes as described in the next subsection, where the transitions between the reference 
 % voxel and all the 26 nighbors are combined together. 
-By doing so the refined C$^3$-HLAC descriptor is well matched with GRSD which gives a significant 
+By doing so, the refined C$^3$-HLAC descriptor is well matched with GRSD which gives a significant 
 robustness to rotation and still shows a powerful expressiveness for color textures.
 
-GRSD, as shown in~\cite{GRSD10Humanoids}, originally used
+GRSD, as presented in~\cite{GRSD10Humanoids}, originally used
 ray-tracing in order to find transitions between surface types. To make it fit into VOSCH 
 we i)~omitted ray-tracing in favor of fast-to-compute adjacency voxels checks and ii)~discarded
-the normalization of histogram bins.
+the normalization of histogram bins -- thus obtaining GRSD$_2$.
 
 These modifications allow us to create histograms which, like in the case of C$^3$-HLAC, are additive.
 The latter property can best be described as follows. 
@@ -597,8 +597,8 @@ i)~7 artificially generated objects with 7 different colors, and
 ii)~63 objects of daily use, scanned using a Kinect sensor and a rotating table
 (shown in the bottom part of Figure~\ref{fig:robot}). 
 We measured the recognition rates against the original implementations of C$^3$-HLAC and 
-GRSD. \todo{was this GRSD or GRSD$_2$? update text and tables/graphs if necessary}
-Since C$^3$-HLAC was already shown to outperform Textured Spin Images~\cite{cortelazzo2006}
+GRSD$_2$.
+Since C$^3$-HLAC was already shown to outperform Textured Spin Images in~\cite{kanezaki2010icra}
 we did not include it in our experiments.
 
 \subsection{Feature Extraction}
@@ -644,7 +644,7 @@ $\sigma \in \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}$ [mm]
 The deviations were set to correspond to the actual noise levels of a Kinect 
 sensor\footnote{\url{http://www.ros.org/wiki/openni_kinect/kinect_accuracy}}.
 For LSM classification we set the dimension of the compressed feature space $d$ to 
-50 for C$^3$-HLAC, ConVOSCH and VOSCH, while GRSD was left uncompressed. 
+50 for C$^3$-HLAC, ConVOSCH and VOSCH, while GRSD$_2$ was left uncompressed. 
 The dimensionality of the subspace $c$ was set to 3.
 The results of the test in Figure~\ref{fig:synthetic},
 show VOSCH (right-most two columns) outperforming all other features.
@@ -664,7 +664,7 @@ between the different classes, while LSM penalizes deviations from the model
 %%   \end{center}
 %% \end{figure}
 
-Since GRSD is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
+Since GRSD$_2$ is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
 Additionally, since objects were uniformly colored and mostly symmetrical, the fact that C$^3$-HLAC 
 is not rotation invariant did not influence the results in the table. In the original implementation C$^3$-HLAC 
 had to be trained with the artificial rotations to achieve rotation invariance.
@@ -717,7 +717,7 @@ had to be trained with the artificial rotations to achieve rotation invariance.
   \centering
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_1.png}
   \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_2.png}
-  \caption{The effect of simulated noise on the classification results using GRSD, C$^3$-HLAC, ConVOSCH and VOSCH with LSM and SVM
+  \caption{The effect of simulated noise on the classification results using GRSD$_2$, C$^3$-HLAC, ConVOSCH and VOSCH with LSM and SVM
     (both with and without random rotations of test data).}
   \label{fig:synthetic}
 \end{figure*}
@@ -760,14 +760,14 @@ Table~\ref{tbl:training} shows the percentage of correctly classified training e
 The numbers in parentheses are the percentages of correctly classified views using the model constructed using the remaining views
 (leave-one-out-test).
 For LSM classification we set $d$ to 
-100 for C$^3$-HLAC, ConVOSCH and VOSCH, while GRSD was left uncompressed. 
-The dimensionality of the subspace $c$ was set to 10 for GRSD and 50 for the others.
+100 for C$^3$-HLAC, ConVOSCH and VOSCH, while GRSD$_2$ was left uncompressed. 
+The dimensionality of the subspace $c$ was set to 10 for GRSD$_2$ and 50 for the others.
 
 % \begin{table*}[tb]
 % \begin{center}
 % \begin{tabular}{|c|c|c|c|c|}
 % \hline
-% \rowcolor{tcA} & \textbf{GRSD (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (ConVOSCH)} & \textbf{VOSCH (137D)} \\
+% \rowcolor{tcA} & \textbf{GRSD$_2$ (20D)} & \textbf{Color-CHLAC (981D)} & \textbf{Concatenated (ConVOSCH)} & \textbf{VOSCH (137D)} \\
 % \hline
 % \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 29.6958\% (17.2619\%) & 99.0741\% (97.8175\%) & 99.3386\% (96.8915\%) & 97.8836\% (93.1217\%) \\
 % \hline
@@ -784,7 +784,7 @@ The dimensionality of the subspace $c$ was set to 10 for GRSD and 50 for the oth
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-\rowcolor{tcA} & \textbf{GRSD} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
+\rowcolor{tcA} & \textbf{GRSD$_2$} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
 \rowcolor{tcA} & \textbf{20D [\%]} & \textbf{981D [\%]} & \textbf{1001D [\%]} & \textbf{137D [\%]} \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 43.65 (39.48) & 99.67 (99.6) & \textbf{99.8} (\textbf{99.74}) & \textbf{99.8} (99.67) \\
@@ -797,7 +797,7 @@ The dimensionality of the subspace $c$ was set to 10 for GRSD and 50 for the oth
 \end{center}
 \end{footnotesize}
 \end{table}
-% GRSD:     32.0 0.5 73.8095
+% GRSD$_2$:     32.0 0.5 73.8095
 % C3HLAC:   
 % ConVOSCH: 
 % VOSCH:    
@@ -821,7 +821,7 @@ the actual classification results by avoiding the training of very different vie
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\rowcolor{tcA} & \textbf{} & \textbf{GRSD} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
+\rowcolor{tcA} & \textbf{} & \textbf{GRSD$_2$} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
 \rowcolor{tcA} & \textbf{} & \textbf{20D} & \textbf{981D} & \textbf{1001D} & \textbf{137D} \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(a)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 16.7\% & 75\% & \textbf{91.7\%} & 83.3\% \\
@@ -855,7 +855,7 @@ the actual classification results by avoiding the training of very different vie
          here we used it for classification of objects that were only visually distinguishable (different brands of milk boxes for example).}
 \label{tbl:novel}
 \end{table}
-% GRSD(10) C3HLAC(20) ConVOSCH(40) VOSCH(70)
+% GRSD$_2$(10) C3HLAC(20) ConVOSCH(40) VOSCH(70)
 
 While LSM proved to be robust to noise on the synthetic data, the real data is quite smooth,
 and SVM outperformed it in our tests. LSM has however the advantage of exploiting the additive
