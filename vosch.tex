@@ -613,16 +613,17 @@ we did not include it in our experiments.
 
 \subsection{Feature Extraction}
 \label{sec:feature_extraction}
-In all tests we parametrized the computation of the feature with the following parameters:
+In all tests, the computation of the feature was parametrized as follows: 
+%%we parametrized the computation of the feature with the following parameters:
 \begin{itemize}
 \item search radius for normals: $2$~cm
 \item search radius for $r_{min}$ and $r_{max}$ estimation: $1$~cm
 \item voxel size: $1$~cm
 \end{itemize}
 
-The execution times for VOSCH feature estimation are shown in the following table, where 
+The execution times for VOSCH feature estimation are shown in Table~\ref{tbl:timing}, where 
 $\overline{nr_{points}}$ denotes the average number of points per object,
-$\overline{t_{point}}$ is the average estimation time per point,
+$\overline{t_{point}}$ is the average estimation time per point
 and $\overline{t_{object}}$ is the average estimation time needed for an object:
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
 \definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
@@ -644,7 +645,7 @@ and $\overline{t_{object}}$ is the average estimation time needed for an object:
 
 \subsection{Synthetic Data}
 We first carried out tests on a set of 49 artificially generated objects, consisting of
-7 shapes, each in 7 colors (Figure~\ref{fig:grsd_cchlac}). We used 1 example of 
+7 shapes, each in 7 different colors (Figure~\ref{fig:grsd_cchlac}). We used 1 example of 
 each object as a training sample and evaluated the model on 5 examples of each object with 
 10 different noise levels. The noise levels were generated for points' 3D coordinates 
 using Gaussian distribution with the following standard deviations:
@@ -676,8 +677,8 @@ between the different classes, while LSM penalizes deviations from the model
 
 Since GRSD$_2$ is insensitive to color, it can identify at most $1/7 \approx 14.2857\%$ of the data.
 Additionally, since objects were uniformly colored and mostly symmetrical, the fact that C$^3$-HLAC 
-is not rotation invariant did not influence the results in the table. In the original implementation C$^3$-HLAC 
-had to be trained with the artificial rotations to achieve rotation invariance.
+is not rotation invariant did not influence the results. In the original implementation C$^3$-HLAC 
+had to be trained in artificial rotations to achieve rotation invariance.
 
 %% \begin{table*}[tb]
 %% \begin{center}
@@ -736,12 +737,14 @@ had to be trained with the artificial rotations to achieve rotation invariance.
 \subsection{Real Data}
 \label{sec:real_data}
 \subsubsection{Acquisition of Training Data}
-Our database of 3D objects was obtained using the Kinect sensor mounted on the head of the robot.
-The set of objects (see Figure~\ref{fig:robot}) encompasses the ones commonly used
-in a typical household environment (mugs, utensils, groceries, etc) and is envisioned for a
-larger expansion and a release after the review process. We rotated the objects on the rotating table with
+Our database of 3D objects was obtained using the Kinect sensor mounted on the head of a robot.
+The set of objects (see Figure~\ref{fig:robot}) encompasses those commonly used
+in a typical household environment (mugs, utensils, groceries, etc.).; 
+we plan to expand this object set and release it after the review process.
+% and is envisioned for a larger expansion and a release after the review process. 
+We rotated the objects on the rotating table with
 an angular step of $15^\circ$ around the up-axis, and acquired partial
-snapshots from a perspective that best approximates the robot's view point during its working cycle.  
+snapshots from a perspective that best approximates the robot's viewpoint during its working cycle.  
 % We consider this to be an important point as opposed to similar initiatives (e.g.,
 % \cite{kit}) where the datasets are acquired using high-precision and off-board sensors.
 
@@ -765,7 +768,7 @@ snapshots from a perspective that best approximates the robot's view point durin
 % \end{figure}
 
 
-\subsubsection{Evaluation on Training Data}
+\subsubsection{Evaluation of the Training Data}
 Table~\ref{tbl:training} shows the percentage of correctly classified training examples using the model computed for them.
 The numbers in parentheses are the percentages of correctly classified views using the model constructed using the remaining views
 (leave-one-out-test).
@@ -802,7 +805,7 @@ The dimensionality of the subspace $c$ was set to 10 for GRSD$_2$ and 50 for the
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{SVM}} & 99.07 (73.81) & \textbf{99.87} (99.6)  & \textbf{99.87} (\textbf{99.67}) & 99.8 (98.94) \\
 \hline
 \end{tabular}
-\caption{Model accuracy on training data and for the leave-one-out test -- the latter in parentheses.}
+\caption{Model accuracy of the training data and for the leave-one-out test -- the latter in parentheses.}
 \label{tbl:training}
 \end{center}
 \end{footnotesize}
@@ -813,15 +816,15 @@ The dimensionality of the subspace $c$ was set to 10 for GRSD$_2$ and 50 for the
 % VOSCH:    
 
 \subsubsection{Evaluation on Novel Views}
-To evaluate the proposed features on novel views as well, we performed the test with the
-following setup (shown in Figure~\ref{fig:novel_views}): we selected 5 types of scenes containing textured
-and textureless objects (a and b), objects with similar shapes (c), a scene with the substantial 
-altered lighting conditions (d), and objects with arbitrary rotation (e). We acquired the data from 3 substantially different views 
+To evaluate the proposed features of the novel views, we performed the test with the
+following setup (shown in Figure~\ref{fig:novel_views}): (a and b) we selected 5 types of scenes containing textured
+and textureless objects, (c) objects with similar shapes, (d) a scene with the substantial 
+altered lighting conditions, and (e) objects with arbitrary rotations. We acquired the data from three substantially different views, 
 as also shown in Figure~\ref{fig:novel_views}. Object candidate clusters were detected
 by first finding a major horizontal planar surface within the point cloud, as done in~\cite{Rusu09IROS_ClosingLoop}.
 For these experiments, we tested all the choices with a break for ten (10, 20, \dots) as the dimension of subspace $c$ in LSM, and set the best one.
 
-In total we tested on 72 views, achieving the highest rates with SVM, as shown in Table~\ref{tbl:novel}.
+In total we tested 72 views, achieving the highest rates with SVM, as shown in Table~\ref{tbl:novel}.
 %The results for VOSCH were slightly less convincing, but more testing is needed to make a final judgment.
 One possible way to improve the results would be to treat each view as a separate sub-class, which should increase
 the actual classification results by avoiding the training of very different views of the same object into one class.
@@ -868,8 +871,8 @@ Such an approach improved the success rate by $12\%$ of GRSD based geometric cla
 \end{table}
 % GRSD$_2$(10) C3HLAC(20) ConVOSCH(40) VOSCH(70)
 
-While LSM proved to be robust to noise on the synthetic data, the real data is quite smooth,
-and SVM outperformed it in our tests. LSM has however the advantage of exploiting the additive
+While LSM proved to be robust to noise in the synthetic data, the real data is quite smooth,
+and SVM outperformed it in our tests. LSM has, however, the advantage of exploiting the additive
 property of the feature for detection in clutter. Moreover, the time required for classification is significantly shorter with LSM than with SVM.
 
 %% \todo{Prove it works for a)textured objects, b)texture-less objects, c)objects with different shapes, 
@@ -880,7 +883,7 @@ property of the feature for detection in clutter. Moreover, the time required fo
 \label{sec:recognition}
 We applied our object recognition method on an object detection scheme in a household
 environment. The system computes the similarities between each target object and all 
-rectangular-solid sub-regions in the environment, and it then outputs all the regions
+rectangular-solid sub-regions in the environment and then it outputs all the regions
 that have higher similarities than an empirically set threshold.
 Each sub-region has the same size as that of the bounding box of the target object 
 ($15$~cm~$\times~15$~cm~$\times~15$~cm) in our tests.
@@ -899,19 +902,19 @@ The latter is then computed by the following equation:
 \end{eqnarray*}
 Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can always be 
 computed by adding the 8 cached feature vectors, regardless of the size of the target object.
-To furthermore accelerate the process empty regions are skipped as well.
-Similarly to the ``Integral Feature Table'', we create a table that stores
-the number of voxels with the occupied property, in the area ranging from $(0,0,0)$ to $(x,y,z)$.
+To furthermore accelerate the process, empty regions are also skipped.
+Similarly to the ``Integral Feature Table'', we created a table that stores
+the number of voxels with the occupied property in the area ranging from $(0,0,0)$ to $(x,y,z)$.
 Using this table, the number of voxels with the occupied property in the detection 
 box can be computed quickly by adding 8 scalar values.
 
-This object detection pipeline was applied on six objects from the set of 
-earlier discussed 63 training objects. Objects were placed onto several locations on a kitchen counter and the robot was tasked to actively find them.
+This object detection pipeline was applied to six of the 63, earlier discussed, training objects.
+Objects were placed in several locations on a kitchen counter and the robot was instructed to actively find them.
 
 Preliminary results of the correctly detected objects are shown in Figure~\ref{fig:correct_detected}. 
-When the range of the target point cloud in the environment is limited to $1$~m from the viewpoint, 
-all the processing including voxelization, feature extraction and similarity calculation was performed 
-in 2-4 seconds per point cloud with the size of 307000 points.
+When the range of the target point cloud in the environment is limited to $1$~m from the robot's viewpoint, 
+all the processing, including voxelization, feature extraction, and similarity calculation was performed 
+in 2-4 seconds per point cloud with the size of 307,000 points.
 
 %\todo{Asako: description for the results}
 
