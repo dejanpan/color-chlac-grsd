@@ -928,17 +928,17 @@ in 2-4 seconds per point cloud with the size of 307000 points.
 \section{Conclusions and Future Work}
 \label{sec:conclusion}
 
-We presented and evaluated a way to efficiently combine two
+In this paper, we presented and evaluated a method to efficiently combine two
 appearance characteristics into a single feature (both rotation
 variant and rotation invariant) and showed its advantage over
 the original methods.
 
-The rotation invariant VOSCH feature with its low number of dimensions
+With its low number of dimensions, the rotation invariant VOSCH feature
 promises to be an efficient and descriptive feature that scales well with
-the increased number of objects a real-world application of the system would
+the number of objects. This is what a real-world application of the system would
 require. C$^3$-HLAC is not rotation invariant, so it has to be trained with
-all rotations around the view-ray, thus ConVOSCH as well. We found
-however, that at least for our 63 objects, the texture variations
+all rotations around the view-ray, and thus, so does ConVOSCH.
+However, we found that at least in regards to our 63 objects, the texture variations
 were not significantly different when the objects were rotated
 -- neither for the single colored synthetic data (Figure~\ref{fig:synthetic}),
 nor for the real views (Table~\ref{tbl:novel}).
@@ -949,19 +949,19 @@ detection in cluttered scenes by using a sliding box approach.
 %% LSM and detection in cluttered scenes using a sliding box approach.
 
 Unfortunately, acquiring enough labeled training data with enough variation
-to avoid overfitting is a problem in 3D perception, thus the final results are
+to avoid overfitting is a problem in 3D perception. Given this, the final results are
 not completely informative and have high variations.
 Furthermore, the dataset is quite challenging, containing many similar objects of same type or brand.
-We will try to address these issues by expanding and publishing our database of objects
+We plan to address these issues by expanding and publishing our database of objects
 and creating more labeled scenes for evaluation.
 
-Additionally, the automatic building of object databases by an in-hand modeling by the
-robot itself is a useful tool that we plan to investigate in order to allow for
-easier upgrade of the database with novel objects.
-% requires grasping without recognition - cite IROS10... maybe for the final version
+Additionally, the automatic building of object databases through in-hand modeling by the
+robot itself
+would allow for easier upgrading of the database with novel objects and, therefore, is a useful tool that we plan to investigate.
+% TODO requires grasping without recognition - cite Marton10IROS... maybe for the final version
 
-Future work will include incorporation of other promising 2.5/3D approaches like VFH and NARF
-into the voxelized feature extraction process, and evaluating using more test and training data.
+Future work will include the incorporation of other promising 2.5/3D approaches, like VFH and NARF,
+into the voxelized feature extraction process and further evaluations using more test and training data.
 
 % % % \todo{color stabilization?}
 
