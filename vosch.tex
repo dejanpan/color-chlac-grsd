@@ -937,8 +937,9 @@ the original methods.
 
 With its low number of dimensions, the rotation invariant VOSCH feature
 promises to be an efficient and descriptive feature that scales well with
-the number of objects. This is what a real-world application of the system would
-require. C$^3$-HLAC is not rotation invariant, so it has to be trained with
+the number of objects.
+% This is what a real-world application of the system would require.
+C$^3$-HLAC is not rotation invariant, so it has to be trained with
 all rotations around the view-ray, and thus, so does ConVOSCH.
 However, we found that at least in regards to our 63 objects, the texture variations
 were not significantly different when the objects were rotated
@@ -960,7 +961,7 @@ and creating more labeled scenes for evaluation.
 Additionally, the automatic building of object databases through in-hand modeling by the
 robot itself
 would allow for easier upgrading of the database with novel objects and, therefore, is a useful tool that we plan to investigate.
-% TODO requires grasping without recognition - cite Marton10IROS... maybe for the final version
+% requires grasping without recognition - cite Marton10IROS?... maybe for the final version
 
 Future work will include the incorporation of other promising 2.5/3D approaches, like VFH and NARF,
 into the voxelized feature extraction process and further evaluations using more test and training data.
