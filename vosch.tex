@@ -312,24 +312,24 @@ than the point-based approaches. %It was shown by the authors in \cite{kanezaki2
 \label{sec:overview}
 The general idea of the work presented herein is depicted in 
 Figure~\ref{fig:robot}. We first acquired the training data for 63 objects
-of daily use using the RGBD Kinect sensor. We then estimate ConVOSCH and VOSCH descriptors 
-for every object view and generate training models using Support Vector
-Machines~\cite{svm99} (SVM) or Linear Subspace Method~\cite{watanabe1973} (LSM) classifiers. The models are then used
-in the evaluation part for cross-validation checks and the detection of 
+of daily use using the RGBD Kinect sensor. We then estimated ConVOSCH and VOSCH descriptors 
+for every object view and generated training models using Support Vector
+Machines~\cite{svm99} (SVM) or Linear Subspace Method~\cite{watanabe1973} (LSM) classifiers. The models were then used
+in the evaluation for cross-validation checks and the detection of 
 objects in natural scenes.
 
 % % % Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
 % % % construction, ii)database assembly and training of object models and iii)testing,
 % % % we solved each of them individually.
-To construct the ConVOSCH and VOSCH descriptors, we had to modify the original algorithms
-such that the C$^3$-HLAC became rotation invariant and GRSD 
+To construct the ConVOSCH and VOSCH descriptors, we modified the original algorithms
+so that the C$^3$-HLAC became rotation invariant and GRSD 
 additive. We thus obtained descriptor histograms with 
-\emph{1001} bins for ConVOSCH and \emph{137} bins for VOSCH representing the transitions between its different dimensions.
+\emph{1001} bins for ConVOSCH and \emph{137} bins for VOSCH, representing the transitions between its different dimensions.
 For constructing a database of object models (Figure~\ref{fig:robot} bottom)
 containing training examples, we used a rotating
-table using a pan-tilt unit that is controlled by the robot over the
-network. Objects placed on this rotating table were scanned at a given
-angle-step ($15^\circ$) and then used to classify objects found in
+table with a pan-tilt unit that is controlled by the robot over the
+network. Objects placed on the rotating table were scanned at a given
+angle ($15^\circ$) and then used to classify objects found in
 typical household settings.
 % % % For this third case we also performed a test on objects that were
 % % % segmented in the euclidean sense. 
@@ -337,24 +337,25 @@ typical household settings.
 Our approach is realized as part of the Robot Operating System
 (ROS, \url{http://www.ros.org}) open source framework, and makes
 use of modular and robust components that can be reused on other robotic
-systems different from ours.
+systems.
 
 % \subsection{Performance and Novelty}
-An important factor of the perception system for robotics is to perform fast. We thus optimized
-the proposed descriptors to bring the estimation time down to $0.26$ s for a cluster consisting of 
-\emph{4632} points on average, and to have the classification time of under \emph{50} milliseconds
-for the SVM classifier and 0.1 millisecond for LSM. The Moving-bounding-box-based
-recognition of objects in e.g. cluttered scenes takes 2-4 seconds as detailed
+An important factor of robotic perception systems is quick performance. To achieve this we optimized
+the proposed descriptors, bringing the estimation time down to $0.26$ s for a cluster consisting of 
+\emph{4632} points on average and the classification time down to under \emph{50} milliseconds
+for the SVM classifier and 0.1 millisecond for the LSM. The Moving-bounding-box-based
+recognition of objects in, e.g. cluttered scenes, takes 2-4 seconds, as detailed
 in Section~\ref{sec:recognition}.
 
-The main contributions of this paper are the following:
+%The main contributions of this paper are the following:
+This paper provides the following main contributions:
 \begin{itemize}
-\item specification of a novel descriptor with two variants (ConVOSCH and VOSCH) that account for
+\item A specification of a novel descriptor with two variants (ConVOSCH and VOSCH) that account for
 geometrical as well as visual appearance  properties of objects;
-\item comparison of classification results for two established classification
-frameworks -- LSM and SVM;
-\item an extensive database of 63 objects of daily use captured with the Kinect sensor
-used as training examples (which we intend to publish after the review process).
+\item A comparison of classification results for two established classification
+frameworks -- LSM and SVM; and,
+\item An extensive database of 63 objects of daily use captured with the Kinect sensor
+and used as training examples (which we intend to publish after the review process).
 \end{itemize}
 
 \section{Feature Estimation}
