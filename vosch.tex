@@ -152,7 +152,7 @@ needs to be able to perceive and decipher all objects, whether they are textured
 \begin{figure}[tb!]
   \begin{center}
     \includegraphics[width=.99\columnwidth]{figures/firstpage/firstpage.pdf}
-    \includegraphics[width=.99\columnwidth]{figures/objects/objects.jpg}
+    \includegraphics[width=.99\columnwidth]{figures/objects/objects_s.jpg}
     \caption{Top: Autonomous service robot equipped with a Kinect sensor
     acquiring training data of the objects shown in the bottom image. For 
   every view of the object, a VOSCH or ConVOSCH descriptor was estimated and a database
@@ -197,18 +197,18 @@ These features can be used to perform classification of one object against 63
 different objects (see Figure~\ref{fig:robot}) in 0.1 millisecond using Linear
 Subspace Method Classifier~\cite{watanabe1973}.
 
-Further contributions of the work presented herein include the ability to deal with
-cluttered scenes while eliminating the requirement for region of interest
-selection (e.g. horizontal supporting structures) and spatially separable object
-clusters. This has been achieved by ensuring that the descriptor is additive and by using a
-moving bounding box-based approach together with a sub-space matching-based classification scheme (Section
-\ref{sec:recognition}). 
+%% Further contributions of the work presented herein include the ability to deal with
+%% cluttered scenes while eliminating the requirement for region of interest
+%% selection (e.g. horizontal supporting structures) and spatially separable object
+%% clusters. This has been achieved by ensuring that the descriptor is additive and by using a
+%% moving bounding box-based approach together with a sub-space matching-based classification scheme (Section
+%% \ref{sec:recognition}). 
 %% The resulting approach performs at 2 frames per second
 %% while taking into account an object database of 63 different objects
 %% (see Figure~\ref{fig:robot}).
-Lastly, our descriptor can be applied out-of-the-box to data coming from 
-new sensing technologies such as the Kinect device, and lays the foundation for a
-multitude of applications.
+%% Lastly, our descriptor can be applied out-of-the-box to data coming from 
+%% new sensing technologies such as the Kinect device, and lays the foundation for a
+%% multitude of applications.
 % \todo{remove ``such as'' and fix reference?} such as the detection of a priori learned object models discussed further on (Section~\ref{sec:recognition}).
 % % % VOSCH also enables equipping of service robots 
 % % % (such as the robot shown in top part of Figure~\ref{fig:robot}) with the 
@@ -244,13 +244,13 @@ Right: different colors of the same category of a torus have different values in
   \end{center}
 \end{figure}
 
-The remainder of this paper is structured as follows: after presenting an overview of the related
-work in Section~\ref{sec:rl}, we present a system overview in Section~\ref{sec:overview}.
-This is followed by Section~\ref{sec:features}, which elaborates on the construction of the
-ConVOSCH and VOSCH descriptor variants. In Section~\ref{sec:classification} we present the usage of this descriptor
-for the classification of objects using two classification methods, which we
-then test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion},
-we conclude and present our agenda for future research.
+%% The remainder of this paper is structured as follows: after presenting an overview of the related
+%% work in Section~\ref{sec:rl}, we present a system overview in Section~\ref{sec:overview}.
+%% This is followed by Section~\ref{sec:features}, which elaborates on the construction of the
+%% ConVOSCH and VOSCH descriptor variants. In Section~\ref{sec:classification} we present the usage of this descriptor
+%% for the classification of objects using two classification methods, which we
+%% then test and present in Section~\ref{sec:results}. In Section~\ref{sec:conclusion},
+%% we conclude and present our agenda for future research.
 
 \section{Related Work}
 \label{sec:rl}
@@ -263,14 +263,14 @@ we conclude and present our agenda for future research.
 Expressiveness and efficiency 
 %of the descriptor%
  are both crucially important for
-a real-time object recognition system.  While there is a trade-off between
-these two abilities, selecting a
-proper matching method which accounts for the characteristics of the
-descriptor will improve both. 
-Over the last ten years, a corpus of powerful 2D and 3D descriptors for
-recognizing real objects have been developed. However, few of them take into
-account the compatibility with the matching method used with them.
-
+a real-time object recognition system.%%   While there is a trade-off between
+%% these two abilities, selecting a
+%% proper matching method which accounts for the characteristics of the
+%% descriptor will improve both. 
+%% Over the last ten years, a corpus of powerful 2D and 3D descriptors for
+%% recognizing real objects have been developed. However, few of them take into
+%% account the compatibility with the matching method used with them.
+%%
 The SIFT~\cite{lowe04distinctive} descriptor, one of the most well-known 2D
 descriptors for object recognition, makes use of detected keypoints in
 scenes comparing them with referenced objects in order to identify the
@@ -300,15 +300,16 @@ represented by patterns of shape-and-color co-occurrence.  For example, the text
 spin-image~\cite{cortelazzo2006} splits the well-known
 spin-image~\cite{Johnson_spin_images} descriptors into several layers
 according to given levels of luminance. C$^3$-HLAC~\cite{kanezaki2011icra} 
-splits the CHLAC~\cite{kobayashi2004} descriptor, which is a histogram of 14 patterns, 
+splits the CHLAC~\cite{kobayashi2004} descriptor %, which is a histogram of 14 patterns, 
 depending on the relative position of neighboring voxels, into RGB channels and the correlation 
-space of these channels.  In \cite{kanezaki2011icra}, the C$^3$-HLAC descriptor is used as a local
+space of these channels.  
+In \cite{kanezaki2011icra}, the C$^3$-HLAC descriptor is used as a local
 descriptor in the training process and as a global descriptor describing each
 object cluster in the recognition process. This takes advantage of the combination
 of the Linear Subspace Method (LSM)~\cite{watanabe1973} and the descriptor's additive property, 
 which means a global descriptor for an object cluster is computed by summing up the local descriptors of its sub-parts.
-Since computation of C$^3$-HLAC is on voxelized data, it is more efficient
-than the point-based approaches. %It was shown by the authors in \cite{kanezaki2011icra} to outperform textured spin-images.
+%% Since computation of C$^3$-HLAC is on voxelized data, it is more efficient
+%% than the point-based approaches. %It was shown by the authors in \cite{kanezaki2011icra} to outperform textured spin-images.
 
 \section{System Overview}
 \label{sec:overview}
@@ -317,8 +318,9 @@ Figure~\ref{fig:robot}. We first acquired the training data for 63 objects
 of daily use using the RGBD Kinect sensor. We then estimated ConVOSCH and VOSCH descriptors 
 for every object view and generated training models using Support Vector
 Machines~\cite{svm99} (SVM) or Linear Subspace Method~\cite{watanabe1973} (LSM) classifiers. The models were then used
-in the evaluation for cross-validation checks and the detection of 
-objects in natural scenes.
+in the evaluation for cross-validation checks.
+%%  and the detection of 
+%% objects in natural scenes.
 
 % % % Since the focus of the paper is on three parts, i.e. i)VOSCH descriptor
 % % % construction, ii)database assembly and training of object models and iii)testing,
@@ -345,9 +347,10 @@ systems.
 An important factor of robotic perception systems is quick performance. To achieve this we optimized
 the proposed descriptors, bringing the estimation time down to $0.26$ s for a cluster consisting of 
 \emph{4632} points on average and the classification time down to under \emph{50} milliseconds
-for the SVM classifier and 0.1 millisecond for the LSM. The Moving-bounding-box-based
-recognition of objects in, e.g. cluttered scenes, takes 2-4 seconds, as detailed
-in Section~\ref{sec:recognition}.
+for the SVM classifier and 0.1 millisecond for the LSM. 
+%% The Moving-bounding-box-based
+%% recognition of objects in, e.g. cluttered scenes, takes 2-4 seconds, as detailed
+%% in Section~\ref{sec:recognition}.
 
 %The main contributions of this paper are the following:
 This paper provides the following main contributions:
@@ -420,18 +423,18 @@ To determine the threshold of color binarization,
     we applied the histogram threshold selection method of~\cite{otsu1979} to the R, G and B values respectively, 
     using the voxel colors of all objects in the database as sample data.
 C$^3$-HLAC features calculated by (\ref{eq:0th_1}) include redundant elements, e.g., $r(\bm{x})\cdot g(\bm{x})$ and $g(\bm{x})\cdot r(\bm{x})$.
-Excluding the redundant elements, the dimension is 12 if color values are binarized, and 21 otherwise (see Figure~\ref{fig:eq3_colorCHLAC}). 
+Excluding the redundant elements, the dimension is 12 if color values are binarized, and 21 otherwise. % (see Figure~\ref{fig:eq3_colorCHLAC}). 
 Finally a full C$^3$-HLAC vector is obtained by concatenating the two vectors from binarized 
 color voxel data and from original color voxel data. As a result, the dimension of the C$^3$-HLAC feature vector 
 becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data). 
 
-\begin{figure}[tb!]
-  \begin{center}
-    \includegraphics[width=.99\columnwidth]{figures/colorCHLAC/Eq3_in_colorCHLAC.png}
-  \caption{Elements in C$^3$-HLAC features calculated by (\ref{eq:0th_1}). $r_1$ and $r_2$ represents $r_1(\bm{x})$ and $r_2(\bm{x})$, respectively. White grids are excluded since they are redundant.}
-  \label{fig:eq3_colorCHLAC}
-\end{center}
-\end{figure}
+%% \begin{figure}[tb!]
+%%   \begin{center}
+%%     \includegraphics[width=.99\columnwidth]{figures/colorCHLAC/Eq3_in_colorCHLAC.png}
+%%   \caption{Elements in C$^3$-HLAC features calculated by (\ref{eq:0th_1}). $r_1$ and $r_2$ represents $r_1(\bm{x})$ and $r_2(\bm{x})$, respectively. White grids are excluded since they are redundant.}
+%%   \label{fig:eq3_colorCHLAC}
+%% \end{center}
+%% \end{figure}
 
 \subsection{GRSD}
 \label{sec:grsd}
@@ -441,7 +444,7 @@ the following geometric classes of voxel surfaces: \emph{free space, plane, cyli
 Surface types were identified based on the estimation of their
 two principal curves' radii, $r_{min}$ and $r_{max}$ \cite{Marton10IROS}. 
 This approach uses the leaves of an octree as voxels, to facilitate fast ray intersection
-tests and is summarized in Algorithm~\ref{alg:compute_grsd}.
+tests. % and is summarized in Algorithm~\ref{alg:compute_grsd}.
 The number of bins $b$ is:
 \begin{equation}
 b=\frac{s(s+1)}{2}
@@ -449,27 +452,27 @@ b=\frac{s(s+1)}{2}
 where $s$ is the number of possible surface types,
 resulting in 21 dimensions for the above stated 6 types of surfaces.
 
-\begin{algorithm}[htb!]
-L = \{$l_{1}...l_{m}$\} \tcc{\footnotesize{octree leaves encapsulating the object}}
-C = \{$c_{l_1}...c_{l_m}$\} \tcc{\footnotesize{the leaf classes generated by $RSD$ 
-    (e.g. class empty, class plane, etc.)}}
-$\cH$ = ZeroMatrix \tcc{\footnotesize{transition matrix holding the number of neighboring classes}}
-  \ForEach{$l_{i} \in L$}
-  {
-    \ForEach{$l_{j} \in L$}
-    {
-      $r_{ij} \leftarrow (l_{i},l_{j})$ \tcc{\footnotesize{create a line segment between $l_{i}$ and $l_{j}$}}
-      $I = \{l_{k}|l_{k} = L \cap r_{ij}\}$ \tcc{\footnotesize{get leaves intersected by $r_{ij}$}}
-      \tcc{\footnotesize{count the class changes between leaves in $I$}}
-      \ForEach{$l_{k} \in I$}
-      {
-        $\cH[c_{l_k},c_{l_{k+1}}]++$ \tcc{\footnotesize{increase counter}}
-      }
-    }
-  }
-  \caption{GRSD Computation}
-  \label{alg:compute_grsd}
-\end{algorithm}
+%% \begin{algorithm}[htb!]
+%% L = \{$l_{1}...l_{m}$\} \tcc{\footnotesize{octree leaves encapsulating the object}}
+%% C = \{$c_{l_1}...c_{l_m}$\} \tcc{\footnotesize{the leaf classes generated by $RSD$ 
+%%     (e.g. class empty, class plane, etc.)}}
+%% $\cH$ = ZeroMatrix \tcc{\footnotesize{transition matrix holding the number of neighboring classes}}
+%%   \ForEach{$l_{i} \in L$}
+%%   {
+%%     \ForEach{$l_{j} \in L$}
+%%     {
+%%       $r_{ij} \leftarrow (l_{i},l_{j})$ \tcc{\footnotesize{create a line segment between $l_{i}$ and $l_{j}$}}
+%%       $I = \{l_{k}|l_{k} = L \cap r_{ij}\}$ \tcc{\footnotesize{get leaves intersected by $r_{ij}$}}
+%%       \tcc{\footnotesize{count the class changes between leaves in $I$}}
+%%       \ForEach{$l_{k} \in I$}
+%%       {
+%%         $\cH[c_{l_k},c_{l_{k+1}}]++$ \tcc{\footnotesize{increase counter}}
+%%       }
+%%     }
+%%   }
+%%   \caption{GRSD Computation}
+%%   \label{alg:compute_grsd}
+%% \end{algorithm}
 
 In order to efficiently merge the two features, the original GRSD had to be altered (see next subsection). 
 In the new, additive GRSD$_2$ feature, transitions from \emph{free space} to \emph{free space} are impossible,
@@ -564,11 +567,13 @@ Then the eigenvectors of $R=\frac{1}{N} \sum^{N}_{t=1} \bm{z}_t \bm{z}_t^T$ are 
 
 To classify and identify a detected object in environments, the system extracts one feature vector from the whole voxel grid of the object. 
 Letting the feature vector be $\bm{z}$ and the matrix of top $c$ eigenvectors for the $i$-th object in the database be $P_i \equiv (\bm{v}_{i1} \bm{v}_{i2} ... \bm{v}_{it})$,
-the similarity between the query part and the $i$-th object in the database is calculated by the following equation:
-\begin{eqnarray}\label{eq:y_calc}
-  %\hspace{-1mm}
-  y_i = \frac{\| P_i^T \bm{z} \|}{\| \bm{z} \|}
-\end{eqnarray}
+the similarity between the query part and the $i$-th object in the database $y_i$ is calculated by 
+%% the following equation:
+%% \begin{eqnarray}\label{eq:y_calc}
+%%   %\hspace{-1mm}
+%%   y_i = \frac{\| P_i^T \bm{z} \|}{\| \bm{z} \|}
+%% \end{eqnarray}
+$y_i = \| P_i^T \bm{z} \|/\| \bm{z} \|$.
 There is an advantage to using LSM with this kind of histogram-based descriptors which are additive. 
 % WAS ALREADY EXPLAINED: The additive property means that a global descriptor for an object cluster equals the summation of local descriptors of its sub-parts. 
 Owing to this property, one feature vector computed from each object cluster in environments can be classified by projecting it to 
@@ -798,7 +803,7 @@ The dimensionality of the subspace $c$ was set to 10 for GRSD$_2$ and 50 for the
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 \rowcolor{tcA} & \textbf{GRSD$_2$} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
-\rowcolor{tcA} & \textbf{20D [\%]} & \textbf{981D [\%]} & \textbf{1001D [\%]} & \textbf{137D [\%]} \\
+%\rowcolor{tcA} & \textbf{20D [\%]} & \textbf{981D [\%]} & \textbf{1001D [\%]} & \textbf{137D [\%]} \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{LSM}} & 43.65 (39.48) & 99.67 (99.6) & \textbf{99.8} (\textbf{99.74}) & \textbf{99.8} (99.67) \\
 \hline
@@ -817,10 +822,12 @@ The dimensionality of the subspace $c$ was set to 10 for GRSD$_2$ and 50 for the
 
 \subsubsection{Evaluation on Novel Views}
 To evaluate the proposed features of the novel views, we performed the test with the
-following setup (shown in Figure~\ref{fig:novel_views}): (a and b) we selected 5 types of scenes containing textured
+following setup % (shown in Figure~\ref{fig:novel_views})
+: (a and b) we selected 5 types of scenes containing textured
 and textureless objects, (c) objects with similar shapes, (d) a scene with the substantial 
-altered lighting conditions, and (e) objects with arbitrary rotations. We acquired the data from three substantially different views, 
-as also shown in Figure~\ref{fig:novel_views}. Object candidate clusters were detected
+altered lighting conditions, and (e) objects with arbitrary rotations. We acquired the data from three substantially different views.%, 
+%as also shown in Figure~\ref{fig:novel_views}. 
+Object candidate clusters were detected
 by first finding a major horizontal planar surface within the point cloud, as done in~\cite{Rusu09IROS_ClosingLoop}.
 For these experiments, we tested all the choices with a break for ten (10, 20, \dots) as the dimension of subspace $c$ in LSM, and set the best one.
 
@@ -836,7 +843,7 @@ Such an approach improved the success rate by $12\%$ of GRSD based geometric cla
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
 \rowcolor{tcA} & \textbf{} & \textbf{GRSD$_2$} & \textbf{C$^3$-HLAC} & \textbf{ConVOSCH} & \textbf{VOSCH} \\
-\rowcolor{tcA} & \textbf{} & \textbf{20D} & \textbf{981D} & \textbf{1001D} & \textbf{137D} \\
+%\rowcolor{tcA} & \textbf{} & \textbf{20D} & \textbf{981D} & \textbf{1001D} & \textbf{137D} \\
 \hline
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{(a)}} & \mc{1}{>{\columncolor{tcA}}c|}{\textbf{LSM}} & 16.7\% & 75\% & \textbf{91.7\%} & 83.3\% \\
 \mc{1}{|>{\columncolor{tcA}}c|}{\textbf{texture}} & \mc{1}{>{\columncolor{tcA}}c|}{{SVM}} & 50\% & 75\% & \textbf{83.3\%} & 66.7\% \\
@@ -879,62 +886,62 @@ property of the feature for detection in clutter. Moreover, the time required fo
 %% d)varying lighting conditions -- no clutter, 1 object at a time}
 %\todo{Dejan}
 
-\subsection{Object Detection Pipeline (in Clutter)}
-\label{sec:recognition}
-We applied our object recognition method on an object detection scheme in a household
-environment. The system computes the similarities between each target object and all 
-rectangular-solid sub-regions in the environment and then it outputs all the regions
-that have higher similarities than an empirically set threshold.
-Each sub-region has the same size as that of the bounding box of the target object 
-($15$~cm~$\times~15$~cm~$\times~15$~cm) in our tests.
-To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, 
-which is a simple extension of ``Integral Image''~\cite{integral_image} from 2D to 3D.
-The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional 
-compressed feature vector extracted from the voxel area ranging from $(0,0,0)$ to $(x,y,z)$.
-Let the feature vector of the voxel area with $x$ ranging from $x_1$ to $x_2$,
-$y$ ranging from $y_1$ to $y_2$, and $z$ ranging from $z_1$ to $z_2$, be $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$.
-The latter is then computed by the following equation:
-\begin{eqnarray*}\label{eq:sat}
-\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2) = \bm{I}(x_2,y_2,z_2) - \bm{I}(x_1,y_2,z_2)
-                           \\ - \bm{I}(x_2,y_1,z_2) - \bm{I}(x_2,y_2,z_1)
-                           \\ + \bm{I}(x_1,y_1,z_2) + \bm{I}(x_1,y_2,z_1)
-                           \\ + \bm{I}(x_2,y_1,z_1) - \bm{I}(x_1,y_1,z_1)
-\end{eqnarray*}
-Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can always be 
-computed by adding the 8 cached feature vectors, regardless of the size of the target object.
-To furthermore accelerate the process, empty regions are also skipped.
-Similarly to the ``Integral Feature Table'', we created a table that stores
-the number of voxels with the occupied property in the area ranging from $(0,0,0)$ to $(x,y,z)$.
-Using this table, the number of voxels with the occupied property in the detection 
-box can be computed quickly by adding 8 scalar values.
+%% \subsection{Object Detection Pipeline (in Clutter)}
+%% \label{sec:recognition}
+%% We applied our object recognition method on an object detection scheme in a household
+%% environment. The system computes the similarities between each target object and all 
+%% rectangular-solid sub-regions in the environment and then it outputs all the regions
+%% that have higher similarities than an empirically set threshold.
+%% Each sub-region has the same size as that of the bounding box of the target object 
+%% ($15$~cm~$\times~15$~cm~$\times~15$~cm) in our tests.
+%% To accelerate feature extraction from the sub-regions, we used ``Integral Feature Table''~\cite{kanezaki2010tvc}, 
+%% which is a simple extension of ``Integral Image''~\cite{integral_image} from 2D to 3D.
+%% The ``Integral Feature Table'' $\bm{I}(x,y,z)$ is defined as the $d$-dimensional 
+%% compressed feature vector extracted from the voxel area ranging from $(0,0,0)$ to $(x,y,z)$.
+%% Let the feature vector of the voxel area with $x$ ranging from $x_1$ to $x_2$,
+%% $y$ ranging from $y_1$ to $y_2$, and $z$ ranging from $z_1$ to $z_2$, be $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$.
+%% The latter is then computed by the following equation:
+%% \begin{eqnarray*}\label{eq:sat}
+%% \bm{F}(x_1,y_1,z_1,x_2,y_2,z_2) = \bm{I}(x_2,y_2,z_2) - \bm{I}(x_1,y_2,z_2)
+%%                            \\ - \bm{I}(x_2,y_1,z_2) - \bm{I}(x_2,y_2,z_1)
+%%                            \\ + \bm{I}(x_1,y_1,z_2) + \bm{I}(x_1,y_2,z_1)
+%%                            \\ + \bm{I}(x_2,y_1,z_1) - \bm{I}(x_1,y_1,z_1)
+%% \end{eqnarray*}
+%% Using the ``Integral Feature Table'', $\bm{F}(x_1,y_1,z_1,x_2,y_2,z_2)$ can always be 
+%% computed by adding the 8 cached feature vectors, regardless of the size of the target object.
+%% To furthermore accelerate the process, empty regions are also skipped.
+%% Similarly to the ``Integral Feature Table'', we created a table that stores
+%% the number of voxels with the occupied property in the area ranging from $(0,0,0)$ to $(x,y,z)$.
+%% Using this table, the number of voxels with the occupied property in the detection 
+%% box can be computed quickly by adding 8 scalar values.
 
-This object detection pipeline was applied to six of the 63, earlier discussed, training objects.
-Objects were placed in several locations on a kitchen counter and the robot was instructed to actively find them.
+%% This object detection pipeline was applied to six of the 63, earlier discussed, training objects.
+%% Objects were placed in several locations on a kitchen counter and the robot was instructed to actively find them.
 
-Preliminary results of the correctly detected objects are shown in Figure~\ref{fig:correct_detected}. 
-When the range of the target point cloud in the environment is limited to $1$~m from the robot's viewpoint, 
-all the processing, including voxelization, feature extraction, and similarity calculation was performed 
-in 2-4 seconds per point cloud with the size of 307,000 points.
+%% Preliminary results of the correctly detected objects are shown in Figure~\ref{fig:correct_detected}. 
+%% When the range of the target point cloud in the environment is limited to $1$~m from the robot's viewpoint, 
+%% all the processing, including voxelization, feature extraction, and similarity calculation was performed 
+%% in 2-4 seconds per point cloud with the size of 307,000 points.
 
-%\todo{Asako: description for the results}
+%% %\todo{Asako: description for the results}
 
-\begin{figure*}[tb!]
-  \centering
-  \subfloat[Textured objects]{\label{fig:textured}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/text_view1.png}}
-  \subfloat[Textureless objects]{\label{fig:textureless}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/textureless_view2.png}}
-  \subfloat[Two groups of objects with similar shapes]{\label{fig:similar_shapes}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
-  \subfloat[Altered light conditions]{\label{fig:light}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/diff_light_view3.png}}
-  \subfloat[Arbitrary rotation]{\label{fig:light}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/rotation.png}}
- \caption{Screenshots of the novel view scenes (best viewed in color) }
- \label{fig:novel_views}
-\end{figure*}
+%% \begin{figure*}[tb!]
+%%   \centering
+%%   \subfloat[Textured objects]{\label{fig:textured}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/text_view1.png}}
+%%   \subfloat[Textureless objects]{\label{fig:textureless}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/textureless_view2.png}}
+%%   \subfloat[Two groups of objects with similar shapes]{\label{fig:similar_shapes}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/similar_shape_view1.png}}
+%%   \subfloat[Altered light conditions]{\label{fig:light}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/diff_light_view3.png}}
+%%   \subfloat[Arbitrary rotation]{\label{fig:light}\includegraphics[width=.2\textwidth]{figures/novel_view_scenes/rotation.png}}
+%%  \caption{Screenshots of the novel view scenes (best viewed in color) }
+%%  \label{fig:novel_views}
+%% \end{figure*}
 
-\begin{figure*}[tb!]
-  \centering
-  \includegraphics[width=.99\textwidth]{figures/detection_demo/four_objects_detection.png}
-  \caption{Screenshots of the examples of correctly detected objects as marked by cubes in different colors corresponding to the background colors of the target objects shown in the left two columns (best viewed in color). }
-  \label{fig:correct_detected}
-\end{figure*}
+%% \begin{figure*}[tb!]
+%%   \centering
+%%   \includegraphics[width=.99\textwidth]{figures/detection_demo/four_objects_detection.png}
+%%   \caption{Screenshots of the examples of correctly detected objects as marked by cubes in different colors corresponding to the background colors of the target objects shown in the left two columns (best viewed in color). }
+%%   \label{fig:correct_detected}
+%% \end{figure*}
 
 
 
@@ -957,22 +964,22 @@ were not significantly different when the objects were rotated
 -- neither for the single colored synthetic data (Figure~\ref{fig:synthetic}),
 nor for the real views (Table~\ref{tbl:novel}).
 
-Since the features were designed to be additive, they can be used with LSM for
-detection in cluttered scenes by using a sliding box approach.
+%% Since the features were designed to be additive, they can be used with LSM for
+%% detection in cluttered scenes by using a sliding box approach.
 %% Since the features were designed to be additive, they can be used using
 %% LSM and detection in cluttered scenes using a sliding box approach.
 
-Unfortunately, acquiring enough labeled training data with enough variation
-to avoid overfitting is a problem in 3D perception. Given this, the final results are
-not completely informative and have high variations.
-Furthermore, the dataset is quite challenging, containing many similar objects of same type or brand.
-We plan to address these issues by expanding and publishing our database of objects
-and creating more labeled scenes for evaluation.
+%% Unfortunately, acquiring enough labeled training data with enough variation
+%% to avoid overfitting is a problem in 3D perception. Given this, the final results are
+%% not completely informative and have high variations.
+%% Furthermore, the dataset is quite challenging, containing many similar objects of same type or brand.
+%% We plan to address these issues by expanding and publishing our database of objects
+%% and creating more labeled scenes for evaluation.
 
-Additionally, the automatic building of object databases through in-hand modeling by the
-robot itself
-would allow for easier upgrading of the database with novel objects and, therefore, is a useful tool that we plan to investigate.
-% requires grasping without recognition - cite Marton10IROS?... maybe for the final version
+%% Additionally, the automatic building of object databases through in-hand modeling by the
+%% robot itself
+%% would allow for easier upgrading of the database with novel objects and, therefore, is a useful tool that we plan to investigate.
+%% % requires grasping without recognition - cite Marton10IROS?... maybe for the final version
 
 Future work will include the incorporation of other promising 2.5/3D approaches, like VFH and NARF,
 into the voxelized feature extraction process and further evaluations using more test and training data.
