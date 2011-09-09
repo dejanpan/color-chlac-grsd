@@ -374,6 +374,7 @@ we briefly present an overview of how the features of HLAC and GRSD are construc
 % Since both approaches work on voxelized data, making their computation a single process
 % and combining them in a single feature is an efficient solution.
 
+\vspace{-1mm}
 \subsection{C$^3$-HLAC}
 \label{sec:color_chlac}
 C$^3$-HLAC descriptor is a high-dimensional vector that measures the summation of the 
@@ -426,7 +427,7 @@ C$^3$-HLAC features calculated by (\ref{eq:0th_1}) include redundant elements, e
 Excluding the redundant elements, the dimension is 12 if color values are binarized, and 21 otherwise. % (see Figure~\ref{fig:eq3_colorCHLAC}). 
 Finally a full C$^3$-HLAC vector is obtained by concatenating the two vectors from binarized 
 color voxel data and from original color voxel data. As a result, the dimension of the C$^3$-HLAC feature vector 
-becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data). 
+becomes 981 (6+468+21 for non-binarized data plus 6+468+12 for binarized data). 
 
 %% \begin{figure}[tb!]
 %%   \begin{center}
@@ -436,6 +437,7 @@ becomes 981 (6+468+12 for non-binarized data plus 6+468+21 for binarized data).
 %% \end{center}
 %% \end{figure}
 
+\vspace{-1mm}
 \subsection{GRSD}
 \label{sec:grsd}
 GRSD is a histogram, that counts the number of transitions between different types of voxels.
@@ -478,6 +480,7 @@ In order to efficiently merge the two features, the original GRSD had to be alte
 In the new, additive GRSD$_2$ feature, transitions from \emph{free space} to \emph{free space} are impossible,
 hence its dimensionality becomes 20.
 
+\vspace{-1mm}
 \subsection{VOSCH}
 \label{sec:VOSCH}
 In order to generate VOSCH we refined the C$^3$-HLAC descriptor to be rotation-invariant by bringing all  
@@ -520,6 +523,7 @@ the millisecond range. This is 2 orders of magnitude faster than the original im
 % reported in~\cite{GRSD10Humanoids}.
 at the cost of some descriptiveness.
 
+\vspace{-1mm}
 \subsection{ConVOSCH}
 The idea of ConVOSCH is to simply estimate C$^3$-HLAC and GRSD$_2$ in two separate steps, 
 concatenate resulting histograms and normalize the final result into a range of [0,1]. This preserves the 
@@ -552,6 +556,7 @@ histograms in the bottom-right part are also identical).
 \section{Classification Methods}
 \label{sec:classification}
 
+\vspace{-1mm}
 \subsection{Linear Subspace Method}
 \label{sec:subspace}
 LSM is an established learning method for classification. 
@@ -579,6 +584,7 @@ There is an advantage to using LSM with this kind of histogram-based descriptors
 Owing to this property, one feature vector computed from each object cluster in environments can be classified by projecting it to 
 each subspace of database objects, regardless of the size of the object cluster, thus providing a fairly fast method for classifying partially visible objects.
 
+\vspace{-1mm}
 \subsection{Support Vector Machine-based Classification}
 We also performed classification using SVM in our experiments.
 SVM is a fast classification method that works by learning the vectors that define hyperplanes separating
@@ -592,6 +598,7 @@ on the training data.
 We used a C-SVC type SVM with a radial basis function kernel \cite{LIBSVM} with $\gamma = 0.0078125$
 ($0.5$ for GRSD$_2$). Cost values higher than $128$ did not further improve the final results.
 
+\vspace{-1mm}
 \subsection{Scaling of Features}
 To improve classification rates using LSM it is important 
 that the values of the feature do not vary over several orders of magnitude and, thus, become very important components during PCA.
@@ -616,6 +623,7 @@ GRSD$_2$.
 Since C$^3$-HLAC was already shown to outperform Textured Spin Images in~\cite{kanezaki2010icra}
 we did not include it in our experiments.
 
+\vspace{-1mm}
 \subsection{Feature Extraction}
 \label{sec:feature_extraction}
 In all tests, the computation of the feature was parametrized as follows: 
@@ -629,7 +637,7 @@ In all tests, the computation of the feature was parametrized as follows:
 The execution times for VOSCH feature estimation are shown in Table~\ref{tbl:timing}, where 
 $\overline{nr_{points}}$ denotes the average number of points per object,
 $\overline{t_{point}}$ is the average estimation time per point
-and $\overline{t_{object}}$ is the average estimation time needed for an object:
+and $\overline{t_{object}}$ is the average estimation time needed for an object.
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
 \definecolor{tcA}{rgb}{0.784314,0.784314,0.784314}
 \begin{table}[tb]
@@ -648,9 +656,10 @@ and $\overline{t_{object}}$ is the average estimation time needed for an object:
 \end{center}
 \end{table}
 
+\vspace{-1mm}
 \subsection{Synthetic Data}
 We first carried out tests on a set of 49 artificially generated objects, consisting of
-7 shapes, each in 7 different colors (Figure~\ref{fig:grsd_cchlac}). We used 1 example of 
+7 shapes, each in 7 different colors (Figure~\ref{fig:grsd_cchlac}). We used one example of 
 each object as a training sample and evaluated the model on 5 examples of each object with 
 10 different noise levels. The noise levels were generated for points' 3D coordinates 
 using Gaussian distribution with the following standard deviations:
@@ -659,6 +668,7 @@ $\sigma \in \{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0\}$ [mm]
 \end{center}
 The deviations were set to correspond to the actual noise levels of a Kinect 
 sensor\footnote{\url{http://www.ros.org/wiki/openni_kinect/kinect_accuracy}}.
+Note that not partial but the whole shape of each object was given as an example in this experiment.
 For LSM classification we set the dimension of the compressed feature space $d$ to 
 50 for C$^3$-HLAC, ConVOSCH and VOSCH, while GRSD$_2$ was left uncompressed. 
 The dimensionality of the subspace $c$ was set to 3.
@@ -731,16 +741,19 @@ had to be trained in artificial rotations to achieve rotation invariance.
 
 \begin{figure*}[tb!]
   \centering
-  \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_1.png}
-  \includegraphics[width=.49\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_2.png}
+  \includegraphics[width=.48\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_1.png}
+  \includegraphics[width=.48\textwidth]{figures/synthetic_experiment/synthetic_experimental_result_2.png}
+  \vspace{-1mm}
   \caption{The effect of simulated noise on the classification results using GRSD$_2$, C$^3$-HLAC, ConVOSCH and VOSCH with LSM and SVM
     (both with and without random rotations of test data).}
   \label{fig:synthetic}
 \end{figure*}
 
 
+\vspace{-1mm}
 \subsection{Real Data}
 \label{sec:real_data}
+\vspace{-1mm}
 \subsubsection{Acquisition of Training Data}
 Our database of 3D objects was obtained using the Kinect sensor mounted on the head of a robot.
 The set of objects (see Figure~\ref{fig:robot}) encompasses those commonly used
@@ -773,6 +786,7 @@ snapshots from a perspective that best approximates the robot's viewpoint during
 % \end{figure}
 
 
+\vspace{-1mm}
 \subsubsection{Evaluation of the Training Data}
 Table~\ref{tbl:training} shows the percentage of correctly classified training examples using the model computed for them.
 The numbers in parentheses are the percentages of correctly classified views using the model constructed using the remaining views
@@ -820,6 +834,7 @@ The dimensionality of the subspace $c$ was set to 10 for GRSD$_2$ and 50 for the
 % ConVOSCH: 
 % VOSCH:    
 
+\vspace{-1mm}
 \subsubsection{Evaluation on Novel Views}
 To evaluate the proposed features of the novel views, we performed the test with the
 following setup % (shown in Figure~\ref{fig:novel_views})
@@ -872,6 +887,7 @@ Such an approach improved the success rate by $12\%$ of GRSD based geometric cla
 \end{tabular}
 \end{center}
 \end{scriptsize}
+\vspace{-3mm}
 \caption{Model accuracy on novel view data. $^*$Please note that while in the original implementation GRSD was used for detecting the geometric category,
          here we used it for classification of objects that were only visually distinguishable (different brands of milk boxes for example).}
 \label{tbl:novel}
@@ -881,6 +897,7 @@ Such an approach improved the success rate by $12\%$ of GRSD based geometric cla
 While LSM proved to be robust to noise in the synthetic data, the real data is quite smooth,
 and SVM outperformed it in our tests. LSM has, however, the advantage of exploiting the additive
 property of the feature for detection in clutter. Moreover, the time required for classification is significantly shorter with LSM than with SVM.
+To validate LSM's robustness to parial data in clutter, additional experiments with larger number of partially observed objects are the most important future work.
 
 %% \todo{Prove it works for a)textured objects, b)texture-less objects, c)objects with different shapes, 
 %% d)varying lighting conditions -- no clutter, 1 object at a time}
@@ -945,6 +962,7 @@ property of the feature for detection in clutter. Moreover, the time required fo
 
 
 
+\vspace{-1mm}
 \section{Conclusions and Future Work}
 \label{sec:conclusion}
 
